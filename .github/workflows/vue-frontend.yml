@@ -4,17 +4,10 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'vue-frontend/**'
-      - '.github/workflows/vue-frontend.yml'
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
-    defaults:
-      run:
-        working-directory: ./vue-frontend
     
     steps:
       - name: Checkout code
@@ -42,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: vue-frontend-dist
-          path: vue-frontend/dist
+          path: dist
           retention-days: 30
       
       - name: Add server to known hosts
@@ -57,9 +50,9 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: 22
-          source: "vue-frontend/dist/*"
+          source: "dist/*"
           target: ${{ secrets.DEPLOY_PATH || '/home/master/applications/default/public_html' }}
-          strip_components: 1
+          strip_components: 0
           rm: false
       
       - name: Set correct permissions
