@@ -63,6 +63,7 @@ jobs:
           target: ${{ secrets.DEPLOY_PATH || '/home/master/applications/default/public_html' }}
           strip_components: 1
           rm: false
+          
       
       - name: Set correct permissions
         uses: appleboy/ssh-action@master
