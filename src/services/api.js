@@ -25,6 +25,15 @@ const api = axios.create({
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
+    // Add Accept-Language header based on current locale
+    try {
+      const locale = localStorage.getItem('app_locale') || 'fr'
+      config.headers['Accept-Language'] = locale
+    } catch (error) {
+      // Fallback to French if localStorage is not available
+      config.headers['Accept-Language'] = 'fr'
+    }
+    
     // Add any auth tokens or headers here if needed
     return config
   },

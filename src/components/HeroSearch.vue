@@ -25,19 +25,19 @@
           @click="activeTab = 'achat'"
           :class="['px-6 py-2 font-semibold rounded-lg', activeTab === 'achat' ? `text-white ${colorClasses.bg} ${colorClasses.hover} border-2 ${colorClasses.border}` : 'text-black bg-white']"
         >
-          Vente
+          {{ t('navigation.sale') }}
         </button>
         <button
           @click="activeTab = 'location'"
           :class="['px-6 py-2 font-semibold rounded-lg', activeTab === 'location' ? `text-white ${colorClasses.bg} ${colorClasses.hover} border-2 ${colorClasses.border}` : 'text-black bg-white']"
         >
-          Location
+          {{ t('navigation.location') }}
         </button>
         <button
           @click="activeTab = 'vacances'"
             :class="['px-6 py-2 font-semibold rounded-lg', activeTab === 'vacances' ? `text-white ${colorClasses.bg} ${colorClasses.hover} border-2 ${colorClasses.border}` : 'text-black bg-white']"
         >
-          Vacances
+          {{ t('navigation.vacation') }}
         </button>
       </div>
       <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-2xl p-6">
@@ -50,7 +50,7 @@
               <MultiSelect
                 v-model="searchForm.ville"
                 :options="villes"
-                placeholder="Toutes les villes"
+                :placeholder="t('search.allCities')"
                 label-key="title"
                 value-key="title"
               />
@@ -59,7 +59,7 @@
               <MultiSelect
                 v-model="searchForm.type"
                 :options="types"
-                placeholder="Toutes les propriétés"
+                :placeholder="t('search.allProperties')"
                 label-key="title"
                 value-key="title"
               />
@@ -68,7 +68,7 @@
               <input
                 v-model.number="searchForm.prix_max"
                 type="number"
-                placeholder="Prix maximum"
+                :placeholder="t('search.maxPrice')"
                 :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`"
               />
             </div>
@@ -96,7 +96,7 @@
               <input
                 v-model.number="searchForm.nbr_adultes"
                 type="number"
-                placeholder="Adultes"
+                :placeholder="t('search.adults')"
                 :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`"
               />
             </div>
@@ -104,7 +104,7 @@
               <input
                 v-model.number="searchForm.nbr_enfants"
                 type="number"
-                placeholder="Enfants"
+                :placeholder="t('search.children')"
                 :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`"
               />
             </div>
@@ -115,7 +115,7 @@
             <input
               v-model="searchForm.reference"
               type="text"
-              placeholder="Rechercher par référence"
+              :placeholder="t('search.searchByReference')"
               :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`"
             />
           </div>
@@ -123,7 +123,7 @@
           <!-- Search Button -->
           <div class="flex items-center gap-2">
             <button type="submit" :class="['flex-1 px-6 py-3 rounded-lg font-semibold text-white', colorClasses.bg, colorClasses.hover]">
-              Recherchez
+              {{ t('search.search') }}
             </button>
             <button
               type="button"
@@ -145,12 +145,14 @@
 import { ref, onMounted, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTheme } from '../composables/useTheme'
+import { useI18n } from '../composables/useI18n'
 import { homeService } from '../services/homeService'
 import { productService } from '../services/productService'
 import bgImmobilierMaroc from '../assets/images/bgs/immobilier-Maroc-2P.webp'
 import MultiSelect from './MultiSelect.vue'
 
 const { colorClasses } = useTheme()
+const { t } = useI18n()
 
 const props = defineProps({
   title: {
