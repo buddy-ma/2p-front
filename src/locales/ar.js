@@ -22,7 +22,7 @@ export default {
     mad: 'درهم',
     chambre: 'غرفة',
     chambres: 'غرف',
-    m²: 'متر',
+    "m²": 'متر',
     parJour: 'لليوم',
     parMois: 'للشهر',
     parMetre: 'للمتر',

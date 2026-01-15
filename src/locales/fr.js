@@ -22,7 +22,7 @@ export default {
     mad: 'MAD',
     chambre: 'Chambre',
     chambres: 'Chambres',
-    m²: 'm²',
+    "m²": "m²",
     parJour: 'jour',
     parMois: 'mois',
     parMetre: 'mètre',
