@@ -63,5 +63,48 @@ export const productService = {
   getExtras(params = {}) {
     return api.get('/extras', { params })
   },
+
+  /**
+   * Get product categories
+   * @returns {Promise} Product categories data
+   */
+  getCategories() {
+    return api.get('/categories')
+  },
+
+  /**
+   * Get villes
+   * @returns {Promise} Villes data
+   */
+  getVilles() {
+    return api.get('/villes')
+  },
+
+  /**
+   * Create a new product
+   * @param {FormData} formData - Product form data including images
+   * @returns {Promise} Created product data
+   */
+  createProduct(formData) {
+    return api.post('/products', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
+    })
+  },
+
+  /**
+   * Create product with authentication (combined endpoint)
+   * Validates product data first, then handles auth, then creates product
+   * @param {FormData} formData - Product form data including images and auth data
+   * @returns {Promise} Created product data with token
+   */
+  createProductWithAuth(formData) {
+    return api.post('/products/with-auth', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
+    })
+  },
 }
 

@@ -70,12 +70,15 @@
         <!-- Right Side Actions -->
         <div class="flex items-center gap-4">
           <button :class="`px-4 py-2 text-gray-700 dark:text-gray-300 ${colorClasses.hoverText}`">{{ t('common.login') }}</button>
-          <button :class="`${colorClasses.bg} text-white px-4 py-2 rounded-lg ${colorClasses.hover} flex items-center`">
+          <router-link
+            to="/ajouter-annonce"
+            :class="`${colorClasses.bg} text-white px-4 py-2 rounded-lg ${colorClasses.hover} flex items-center`"
+          >
             <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
             {{ t('common.freeAd') }}
-          </button>
+          </router-link>
           <!-- Dark Mode Toggle -->
           <DarkModeToggle />
           <!-- Language Switcher -->

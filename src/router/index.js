@@ -16,6 +16,7 @@ import Immoneuf from '../views/Immoneuf.vue'
 import Conseils from '../views/Conseils.vue'
 import DecouvrezMaroc from '../views/DecouvrezMaroc.vue'
 import Contact from '../views/Contact.vue'
+import AddProduct from '../views/AddProduct.vue'
 
 // Define routes without locale prefix (French routes)
 const baseRoutes = [
@@ -174,6 +175,19 @@ const baseRoutes = [
         titleKey: 'contact.meta.title',
         descriptionKey: 'contact.meta.description',
         image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
+      },
+    },
+  },
+  {
+    path: '/ajouter-annonce',
+    name: 'AddProduct',
+    component: AddProduct,
+    meta: { 
+      logo: 'blue', 
+      locale: 'fr',
+      seo: {
+        titleKey: 'add-product.title',
+        descriptionKey: 'add-product.description',
       },
     },
   },

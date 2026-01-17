@@ -34,7 +34,12 @@ api.interceptors.request.use(
       config.headers['Accept-Language'] = 'fr'
     }
     
-    // Add any auth tokens or headers here if needed
+    // Add auth token if available
+    const token = localStorage.getItem('auth_token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    
     return config
   },
   (error) => {
@@ -58,7 +63,8 @@ api.interceptors.response.use(
     })
     // Handle common errors
     if (error.response?.status === 401) {
-      // Handle unauthorized
+      // Unauthorized - clear token and redirect to login if needed
+      localStorage.removeItem('auth_token')
     } else if (error.response?.status === 404) {
       console.error('404 Not Found - Check if Laravel backend is running on the correct port')
     }

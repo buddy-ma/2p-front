@@ -2,6 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  /* Toast customization for dark mode */
+  .custom-toast-container {
+    @apply dark:bg-gray-800;
+  }
+
+  .custom-toast {
+    @apply dark:bg-gray-700 dark:text-gray-100;
+  }
+
+  .custom-toast-body {
+    @apply dark:text-gray-100;
+  }
+}
+
+/* Override toast styles for dark mode - using regular CSS to avoid Tailwind class issues */
+.dark .Vue-Toastification__toast {
+  background-color: #374151 !important;
+  color: #f3f4f6 !important;
+}
+
+.dark .Vue-Toastification__toast--success {
+  background-color: #16a34a !important;
+  color: #ffffff !important;
+}
+
+.dark .Vue-Toastification__toast--error {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+.dark .Vue-Toastification__toast--warning {
+  background-color: #ca8a04 !important;
+  color: #ffffff !important;
+}
+
+.dark .Vue-Toastification__toast--info {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+.dark .Vue-Toastification__close-button {
+  color: #d1d5db !important;
+}
+
+.dark .Vue-Toastification__progress-bar {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
 @layer base {
   * {
     margin: 0;

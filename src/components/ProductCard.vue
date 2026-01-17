@@ -71,7 +71,7 @@
           {{ product.surface }} {{ t('product.surface') }}
         </span>
       </div>
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between ayman">
         <span v-if="product.vendu" class="text-red-500 line-through text-lg font-bold" v-text="plainPrice">
         </span>
         <span v-else :class="`${colorClasses.text} text-xl font-bold`" v-text="plainPrice">
