@@ -5,7 +5,7 @@
 @layer components {
   /* Toast customization for dark mode */
   .custom-toast-container {
-    @apply dark:bg-gray-800;
+    /* Remove background color to prevent empty containers from being visible */
   }
 
   .custom-toast {
@@ -15,6 +15,37 @@
   .custom-toast-body {
     @apply dark:text-gray-100;
   }
+}
+
+/* Hide empty toast containers - ensure they don't block the view */
+.Vue-Toastification__container {
+  pointer-events: none;
+  background: transparent !important;
+  border: none !important;
+}
+
+.Vue-Toastification__container:not(:empty) {
+  pointer-events: auto;
+}
+
+/* Make sure empty containers are completely hidden */
+.Vue-Toastification__container:empty {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Ensure containers don't have background in dark mode */
+.dark .Vue-Toastification__container:empty {
+  background: transparent !important;
+}
+
+.dark .Vue-Toastification__container {
+  background: transparent !important;
 }
 
 /* Override toast styles for dark mode - using regular CSS to avoid Tailwind class issues */
