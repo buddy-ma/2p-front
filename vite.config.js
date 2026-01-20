@@ -8,21 +8,6 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [vue()],
     server: {
-      proxy: {
-        '/api': {
-          target: env.VITE_API_BASE_URL || 'http://localhost:8001',
-          changeOrigin: true,
-          secure: false,
-          configure: (proxy, options) => {
-            proxy.on('proxyReq', (proxyReq, req, res) => {
-              console.log('[Proxy]', req.method, req.url, '->', options.target + req.url)
-            })
-            proxy.on('error', (err, req, res) => {
-              console.error('[Proxy Error]', err)
-            })
-          },
-        },
-      },
     },
   }
 })

@@ -12,7 +12,7 @@ import axios from 'axios'
 
 const baseURL = import.meta.env.VITE_API_BASE_URL 
   ? `${import.meta.env.VITE_API_BASE_URL}/api` 
-  : '/api' // Relative URL - Vite proxy will forward to Laravel backend
+  : 'https://2p.ma/api' // Relative URL - Vite proxy will forward to Laravel backend
 
 const api = axios.create({
   baseURL,
