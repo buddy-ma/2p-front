@@ -4,7 +4,7 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <!-- Logo -->
         <div>
-          <img src="http://localhost:8000/assets/images/logo-blue-white.svg" alt="2P" class="h-12 mb-4" />
+          <img src="../assets/images/logos/logo-blue.svg" alt="2P" class="h-12 mb-4" />
         </div>
 
         <!-- Nos Services -->
@@ -35,9 +35,13 @@
           <h4 class="text-lg font-semibold mb-4">{{ t('footer.legalPages') }}</h4>
           <ul class="space-y-2">
             <li v-for="blog in footerBlogs" :key="blog.id">
-              <router-link :to="`/conseils/${blog.slug}`" class="text-gray-300 dark:text-gray-400 hover:text-white transition-colors">
+              <a 
+                v-if="blog && blog.slug"
+                :href="`/conseils/${blog.slug}`" 
+                class="text-gray-300 dark:text-gray-400 hover:text-white transition-colors"
+              >
                 {{ blog.short_title || blog.title }}
-              </router-link>
+              </a>
             </li>
           </ul>
         </div>

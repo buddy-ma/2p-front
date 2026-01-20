@@ -1,3 +1,7 @@
+import citiesData from './data/cities.js'
+import quartiersData from './data/quartiers.js'
+import propertiesData from './data/properties.js'
+
 export default {
   meta: {
     author: 'Particulier à Particulier',
@@ -27,28 +31,9 @@ export default {
     parMois: 'للشهر',
     parMetre: 'للمتر',
     aPartirDe: 'من',
-    cities: {
-      agadir: 'أكادير',
-      casablanca: 'الدار البيضاء',
-      marrakech: 'مراكش',
-      rabat: 'الرباط',
-      tanger: 'طنجة',
-      fes: 'فاس',
-    },
-    propertyTypes: {
-      apartment: 'شقة',
-      villa: 'فيلا',
-      house: 'منزل',
-      studio: 'استوديو',
-      land: 'أرض',
-      riad: 'رياض',
-      duplex: 'دوبلكس',
-      office: 'مكتب',
-      commercial: 'محل تجاري',
-      showroom: 'معرض تجاري',
-      business: 'أصل تجارية',
-      building: 'مبنى',
-    },
+    cities: citiesData.ar,
+    quartiers: quartiersData.ar,
+    propertyTypes: propertiesData.ar,
   },
   navigation: {
     home: 'الرئيسية',

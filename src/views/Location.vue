@@ -6,6 +6,8 @@
       :text="pageText"
       active="location"
       bg="location"
+      :extras="data?.extras || {}"
+      :extra="data?.extra || []"
     />
 
     <!-- Long Advertising Section -->
@@ -62,15 +64,15 @@
 
         <!-- Body Links -->
         <div v-if="data?.bodyLinks && data.bodyLinks.length > 0" class="mt-6 flex flex-wrap justify-center gap-4">
-          <a 
-            v-for="link in data.bodyLinks" 
-            :key="link.id"
-            v-if="link.link"
-            :href="link.link" 
-            class="px-4 py-2 border border-purple-600 text-purple-600 rounded-lg hover:bg-purple-600 hover:text-white transition-colors"
-          >
-            {{ link.mainTitle }}
-          </a>
+          <template v-for="link in data.bodyLinks" :key="link.id">
+            <a 
+              v-if="link && link.link"
+              :href="link.link" 
+              class="px-4 py-2 border border-purple-600 text-purple-600 rounded-lg hover:bg-purple-600 hover:text-white transition-colors"
+            >
+              {{ link.mainTitle }}
+            </a>
+          </template>
         </div>
 
         <!-- Similaires Section (shown on last page) -->

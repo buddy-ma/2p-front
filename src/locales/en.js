@@ -1,3 +1,7 @@
+import citiesData from './data/cities.js'
+import quartiersData from './data/quartiers.js'
+import propertiesData from './data/properties.js'
+
 export default {
   meta: {
     author: 'Particulier à Particulier',
@@ -27,28 +31,10 @@ export default {
     parMois: 'month',
     parMetre: 'metre',
     aPartirDe: 'from',
-    cities: {
-      agadir: 'Agadir',
-      casablanca: 'Casablanca',
-      marrakech: 'Marrakech',
-      rabat: 'Rabat',
-      tanger: 'Tangier',
-      fes: 'Fez',
-    },
-    propertyTypes: {
-      apartment: 'Apartment',
-      villa: 'Villa',
-      house: 'House',
-      studio: 'Studio',
-      land: 'Land',
-      riad: 'Riad',
-      duplex: 'Duplex',
-      office: 'Office',
-      commercial: 'Commercial Space',
-      showroom: 'Showroom',
-      business: 'Business Asset',
-      building: 'Building',
-    },
+    loading: 'Loading...',
+    cities: citiesData.en,
+    quartiers: quartiersData.en,
+    propertyTypes: propertiesData.en,
   },
   navigation: {
     home: 'Home',
@@ -450,6 +436,60 @@ export default {
       max_files: 'Maximum number of files exceeded',
       select_default: 'Select default image',
       default: 'Default image',
+    },
+  },
+  decouvrezMaroc: {
+    title: 'Discover Morocco',
+    meta: {
+      description: 'Discover Morocco through our articles and guides on cities, culture, tourism and Moroccan real estate.',
+      og_title: 'Discover Morocco - Guides and Articles',
+      og_description: 'Explore Morocco through our comprehensive articles and guides on cities, culture, tourism and real estate.',
+      twitter_title: 'Discover Morocco - Guides and Articles',
+      twitter_description: 'Explore Morocco through our comprehensive articles and guides on cities, culture, tourism and real estate.',
+    },
+    content: {
+      section_title: 'Discover Morocco',
+      section_subtitle: 'Explore the Wonders of the Kingdom',
+      description: 'Morocco is a country rich in history, culture and beautiful landscapes. Discover our comprehensive guides on Moroccan cities, local culture, best tourist destinations and everything you need to know about real estate in Morocco.',
+      image_alt: 'Discover Morocco',
+    },
+    filter: {
+      hero: {
+        title: 'Discover Morocco',
+        search_placeholder: 'Search articles...',
+        search_button: 'Search',
+      },
+      no_results: {
+        title: 'No results found',
+        message: 'Sorry, no articles match your search.',
+      },
+    },
+    conseils: {
+      title: 'Real Estate Advice',
+      meta: {
+        description: 'Real estate advice and guides in Morocco. Everything you need to know to buy, sell or rent a property.',
+        og_title: 'Real Estate Advice in Morocco',
+        og_description: 'Discover our comprehensive advice and guides on real estate in Morocco. Buying, selling, renting - all our expert advice.',
+        twitter_title: 'Real Estate Advice in Morocco',
+        twitter_description: 'Discover our comprehensive advice and guides on real estate in Morocco. Buying, selling, renting - all our expert advice.',
+      },
+      content: {
+        section_title: 'Real Estate Advice',
+        section_subtitle: 'Your Complete Guide to Real Estate in Morocco',
+        description: 'Whether you want to buy, sell or rent a property in Morocco, our experts guide you with practical advice and detailed guides to make the best choices.',
+        image_alt: 'Real Estate Advice',
+      },
+      filter: {
+        hero: {
+          title: 'Real Estate Advice',
+          search_placeholder: 'Search advice...',
+          search_button: 'Search',
+        },
+        no_results: {
+          title: 'No results found',
+          message: 'Sorry, no advice matches your search.',
+        },
+      },
     },
   },
 }

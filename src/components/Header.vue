@@ -127,7 +127,6 @@ import logoGreen from '../assets/images/logos/logo-green.svg'
 import logoOrange from '../assets/images/logos/logo-orange.svg'
 import logoPurple from '../assets/images/logos/logo-purple.svg'
 import logoRed from '../assets/images/logos/logo-red.svg'
-import logoWhite from '../assets/images/logos/logo-white.svg'
 
 const mobileMenuOpen = ref(false)
 const route = useRoute()
@@ -138,9 +137,9 @@ const logos = {
   blue: logoBlue,
   green: logoGreen,
   orange: logoOrange,
+  'orange-decouvrez': '/assets/images/logo-orange-decouvrez.svg',
   purple: logoPurple,
   red: logoRed,
-  white: logoWhite,
 }
 
 const logoPath = computed(() => {
