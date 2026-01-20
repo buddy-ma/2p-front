@@ -1,3 +1,7 @@
+import citiesData from './data/cities.js'
+import quartiersData from './data/quartiers.js'
+import propertiesData from './data/properties.js'
+
 export default {
   meta: {
     author: 'Particulier à Particulier',
@@ -27,28 +31,10 @@ export default {
     parMois: 'mois',
     parMetre: 'mètre',
     aPartirDe: 'à partir de',
-    cities: {
-      agadir: 'Agadir',
-      casablanca: 'Casablanca',
-      marrakech: 'Marrakech',
-      rabat: 'Rabat',
-      tanger: 'Tanger',
-      fes: 'Fès',
-    },
-    propertyTypes: {
-      apartment: 'Appartement',
-      villa: 'Villa',
-      house: 'Maison',
-      studio: 'Studio',
-      land: 'Terrain',
-      riad: 'Riad',
-      duplex: 'Duplex',
-      office: 'Bureau',
-      commercial: 'Local commercial',
-      showroom: 'Showroom',
-      business: 'Fonds de commerce',
-      building: 'Immeuble',
-    },
+    loading: 'Chargement...',
+    cities: citiesData.fr,
+    quartiers: quartiersData.fr,
+    propertyTypes: propertiesData.fr,
   },
   navigation: {
     home: 'Accueil',
@@ -450,6 +436,60 @@ export default {
       max_files: 'Nombre maximum de fichiers atteint',
       select_default: 'Sélectionner l\'image par défaut',
       default: 'Image par défaut',
+    },
+  },
+  decouvrezMaroc: {
+    title: 'Découvrez le Maroc',
+    meta: {
+      description: 'Découvrez le Maroc à travers nos articles et guides sur les villes, la culture, le tourisme et l\'immobilier marocain.',
+      og_title: 'Découvrez le Maroc - Guides et Articles',
+      og_description: 'Explorez le Maroc à travers nos articles et guides complets sur les villes, la culture, le tourisme et l\'immobilier.',
+      twitter_title: 'Découvrez le Maroc - Guides et Articles',
+      twitter_description: 'Explorez le Maroc à travers nos articles et guides complets sur les villes, la culture, le tourisme et l\'immobilier.',
+    },
+    content: {
+      section_title: 'Découvrez le Maroc',
+      section_subtitle: 'Explorez les merveilles du Royaume',
+      description: 'Le Maroc est un pays riche en histoire, culture et paysages magnifiques. Découvrez nos guides complets sur les villes marocaines, la culture locale, les meilleures destinations touristiques et tout ce que vous devez savoir sur l\'immobilier au Maroc.',
+      image_alt: 'Découvrez le Maroc',
+    },
+    filter: {
+      hero: {
+        title: 'Découvrez le Maroc',
+        search_placeholder: 'Rechercher des articles...',
+        search_button: 'Rechercher',
+      },
+      no_results: {
+        title: 'Aucun résultat trouvé',
+        message: 'Désolé, aucun article ne correspond à votre recherche.',
+      },
+    },
+    conseils: {
+      title: 'Conseils Immobiliers',
+      meta: {
+        description: 'Conseils et guides immobiliers au Maroc. Tout ce que vous devez savoir pour acheter, vendre ou louer un bien immobilier.',
+        og_title: 'Conseils Immobiliers au Maroc',
+        og_description: 'Découvrez nos conseils et guides complets sur l\'immobilier au Maroc. Achat, vente, location - tous nos conseils d\'experts.',
+        twitter_title: 'Conseils Immobiliers au Maroc',
+        twitter_description: 'Découvrez nos conseils et guides complets sur l\'immobilier au Maroc. Achat, vente, location - tous nos conseils d\'experts.',
+      },
+      content: {
+        section_title: 'Conseils Immobiliers',
+        section_subtitle: 'Votre guide complet pour l\'immobilier au Maroc',
+        description: 'Que vous souhaitiez acheter, vendre ou louer un bien immobilier au Maroc, nos experts vous accompagnent avec des conseils pratiques et des guides détaillés pour faire les meilleurs choix.',
+        image_alt: 'Conseils Immobiliers',
+      },
+      filter: {
+        hero: {
+          title: 'Conseils Immobiliers',
+          search_placeholder: 'Rechercher des conseils...',
+          search_button: 'Rechercher',
+        },
+        no_results: {
+          title: 'Aucun résultat trouvé',
+          message: 'Désolé, aucun conseil ne correspond à votre recherche.',
+        },
+      },
     },
   },
 }

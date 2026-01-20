@@ -6,8 +6,10 @@
       :text="pageText"
       active="vacances"
       bg="vacances"
+      :extras="data?.extras || {}"
+      :extra="data?.extra || []"
     />
-
+    
     <!-- Long Advertising Section -->
     <AdvertisingLong v-if="data?.long_advertising" :advertising="data.long_advertising" />
     <div v-else class="bg-gray-50 py-4">
@@ -62,15 +64,15 @@
 
         <!-- Body Links -->
         <div v-if="data?.bodyLinks && data.bodyLinks.length > 0" class="mt-6 flex flex-wrap justify-center gap-4">
-          <a 
-            v-for="link in data.bodyLinks" 
-            :key="link.id"
-            v-if="link.link"
-            :href="link.link" 
-            class="px-4 py-2 border border-orange-600 text-orange-600 rounded-lg hover:bg-orange-600 hover:text-white transition-colors"
-          >
-            {{ link.mainTitle }}
-          </a>
+          <template v-for="link in data.bodyLinks" :key="link.id">
+            <a 
+              v-if="link && link.link"
+              :href="link.link" 
+              class="px-4 py-2 border border-orange-600 text-orange-600 rounded-lg hover:bg-orange-600 hover:text-white transition-colors"
+            >
+              {{ link.mainTitle }}
+            </a>
+          </template>
         </div>
 
         <!-- Similaires Section (shown on last page) -->
@@ -219,6 +221,7 @@ const isLastPage = computed(() => {
   const lastPage = data.value.products.last_page || 1
   return currentPage === lastPage || lastPage === 1
 })
+
 
 const loadProducts = async () => {
   try {

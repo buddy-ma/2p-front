@@ -147,11 +147,20 @@ const baseRoutes = [
     },
   },
   {
+    path: '/conseils/:slug',
+    name: 'ConseilDetail',
+    redirect: '/conseils',
+    meta: { 
+      logo: 'red', 
+      locale: 'fr',
+    },
+  },
+  {
     path: '/decouvrez-maroc',
     name: 'DecouvrezMaroc',
     component: DecouvrezMaroc,
     meta: { 
-      logo: 'orange', 
+      logo: 'orange-decouvrez', 
       locale: 'fr',
       seo: {
         titleKey: 'navigation.discoverMorocco',
