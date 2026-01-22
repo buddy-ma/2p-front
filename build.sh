@@ -32,7 +32,11 @@ else
 fi
 
 echo -e "${YELLOW}📦 Installing dependencies (if needed)...${NC}"
-$PNPM_CMD install --frozen-lockfile
+# Try frozen lockfile first (for CI/production), fall back to updating if needed
+if ! $PNPM_CMD install --frozen-lockfile 2>/dev/null; then
+    echo -e "${YELLOW}  ⚠️  Lockfile out of sync, updating...${NC}"
+    $PNPM_CMD install --no-frozen-lockfile
+fi
 
 echo ""
 echo -e "${YELLOW}🔨 Building application for production...${NC}"

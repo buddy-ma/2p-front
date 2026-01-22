@@ -4,16 +4,14 @@
   RewriteBase /
 
   # Don't rewrite requests for files that exist
-  RewriteCond %{REQUEST_FILENAME} -f [OR]
-  RewriteCond %{REQUEST_FILENAME} -d
-  RewriteRule ^ - [L]
-
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  
   # Don't rewrite requests for assets directory
-  RewriteCond %{REQUEST_URI} ^/assets/
-  RewriteRule ^ - [L]
+  RewriteCond %{REQUEST_URI} !^/assets/
 
   # Handle Vue Router - redirect all other requests to index.html
-  RewriteRule ^ /index.html [L]
+  RewriteRule . /index.html [L]
 </IfModule>
 
 # Enable Compression
@@ -139,5 +137,5 @@
 # Prevent directory browsing
 Options -Indexes
 
-# Custom Error Pages (optional)
-# ErrorDocument 404 /index.html
+# Custom Error Pages - fallback for Vue Router
+ErrorDocument 404 /index.html

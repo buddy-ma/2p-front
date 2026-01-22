@@ -13,7 +13,7 @@
       <!-- Desktop Title -->
       <div class="hidden md:block text-center mb-8">
         <h1 class="text-2xl md:text-3xl font-semibold text-white mb-4" style="font-size: 1.5rem; font-weight: 600">
-          {{ title || 'Immobilier Au Maroc De Particulier À Particulier' }}
+          {{ title || 'Immobilier Au Maroc De Particulier À Particulierr' }}
         </h1>
         <p class="text-white text-base md:text-md mx-auto">
           {{ text || 'Nos services d\'immobilier au Maroc de particulier à particulier simplifient la vente, la location ou l\'achat de biens sans commission ni intermédiaire. Profitez d\'une plateforme fiable et accessible, regroupant des annonces dans les principales villes comme Agadir, Casablanca et Marrakech. Trouvez des opportunités adaptées à vos besoins grâce à un large choix de biens disponibles.' }}
@@ -23,7 +23,7 @@
       <!-- Mobile Title -->
       <div class="md:hidden mb-5 py-4 px-3 bg-gray-100 rounded-2xl">
         <h1 class="mb-3 text-primary text-center" style="font-size: 22px">
-          {{ title || 'Immobilier Au Maroc De Particulier À Particulier' }}
+          {{ title || 'Immobilier Au Maroc De Particulier À Particulierr' }}
         </h1>
         <p class="text-muted text-sm">
           {{ text || 'Nos services d\'immobilier au Maroc de particulier à particulier simplifient la vente, la location ou l\'achat de biens sans commission ni intermédiaire.' }}

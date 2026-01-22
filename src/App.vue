@@ -5,6 +5,7 @@
       <router-view />
     </main>
     <Footer />
+    <Toaster />
   </div>
 </template>
 
@@ -12,6 +13,7 @@
 import { onMounted } from 'vue'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+import Toaster from './components/ui/Toaster.vue'
 import { useLanguage } from './composables/useLanguage'
 import { useDarkMode } from './composables/useDarkMode'
 import { useSEO } from './composables/useSEO'

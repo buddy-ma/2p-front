@@ -445,7 +445,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
+import { useToast } from '../composables/useToast'
 import { useTheme } from '../composables/useTheme'
 import { useI18n } from '../composables/useI18n'
 import { productService } from '../services/productService'
@@ -852,8 +852,7 @@ async function saveProduct() {
 
     // Show success toast
     toast.success(response.data.message || t('add-product.success.message'), {
-      timeout: 4000,
-      position: 'top-right'
+      duration: 4000
     })
 
     // Redirect to home page after a short delay
@@ -882,8 +881,7 @@ async function saveProduct() {
     
     // Show error toast
     toast.error(errorMessage, {
-      timeout: 5000,
-      position: 'top-right'
+      duration: 5000
     })
   } finally {
     loading.value = false

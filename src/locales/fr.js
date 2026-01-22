@@ -95,7 +95,7 @@ export default {
     advice: 'Conseils',
   },
   home: {
-    title: 'Immobilier au Maroc de particulier à particulier',
+    title: 'Immobilier au Maroc de particulier à particulierr',
     span: 'Bye-bye les agences immobilières',
     description: "Annonces immobilières au Maroc de particulier à particulier, sans commission: location, vente, vacances et neuf à Agadir, Marrakech, Casablanca et Rabat...",
     heroTitle: "Immobilier Au Maroc De Particulier À Particulier",

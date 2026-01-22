@@ -2,8 +2,6 @@ import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
 import router from './router'
-import Toast from 'vue-toastification'
-import 'vue-toastification/dist/index.css'
 
 // Global error handler
 window.addEventListener('error', (event) => {
@@ -28,27 +26,6 @@ window.addEventListener('unhandledrejection', (event) => {
 try {
   const app = createApp(App)
   app.use(router)
-  app.use(Toast, {
-    transition: 'Vue-Toastification__bounce',
-    maxToasts: 5,
-    newestOnTop: true,
-    position: 'top-right',
-    timeout: 5000,
-    closeOnClick: true,
-    pauseOnFocusLoss: true,
-    pauseOnHover: true,
-    draggable: true,
-    draggablePercent: 0.6,
-    showCloseButtonOnHover: false,
-    hideProgressBar: false,
-    closeButton: 'button',
-    icon: true,
-    rtl: false,
-    // Dark mode support
-    toastClassName: 'custom-toast',
-    bodyClassName: 'custom-toast-body',
-    containerClassName: 'custom-toast-container',
-  })
   app.mount('#app')
 } catch (error) {
   console.error('Failed to initialize Vue app:', error)
