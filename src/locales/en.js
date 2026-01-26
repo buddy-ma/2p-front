@@ -344,6 +344,30 @@ export default {
       subject: 'Message from Contact Modal',
     },
   },
+  error404: {
+    meta: {
+      title: 'Page Not Found - 404',
+      description: 'The page you are looking for does not exist or has been moved.',
+    },
+    title: 'Page Not Found',
+    message: 'Sorry, the page you are looking for does not exist or has been moved.',
+    description: 'We apologize for the inconvenience. This page has been deleted or is no longer accessible. If you believe there is an error, please contact us and inform us.',
+    backHome: 'Back to Home',
+    goBack: 'Go Back',
+    helpfulLinks: 'Helpful links:',
+  },
+  error410: {
+    meta: {
+      title: 'Content Removed - 410',
+      description: 'The content you are looking for has been permanently removed.',
+    },
+    title: 'Content Removed',
+    message: 'Sorry, the content you are looking for has been permanently removed.',
+    description: 'This resource is no longer available and will not be accessible in the future.',
+    backHome: 'Back to Home',
+    goBack: 'Go Back',
+    helpfulLinks: 'Helpful links:',
+  },
   search: {
     allCities: 'All cities',
     allProperties: 'All properties',

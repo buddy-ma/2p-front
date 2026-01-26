@@ -17,6 +17,8 @@ import Conseils from '../views/Conseils.vue'
 import DecouvrezMaroc from '../views/DecouvrezMaroc.vue'
 import Contact from '../views/Contact.vue'
 import AddProduct from '../views/AddProduct.vue'
+import NotFound404 from '../views/NotFound404.vue'
+import Gone410 from '../views/Gone410.vue'
 
 // Define routes without locale prefix (French routes)
 const baseRoutes = [
@@ -200,6 +202,32 @@ const baseRoutes = [
       },
     },
   },
+  {
+    path: '/404',
+    name: 'NotFound404',
+    component: NotFound404,
+    meta: { 
+      logo: 'blue', 
+      locale: 'fr',
+      seo: {
+        titleKey: 'error404.meta.title',
+        descriptionKey: 'error404.meta.description',
+      },
+    },
+  },
+  {
+    path: '/410',
+    name: 'Gone410',
+    component: Gone410,
+    meta: { 
+      logo: 'blue', 
+      locale: 'fr',
+      seo: {
+        titleKey: 'error410.meta.title',
+        descriptionKey: 'error410.meta.description',
+      },
+    },
+  },
 ]
 
 // Helper function to create localized routes
@@ -242,6 +270,20 @@ const routes = [
       // Remove invalid locale and redirect to French version
       const pathWithoutLocale = to.path.replace(/^\/(en|ar)/, '')
       return pathWithoutLocale || '/'
+    },
+  },
+  // Catch-all route for 404 - must be last
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound404,
+    meta: { 
+      logo: 'blue', 
+      locale: 'fr',
+      seo: {
+        titleKey: 'error404.meta.title',
+        descriptionKey: 'error404.meta.description',
+      },
     },
   },
 ]

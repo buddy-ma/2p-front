@@ -344,6 +344,30 @@ export default {
       subject: 'Message depuis Contact Modal',
     },
   },
+  error404: {
+    meta: {
+      title: 'Page non trouvée - 404',
+      description: 'La page que vous recherchez n\'existe pas ou a été déplacée.',
+    },
+    title: 'Page non trouvée',
+    message: 'Désolé, la page que vous recherchez n\'existe pas ou a été déplacée.',
+    description: 'Nous nous excusons pour le désagrément. Cette page a été supprimée ou n\'est plus accessible. Si vous estimez qu\'il y a une erreur, prière de nous contacter et de nous en informer.',
+    backHome: 'Retour à l\'accueil',
+    goBack: 'Retour en arrière',
+    helpfulLinks: 'Liens utiles :',
+  },
+  error410: {
+    meta: {
+      title: 'Contenu supprimé - 410',
+      description: 'Le contenu que vous recherchez a été définitivement supprimé.',
+    },
+    title: 'Contenu supprimé',
+    message: 'Désolé, le contenu que vous recherchez a été définitivement supprimé.',
+    description: 'Cette ressource n\'est plus disponible et ne sera plus accessible à l\'avenir.',
+    backHome: 'Retour à l\'accueil',
+    goBack: 'Retour en arrière',
+    helpfulLinks: 'Liens utiles :',
+  },
   search: {
     allCities: 'Toutes les villes',
     allProperties: 'Toutes les propriétés',
