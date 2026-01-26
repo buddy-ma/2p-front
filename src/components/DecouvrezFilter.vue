@@ -4,7 +4,7 @@ import { useI18n } from '../composables/useI18n'
 import { useRouter } from 'vue-router'
 import api from '../services/api'
 import NoSearchResultsImage from '../assets/images/elements/no-search-results.svg'
-import backgroundImage from '../assets/images/bgs/Decouvrez-le-maroc-2p.webp'
+import backgroundImage from '../assets/images/bgs/DECOUVREZ-LE-MAROC-2p.webp'
 import { Grip } from 'lucide-vue-next'
 
 const { t } = useI18n()

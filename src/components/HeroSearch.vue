@@ -29,34 +29,27 @@
           {{ text || 'Nos services d\'immobilier au Maroc de particulier à particulier simplifient la vente, la location ou l\'achat de biens sans commission ni intermédiaire.' }}
         </p>
       </div>
-
+      <div v-if="showTabs" class="flex justify-center w-full mb-3 gap-2 flex-wrap">
+        <button
+          @click="switchType('achat')"
+          :class="['px-6 py-2 font-semibold rounded-lg transition-colors', activeTab === 'achat' ? `text-white ${colorClasses.bg} border-2 ${colorClasses.border}` : 'text-black bg-white hover:bg-gray-100']"
+        >
+          {{ t('hero.sale') }}
+        </button>
+        <button
+          @click="switchType('location')"
+          :class="['px-6 py-2 font-semibold rounded-lg transition-colors', activeTab === 'location' ? `text-white ${colorClasses.bg} border-2 ${colorClasses.border}` : 'text-black bg-white hover:bg-gray-100']"
+        >
+          {{ t('hero.rent') }}
+        </button>
+        <button
+          @click="switchType('vacances')"
+          :class="['px-6 py-2 font-semibold rounded-lg transition-colors', activeTab === 'vacances' ? `text-white ${colorClasses.bg} border-2 ${colorClasses.border}` : 'text-black bg-white hover:bg-gray-100']"
+        >
+          {{ t('hero.vacation') }}
+        </button>
+      </div>
       <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-2xl p-6">
-        <h3 class="text-center mb-3 text-primary font-semibold">
-          {{ t('hero.findProperty') }} <span>{{ activeTabText }}</span>
-        </h3>
-
-        <!-- Tabs (only show on home page) -->
-        <div v-if="showTabs" class="flex justify-center w-full mb-3 gap-2 flex-wrap">
-          <button
-            @click="switchType('achat')"
-            :class="['px-6 py-2 font-semibold rounded-lg transition-colors', activeTab === 'achat' ? `text-white ${colorClasses.bg} border-2 ${colorClasses.border}` : 'text-black bg-white hover:bg-gray-100']"
-          >
-            {{ t('hero.sale') }}
-          </button>
-          <button
-            @click="switchType('location')"
-            :class="['px-6 py-2 font-semibold rounded-lg transition-colors', activeTab === 'location' ? `text-white ${colorClasses.bg} border-2 ${colorClasses.border}` : 'text-black bg-white hover:bg-gray-100']"
-          >
-            {{ t('hero.rent') }}
-          </button>
-          <button
-            @click="switchType('vacances')"
-            :class="['px-6 py-2 font-semibold rounded-lg transition-colors', activeTab === 'vacances' ? `text-white ${colorClasses.bg} border-2 ${colorClasses.border}` : 'text-black bg-white hover:bg-gray-100']"
-          >
-            {{ t('hero.vacation') }}
-          </button>
-        </div>
-
         <!-- Search Form -->
         <form @submit.prevent="handleSearch" class="space-y-4">
           <div :class="['grid gap-4', isHomePage ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-1 md:grid-cols-2']">
@@ -143,14 +136,31 @@
             </div>
           </div>
 
-          <!-- Reference Search Toggle -->
-          <div class="mb-2">
+          <!-- Reference/Search Button Group (styled like the image) -->
+          <div class="flex gap-2 w-full mt-2 mb-2">
+            <button
+              type="submit"
+              :class="[
+                'flex-1 px-6 py-2 rounded-lg font-semibold text-white transition',
+                colorClasses.bg,
+                colorClasses.hover,
+                'focus:outline-none'
+              ]"
+            >
+              {{ t('hero.searchButton') }}
+            </button>
             <button
               type="button"
               @click="showReference = !showReference"
-              class="text-primary hover:underline text-sm"
+              :class="[
+                'flex items-center justify-center px-0 w-12 md:w-10 py-2 rounded-lg font-bold transition',
+                colorClasses.bg,
+                colorClasses.hover,
+                'text-white text-xl focus:outline-none'
+              ]"
+              :aria-label="t('hero.referenceSearch')"
             >
-              {{ t('hero.referenceSearch') }}
+              <ScanBarcode />
             </button>
           </div>
 
@@ -162,16 +172,6 @@
               :placeholder="t('hero.reference')"
               :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`"
             />
-          </div>
-
-          <!-- Search Button -->
-          <div>
-            <button 
-              type="submit" 
-              :class="['w-full px-6 py-3 rounded-lg font-semibold text-white', colorClasses.bg, colorClasses.hover]"
-            >
-              {{ t('hero.searchButton') }}
-            </button>
           </div>
         </form>
       </div>
@@ -203,6 +203,7 @@ import { getLocalizedPath } from '../utils/routeHelpers'
 import ExtrasFilter from './ExtrasFilter.vue'
 import bgImmobilierMaroc from '../assets/images/bgs/immobilier-Maroc-2P.webp'
 import MultiSelect from './MultiSelect.vue'
+import { ScanBarcode } from 'lucide-vue-next';
 
 const { colorClasses } = useTheme()
 const { t } = useI18n()

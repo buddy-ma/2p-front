@@ -40,7 +40,8 @@ fi
 
 echo ""
 echo -e "${YELLOW}🔨 Building application for production...${NC}"
-$PNPM_CMD build
+# Use --emptyOutDir to ensure a clean build without cached files
+$PNPM_CMD build:clean
 
 if [ $? -ne 0 ]; then
     echo -e "${RED}❌ Build failed!${NC}"
@@ -57,51 +58,71 @@ fi
 echo ""
 echo -e "${YELLOW}📋 Copying built files to production directory...${NC}"
 
-# List of files/directories to exclude from root (keep source files)
-EXCLUDE_LIST=(
-    "src"
-    "node_modules"
-    "public"
-    "dist"
-    ".git"
-    ".github"
-    ".vscode"
-    "package.json"
-    "package-lock.json"
-    "pnpm-lock.yaml"
-    "vite.config.js"
-    "tailwind.config.js"
-    "postcss.config.js"
-    "DEPLOYMENT_GUIDE.md"
-    "QUICK_START.md"
-    "README.md"
-    ".gitignore"
-    "build.sh"
-)
-
-# Backup current production files (optional - comment out if not needed)
-# echo -e "${YELLOW}💾 Creating backup...${NC}"
-# BACKUP_DIR="backup_$(date +%Y%m%d_%H%M%S)"
-# mkdir -p "$BACKUP_DIR"
-# for item in assets index.html vite.svg .htaccess 2>/dev/null; do
-#     if [ -e "$item" ]; then
-#         cp -r "$item" "$BACKUP_DIR/" 2>/dev/null || true
-#     fi
-# done
+# Clean old production files before copying new ones
+echo "  → Cleaning old production files..."
+# Backup .htaccess if it exists (Vite doesn't copy it to dist)
+HTACCESS_BACKUP=""
+if [ -f ".htaccess" ]; then
+    HTACCESS_BACKUP=$(mktemp)
+    cp .htaccess "$HTACCESS_BACKUP"
+    echo "  → Backed up .htaccess"
+fi
+# Remove old assets directory if it exists
+if [ -d "assets" ]; then
+    rm -rf assets
+    echo "  → Removed old assets directory"
+fi
+# Remove old index.html and vite.svg if they exist
+[ -f "index.html" ] && rm -f index.html && echo "  → Removed old index.html"
+[ -f "vite.svg" ] && rm -f vite.svg && echo "  → Removed old vite.svg"
 
 # Copy all files from dist to root
-echo "  → Copying files from dist/ to root..."
+echo "  → Copying new files from dist/ to root..."
 cp -r dist/* .
 
-# Ensure .htaccess is in place
-if [ -f "dist/.htaccess" ]; then
+# Replace index.html with index-new.html
+if [ -f "index.html" ]; then
+    rm -f index.html
+    echo "  → Removed index.html from dist"
+fi
+if [ -f "index-new.html" ]; then
+    cp index-new.html index.html
+    echo "  → Copied index-new.html to index.html"
+else
+    echo -e "${YELLOW}  ⚠️  Warning: index-new.html not found!${NC}"
+fi
+
+# Copy images from public/assets/images to assets directory
+# Files in public/ are copied to dist root by Vite, so we need to copy them to assets/
+if [ -d "dist/assets/images" ]; then
+    echo "  → Copying images from dist/assets/images..."
+    mkdir -p assets/images
+    cp -r dist/assets/images/* assets/images/ 2>/dev/null || true
+    echo "  → Images from dist/assets/images copied"
+fi
+
+# Also ensure images from public/assets/images are available
+# (Vite copies public/ to dist root, so they should be in dist/assets/images/)
+if [ -d "public/assets/images" ] && [ ! -d "assets/images" ]; then
+    echo "  → Copying images from public/assets/images..."
+    mkdir -p assets/images
+    cp -r public/assets/images/* assets/images/ 2>/dev/null || true
+    echo "  → Images from public/assets/images copied"
+fi
+
+# Restore .htaccess if it was backed up
+if [ -n "$HTACCESS_BACKUP" ] && [ -f "$HTACCESS_BACKUP" ]; then
+    cp "$HTACCESS_BACKUP" .htaccess
+    rm -f "$HTACCESS_BACKUP"
+    echo "  → Restored .htaccess"
+elif [ -f "dist/.htaccess" ]; then
     cp dist/.htaccess .
     echo "  → Copied .htaccess from dist/"
-elif [ -f ".htaccess" ]; then
-    echo "  → .htaccess already exists in root"
-else
+elif [ ! -f ".htaccess" ]; then
     echo -e "${YELLOW}  ⚠️  Warning: .htaccess not found. Make sure it exists for SPA routing.${NC}"
 fi
+
+echo "  → Files copied successfully"
 
 # Set proper permissions (adjust as needed for your server)
 echo ""
