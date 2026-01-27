@@ -178,11 +178,11 @@ onMounted(() => {
 })
 
 const pageTitle = computed(() => {
-  return data.value?.page?.mainTitle || 'Immobilier à Vendre au Maroc'
+  return data.value?.page?.mainTitle || ''
 })
 
 const pageText = computed(() => {
-  return data.value?.page?.mainText || 'Trouvez votre bien immobilier idéal parmi notre sélection de propriétés à vendre au Maroc'
+  return data.value?.page?.mainText || ''
 })
 
 const hasProducts = computed(() => {

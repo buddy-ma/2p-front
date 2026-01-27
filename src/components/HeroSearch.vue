@@ -1,51 +1,36 @@
 <template>
-  <section
-    class="relative py-20"
-    :style="{
-      backgroundImage: `linear-gradient(-36deg,rgba(77,165,255,0.2) 0%,rgba(49,84,232,0.2) 100%), url(${bgPath})`,
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center center',
-      backgroundSize: 'cover'
-    }"
-  >
+  <section class="relative py-20" :style="{
+    backgroundImage: `linear-gradient(-36deg,rgba(77,165,255,0.2) 0%,rgba(49,84,232,0.2) 100%), url(${bgPath})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center center',
+    backgroundSize: 'cover'
+  }">
     <div class="absolute inset-0 bg-black opacity-30 z-0"></div>
     <div class="container mx-auto max-w-6xl px-4 relative z-10">
       <!-- Desktop Title -->
       <div class="hidden md:block text-center mb-8">
         <h1 class="text-2xl md:text-3xl font-semibold text-white mb-4" style="font-size: 1.5rem; font-weight: 600">
-          {{ title || 'Immobilier Au Maroc De Particulier À Particulierr' }}
+          {{ title || '' }}
         </h1>
-        <p class="text-white text-base md:text-md mx-auto">
-          {{ text || 'Nos services d\'immobilier au Maroc de particulier à particulier simplifient la vente, la location ou l\'achat de biens sans commission ni intermédiaire. Profitez d\'une plateforme fiable et accessible, regroupant des annonces dans les principales villes comme Agadir, Casablanca et Marrakech. Trouvez des opportunités adaptées à vos besoins grâce à un large choix de biens disponibles.' }}
-        </p>
       </div>
 
       <!-- Mobile Title -->
       <div class="md:hidden mb-5 py-4 px-3 bg-gray-100 rounded-2xl">
         <h1 class="mb-3 text-primary text-center" style="font-size: 22px">
-          {{ title || 'Immobilier Au Maroc De Particulier À Particulierr' }}
+          {{ title || 'Immobilier Au Maroc De Particulier À Particulier' }}
         </h1>
-        <p class="text-muted text-sm">
-          {{ text || 'Nos services d\'immobilier au Maroc de particulier à particulier simplifient la vente, la location ou l\'achat de biens sans commission ni intermédiaire.' }}
-        </p>
       </div>
       <div v-if="showTabs" class="flex justify-center w-full mb-3 gap-2 flex-wrap">
-        <button
-          @click="switchType('achat')"
-          :class="['px-6 py-2 font-semibold rounded-lg transition-colors', activeTab === 'achat' ? `text-white ${colorClasses.bg} border-2 ${colorClasses.border}` : 'text-black bg-white hover:bg-gray-100']"
-        >
+        <button @click="switchType('achat')"
+          :class="['px-6 py-2 font-semibold rounded-lg transition-colors', activeTab === 'achat' ? `text-white ${colorClasses.bg} border-2 ${colorClasses.border}` : 'text-black bg-white hover:bg-gray-100']">
           {{ t('hero.sale') }}
         </button>
-        <button
-          @click="switchType('location')"
-          :class="['px-6 py-2 font-semibold rounded-lg transition-colors', activeTab === 'location' ? `text-white ${colorClasses.bg} border-2 ${colorClasses.border}` : 'text-black bg-white hover:bg-gray-100']"
-        >
+        <button @click="switchType('location')"
+          :class="['px-6 py-2 font-semibold rounded-lg transition-colors', activeTab === 'location' ? `text-white ${colorClasses.bg} border-2 ${colorClasses.border}` : 'text-black bg-white hover:bg-gray-100']">
           {{ t('hero.rent') }}
         </button>
-        <button
-          @click="switchType('vacances')"
-          :class="['px-6 py-2 font-semibold rounded-lg transition-colors', activeTab === 'vacances' ? `text-white ${colorClasses.bg} border-2 ${colorClasses.border}` : 'text-black bg-white hover:bg-gray-100']"
-        >
+        <button @click="switchType('vacances')"
+          :class="['px-6 py-2 font-semibold rounded-lg transition-colors', activeTab === 'vacances' ? `text-white ${colorClasses.bg} border-2 ${colorClasses.border}` : 'text-black bg-white hover:bg-gray-100']">
           {{ t('hero.vacation') }}
         </button>
       </div>
@@ -55,140 +40,85 @@
           <div :class="['grid gap-4', isHomePage ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-1 md:grid-cols-2']">
             <!-- Ville Selection -->
             <div>
-              <MultiSelect
-                v-model="searchForm.ville"
-                :options="translatedVilles"
-                :placeholder="t('hero.sectorsCities')"
-                label-key="translatedTitle"
-                value-key="title"
-                @update:modelValue="handleVilleChange"
-              />
+              <MultiSelect v-model="searchForm.ville" :options="translatedVilles" :placeholder="t('hero.sectorsCities')"
+                label-key="translatedTitle" value-key="title" @update:modelValue="handleVilleChange" />
             </div>
             <!-- Quartier Selection (hidden on home page) -->
             <div v-if="!isHomePage">
-              <MultiSelect
-                v-model="searchForm.quartier"
-                :options="translatedQuartiers"
-                :placeholder="t('hero.entireCity')"
-                label-key="translatedTitle"
-                value-key="title_original"
-                :disabled="!canSelectQuartier"
-              />
+              <MultiSelect v-model="searchForm.quartier" :options="translatedQuartiers"
+                :placeholder="t('hero.entireCity')" label-key="translatedTitle" value-key="title_original"
+                :disabled="!canSelectQuartier" />
             </div>
             <!-- Type Selection -->
             <div>
-              <MultiSelect
-                v-model="searchForm.type"
-                :options="translatedTypes"
-                :placeholder="t('hero.allProperties')"
-                label-key="translatedTitle"
-                value-key="uniqueValue"
-              />
+              <MultiSelect v-model="searchForm.type" :options="translatedTypes" :placeholder="t('hero.allProperties')"
+                label-key="translatedTitle" value-key="uniqueValue" />
             </div>
             <!-- Max Price -->
             <div>
-              <input
-                v-model.number="searchForm.prix_max"
-                type="number"
-                :placeholder="t('hero.maxPrice')"
-                :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`"
-              />
+              <input v-model.number="searchForm.prix_max" type="number" :placeholder="t('hero.maxPrice')"
+                :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`" />
             </div>
           </div>
 
           <!-- Vacation Filters -->
           <div v-if="activeTab === 'vacances'" class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <input
-                v-model="searchForm.date_arrivee"
-                type="date"
-                :min="new Date().toISOString().split('T')[0]"
+              <input v-model="searchForm.date_arrivee" type="date" :min="new Date().toISOString().split('T')[0]"
                 :placeholder="t('hero.arrivalDate')"
-                :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`"
-              />
+                :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`" />
             </div>
             <div>
-              <input
-                v-model="searchForm.date_depart"
-                type="date"
-                :min="minDepartureDate"
+              <input v-model="searchForm.date_depart" type="date" :min="minDepartureDate"
                 :placeholder="t('hero.departureDate')"
-                :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`"
-              />
+                :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`" />
             </div>
             <div>
-              <input
-                v-model.number="searchForm.nbr_adultes"
-                type="number"
-                min="1"
-                :placeholder="t('hero.adultsCount')"
-                :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`"
-              />
+              <input v-model.number="searchForm.nbr_adultes" type="number" min="1" :placeholder="t('hero.adultsCount')"
+                :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`" />
             </div>
             <div>
-              <input
-                v-model.number="searchForm.nbr_enfants"
-                type="number"
-                min="0"
+              <input v-model.number="searchForm.nbr_enfants" type="number" min="0"
                 :placeholder="t('hero.childrenCount')"
-                :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`"
-              />
+                :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`" />
             </div>
           </div>
 
           <!-- Reference/Search Button Group (styled like the image) -->
           <div class="flex gap-2 w-full mt-2 mb-2">
-            <button
-              type="submit"
-              :class="[
-                'flex-1 px-6 py-2 rounded-lg font-semibold text-white transition',
-                colorClasses.bg,
-                colorClasses.hover,
-                'focus:outline-none'
-              ]"
-            >
+            <button type="submit" :class="[
+              'flex-1 px-6 py-2 rounded-lg font-semibold text-white transition',
+              colorClasses.bg,
+              colorClasses.hover,
+              'focus:outline-none'
+            ]">
               {{ t('hero.searchButton') }}
             </button>
-            <button
-              type="button"
-              @click="showReference = !showReference"
-              :class="[
-                'flex items-center justify-center px-0 w-12 md:w-10 py-2 rounded-lg font-bold transition',
-                colorClasses.bg,
-                colorClasses.hover,
-                'text-white text-xl focus:outline-none'
-              ]"
-              :aria-label="t('hero.referenceSearch')"
-            >
+            <button type="button" @click="showReference = !showReference" :class="[
+              'flex items-center justify-center px-0 w-12 md:w-10 py-2 rounded-lg font-bold transition',
+              colorClasses.bg,
+              colorClasses.hover,
+              'text-white text-xl focus:outline-none'
+            ]" :aria-label="t('hero.referenceSearch')">
               <ScanBarcode />
             </button>
           </div>
 
           <!-- Reference Input -->
           <div v-if="showReference" class="mb-4">
-            <input
-              v-model="searchForm.reference"
-              type="text"
-              :placeholder="t('hero.reference')"
-              :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`"
-            />
+            <input v-model="searchForm.reference" type="text" :placeholder="t('hero.reference')"
+              :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`" />
           </div>
         </form>
       </div>
 
-       <!-- Extras Filter -->
-      <ExtrasFilter
-        v-if="props.extras && Object.keys(props.extras).length > 0 && hasTypeSelected"
-        :extras="props.extras"
-        :extra="props.extra || []"
-        :ville="currentVille"
-        :quartier="currentQuartier"
-        :types-immobilier="currentTypesImmobilier"
-        :is-mobile="false"
-      />
+      <!-- Extras Filter -->
+      <ExtrasFilter v-if="props.extras && Object.keys(props.extras).length > 0 && hasTypeSelected"
+        :extras="props.extras" :extra="props.extra || []" :ville="currentVille" :quartier="currentQuartier"
+        :types-immobilier="currentTypesImmobilier" :is-mobile="false" />
     </div>
 
-   
+
   </section>
 </template>
 
@@ -295,7 +225,7 @@ const canSelectQuartier = computed(() => {
 const translateCity = (cityTitle) => {
   if (!cityTitle) return ''
   // Convert dashes to spaces and capitalize words (matching ucwords)
-  const normalized = cityTitle.replace(/-/g, ' ').split(' ').map(word => 
+  const normalized = cityTitle.replace(/-/g, ' ').split(' ').map(word =>
     word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
   ).join(' ')
   // Try to get translation from common.cities using the capitalized key (matching Laravel cities.php)
@@ -378,11 +308,11 @@ const translatedTypes = computed(() => {
 const typesWithUniqueValues = computed(() => {
   return types.value.map((type, index) => {
     if (!type) return null
-    
+
     // Ensure each type has a unique value
     // Priority: type_title_original > title (normalized) > id > index-based value
     let uniqueValue = null
-    
+
     if (type.type_title_original && type.type_title_original.trim()) {
       uniqueValue = type.type_title_original.trim()
     } else if (type.title && type.title.trim()) {
@@ -392,7 +322,7 @@ const typesWithUniqueValues = computed(() => {
     } else {
       uniqueValue = `type-${index}`
     }
-    
+
     return {
       ...type,
       uniqueValue: uniqueValue
@@ -419,7 +349,7 @@ const hasTypeSelected = computed(() => {
 const currentTypesImmobilier = computed(() => {
   const typeParam = route.params.type
   const queryTypes = route.query.types_immobilier
-  
+
   if (queryTypes) {
     return queryTypes.split(',').map(t => t.replace(/-/g, ' '))
   } else if (typeParam) {
@@ -482,20 +412,20 @@ const populateFormFromRoute = async () => {
     categoryId.value = categoryMap[detectedTab] || 1
     await loadTypes(categoryId.value)
   }
-  
+
   // Ensure types are loaded before processing
   if (types.value.length === 0) {
     await loadTypes(categoryId.value)
   }
-  
+
   // Parse route params
   const villeParam = route.params.ville ? route.params.ville.replace(/-/g, ' ') : null
   const quartierParam = route.params.quartier ? route.params.quartier.replace(/-/g, ' ') : null
   const typeParam = route.params.type ? route.params.type.replace(/-/g, ' ') : null
-  
+
   // Parse query params
   const query = route.query || {}
-  
+
   // Handle villes - ensure villes are loaded
   if (villes.value.length > 0) {
     if (query.cities) {
@@ -523,7 +453,7 @@ const populateFormFromRoute = async () => {
     // If villes not loaded yet, store as string temporarily
     searchForm.value.ville = [villeParam]
   }
-  
+
   // Handle quartiers
   if (query.quartiers) {
     // Multiple quartiers from query
@@ -547,7 +477,7 @@ const populateFormFromRoute = async () => {
     // Load quartiers if single ville selected but no quartier in route
     await handleVilleChange(searchForm.value.ville)
   }
-  
+
   // Handle types - wait for types to be loaded and use uniqueValue
   if (typesWithUniqueValues.value.length > 0) {
     if (query.types_immobilier) {
@@ -555,29 +485,29 @@ const populateFormFromRoute = async () => {
       const typesList = query.types_immobilier.split(',').map(t => t.replace(/-/g, ' '))
       searchForm.value.type = typesList.map(typeTitle => {
         if (!typeTitle || !typeTitle.trim()) return null
-        
+
         // Find matching type object using uniqueValue
         const typeObj = typesWithUniqueValues.value.find(t => {
           if (!t) return false
           const original = (t.type_title_original || '').trim()
           const title = (t.title || '').trim()
           const uniqueVal = (t.uniqueValue || '').trim()
-          
+
           const normalizedOriginal = original ? original.replace(/\s+/g, '-').toLowerCase() : ''
           const normalizedTitle = typeTitle.replace(/\s+/g, '-').toLowerCase()
           const normalizedTitleValue = title ? title.replace(/\s+/g, '-').toLowerCase() : ''
           const normalizedUnique = uniqueVal ? uniqueVal.replace(/\s+/g, '-').toLowerCase() : ''
-          
-          return (original && original === typeTitle) || 
-                 (title && title === typeTitle) ||
-                 (uniqueVal && uniqueVal === typeTitle) ||
-                 (normalizedOriginal && normalizedOriginal === normalizedTitle) ||
-                 (normalizedTitleValue && normalizedTitleValue === normalizedTitle) ||
-                 (normalizedUnique && normalizedUnique === normalizedTitle) ||
-                 (original && original.toLowerCase() === typeTitle.toLowerCase()) ||
-                 (title && title.toLowerCase() === typeTitle.toLowerCase())
+
+          return (original && original === typeTitle) ||
+            (title && title === typeTitle) ||
+            (uniqueVal && uniqueVal === typeTitle) ||
+            (normalizedOriginal && normalizedOriginal === normalizedTitle) ||
+            (normalizedTitleValue && normalizedTitleValue === normalizedTitle) ||
+            (normalizedUnique && normalizedUnique === normalizedTitle) ||
+            (original && original.toLowerCase() === typeTitle.toLowerCase()) ||
+            (title && title.toLowerCase() === typeTitle.toLowerCase())
         })
-        
+
         if (typeObj && typeObj.uniqueValue) {
           return typeObj.uniqueValue
         }
@@ -591,22 +521,22 @@ const populateFormFromRoute = async () => {
         const original = (t.type_title_original || '').trim()
         const title = (t.title || '').trim()
         const uniqueVal = (t.uniqueValue || '').trim()
-        
+
         const normalizedOriginal = original ? original.replace(/\s+/g, '-').toLowerCase() : ''
         const normalizedParam = typeParam.replace(/\s+/g, '-').toLowerCase()
         const normalizedTitleValue = title ? title.replace(/\s+/g, '-').toLowerCase() : ''
         const normalizedUnique = uniqueVal ? uniqueVal.replace(/\s+/g, '-').toLowerCase() : ''
-        
-        return (original && original === typeParam) || 
-               (title && title === typeParam) ||
-               (uniqueVal && uniqueVal === typeParam) ||
-               (normalizedOriginal && normalizedOriginal === normalizedParam) ||
-               (normalizedTitleValue && normalizedTitleValue === normalizedParam) ||
-               (normalizedUnique && normalizedUnique === normalizedParam) ||
-               (original && original.toLowerCase() === typeParam.toLowerCase()) ||
-               (title && title.toLowerCase() === typeParam.toLowerCase())
+
+        return (original && original === typeParam) ||
+          (title && title === typeParam) ||
+          (uniqueVal && uniqueVal === typeParam) ||
+          (normalizedOriginal && normalizedOriginal === normalizedParam) ||
+          (normalizedTitleValue && normalizedTitleValue === normalizedParam) ||
+          (normalizedUnique && normalizedUnique === normalizedParam) ||
+          (original && original.toLowerCase() === typeParam.toLowerCase()) ||
+          (title && title.toLowerCase() === typeParam.toLowerCase())
       })
-      
+
       if (typeObj && typeObj.uniqueValue) {
         searchForm.value.type = [typeObj.uniqueValue]
       } else {
@@ -623,7 +553,7 @@ const populateFormFromRoute = async () => {
       searchForm.value.type = [typeParam.replace(/\s+/g, '-')]
     }
   }
-  
+
   // Handle other query params
   if (query.prix_max) {
     searchForm.value.prix_max = Number(query.prix_max) || ''
@@ -653,15 +583,15 @@ onMounted(async () => {
     const homeResponse = await homeService.getHomeData()
     const responseData = homeResponse.data || homeResponse
     villes.value = responseData.villes || []
-    
+
     // Detect active tab from route
     const detectedTab = detectActiveTabFromRoute()
     activeTab.value = detectedTab
     categoryId.value = categoryMap[detectedTab] || 1
-    
+
     // Load types for detected category
     await loadTypes(categoryId.value)
-    
+
     // On home page, always set quartier to 'toutelaville'
     if (isHomePage.value) {
       searchForm.value.quartier = ['toutelaville']
@@ -694,7 +624,7 @@ const loadTypes = async (categoryId) => {
   try {
     const locale = localStorage.getItem('app_locale') || 'fr'
     const languageId = locale === 'fr' ? 1 : locale === 'ar' ? 2 : 3
-    
+
     const response = await productService.getTypes({
       product_category_id: categoryId,
       language_id: languageId,
@@ -702,7 +632,7 @@ const loadTypes = async (categoryId) => {
     const responseData = response.data || response
     // Filter out any null/undefined types and ensure they have at least a title or id
     types.value = (responseData.types || []).filter(t => t && (t.title || t.type_title_original || t.id))
-    
+
     // Add "Toutes les propriétés" option if not present
     const allPropertiesText = t('hero.allProperties')
     const hasAllProperties = types.value.some(t => t && t.title === allPropertiesText)
@@ -722,10 +652,10 @@ const loadTypes = async (categoryId) => {
 const switchType = async (type) => {
   activeTab.value = type
   categoryId.value = categoryMap[type] || 1
-  
+
   // Load types for new category
   await loadTypes(categoryId.value)
-  
+
   // Reset quartier when switching to vacation
   if (type === 'vacances') {
     searchForm.value.quartier = ['toutelaville']
@@ -735,20 +665,20 @@ const switchType = async (type) => {
 // Helper function to load quartiers for a ville
 const loadQuartiersForVille = async (villeTitle) => {
   try {
-    const normalizedTitle = typeof villeTitle === 'string' 
-      ? villeTitle.replace(/-/g, ' ') 
+    const normalizedTitle = typeof villeTitle === 'string'
+      ? villeTitle.replace(/-/g, ' ')
       : (villeTitle?.title || '').replace(/-/g, ' ')
-    
+
     if (!normalizedTitle) {
       quartiers.value = []
       return
     }
-    
+
     const response = await productService.getQuartiers({
       title: normalizedTitle,
     })
     const responseData = response.data || response
-    
+
     // Add "Toute la ville" option first
     quartiers.value = [
       {
@@ -774,24 +704,24 @@ const handleVilleChange = async (selectedVilles) => {
     quartiers.value = []
     return
   }
-  
+
   // Don't clear quartier if it's already set from route params
   const hadQuartier = searchForm.value.quartier.length > 0
   if (!hadQuartier) {
     searchForm.value.quartier = []
   }
-  
+
   if (!selectedVilles || selectedVilles.length === 0) {
     if (!hadQuartier) {
       quartiers.value = []
     }
     return
   }
-  
+
   // If single ville selected, load quartiers
   if (selectedVilles.length === 1) {
     await loadQuartiersForVille(selectedVilles[0])
-    
+
     // Auto-select "toutelaville" for vacation if no quartier was set
     if (!hadQuartier && activeTab.value === 'vacances') {
       searchForm.value.quartier = ['toutelaville']
@@ -807,38 +737,38 @@ const handleVilleChange = async (selectedVilles) => {
 // Build URL matching Blade template logic
 const buildSearchUrl = () => {
   const reference = searchForm.value.reference?.trim()
-  
+
   // If reference search, redirect to /annonce/{reference}
   if (reference) {
     return `/annonce/${reference}`
   }
-  
+
   const ville = searchForm.value.ville
   const quartier = searchForm.value.quartier
   const type = searchForm.value.type
   const prix_max = searchForm.value.prix_max
   const category_id = categoryId.value
-  
+
   // Validate ville selection
   if (!ville || ville.length === 0) {
     // Show error message
     alert(t('hero.pleaseSelectCity'))
     return null
   }
-  
+
   // Build base route
   const baseRoute = routeMap[activeTab.value] || 'immobilier-a-vendre'
   let url = `/${baseRoute}`
-  
+
   // Determine ville link - extract title from ville objects/strings
   let villeLink = 'maroc'
   if (ville.length === 1) {
     const villeValue = typeof ville[0] === 'string' ? ville[0] : (ville[0]?.title || ville[0])
     villeLink = villeValue.replace(/\s+/g, '-')
   }
-  
+
   url += `/${villeLink}`
-  
+
   // Determine quartier link
   let quartierLink = ''
   if (quartier && quartier.length > 0) {
@@ -849,13 +779,13 @@ const buildSearchUrl = () => {
       quartierLink = ''
     }
   }
-  
+
   if (quartierLink) {
     url += `/${quartierLink}`
   } else {
     url += '/toutelaville'
   }
-  
+
   // Add type if single selection - convert uniqueValue back to URL format
   if (type && type.length === 1) {
     let typeValue = ''
@@ -864,8 +794,8 @@ const buildSearchUrl = () => {
       const typeObj = typesWithUniqueValues.value.find(t => t && t.uniqueValue === type[0])
       if (typeObj) {
         // Use type_title_original if available, otherwise use title normalized
-        typeValue = (typeObj.type_title_original && typeObj.type_title_original.trim()) 
-          ? typeObj.type_title_original 
+        typeValue = (typeObj.type_title_original && typeObj.type_title_original.trim())
+          ? typeObj.type_title_original
           : (typeObj.title && typeObj.title.trim())
             ? typeObj.title.replace(/\s+/g, '-')
             : type[0]
@@ -880,10 +810,10 @@ const buildSearchUrl = () => {
     typeValue = String(typeValue).replace(/\s+/g, '-')
     url += `/${typeValue}`
   }
-  
+
   // Build query parameters
   const queryParams = []
-  
+
   // Add cities parameter if multiple villes
   if (villeLink === 'maroc' && ville.length > 0) {
     const citiesValue = ville.map(v => {
@@ -892,7 +822,7 @@ const buildSearchUrl = () => {
     }).join(',')
     queryParams.push(`cities=${encodeURIComponent(citiesValue)}`)
   }
-  
+
   // Add quartiers parameter if multiple quartiers
   if (!quartierLink && quartier && quartier.length > 1) {
     const quartiersValue = quartier.map(q => {
@@ -901,7 +831,7 @@ const buildSearchUrl = () => {
     }).join(',')
     queryParams.push(`quartiers=${encodeURIComponent(quartiersValue)}`)
   }
-  
+
   // Add types parameter if multiple types - convert uniqueValue back to URL format
   if (type && type.length > 1) {
     const typesValue = type.map(t => {
@@ -911,8 +841,8 @@ const buildSearchUrl = () => {
         const typeObj = typesWithUniqueValues.value.find(typeItem => typeItem && typeItem.uniqueValue === t)
         if (typeObj) {
           // Use type_title_original if available, otherwise use title normalized
-          typeVal = (typeObj.type_title_original && typeObj.type_title_original.trim()) 
-            ? typeObj.type_title_original 
+          typeVal = (typeObj.type_title_original && typeObj.type_title_original.trim())
+            ? typeObj.type_title_original
             : (typeObj.title && typeObj.title.trim())
               ? typeObj.title.replace(/\s+/g, '-')
               : t
@@ -927,12 +857,12 @@ const buildSearchUrl = () => {
     }).join(',')
     queryParams.push(`types_immobilier=${encodeURIComponent(typesValue)}`)
   }
-  
+
   // Add prix_max
   if (prix_max) {
     queryParams.push(`prix_max=${encodeURIComponent(prix_max)}`)
   }
-  
+
   // Add vacation-specific parameters
   if (category_id === 4) {
     if (searchForm.value.date_arrivee) {
@@ -948,12 +878,12 @@ const buildSearchUrl = () => {
       queryParams.push(`nbr_enfants=${encodeURIComponent(searchForm.value.nbr_enfants)}`)
     }
   }
-  
+
   // Add query string if any params
   if (queryParams.length > 0) {
     url += '?' + queryParams.join('&')
   }
-  
+
   return url
 }
 
@@ -963,16 +893,16 @@ const handleSearch = () => {
   if (isHomePage.value) {
     searchForm.value.quartier = ['toutelaville']
   }
-  
+
   const url = buildSearchUrl()
   if (!url) return
-  
+
   // Get current locale
   const locale = localStorage.getItem('app_locale') || 'fr'
-  
+
   // Build localized path
   const localizedUrl = getLocalizedPath(url, locale)
-  
+
   router.push(localizedUrl)
 }
 
@@ -981,4 +911,3 @@ watch(activeTab, async (newTab) => {
   await switchType(newTab)
 })
 </script>
-
