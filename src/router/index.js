@@ -19,6 +19,8 @@ import Contact from '../views/Contact.vue'
 import AddProduct from '../views/AddProduct.vue'
 import NotFound404 from '../views/NotFound404.vue'
 import Gone410 from '../views/Gone410.vue'
+import ProductDetail from '../views/ProductDetail.vue'
+import BlogDetail from '../views/BlogDetail.vue'
 
 // Define routes without locale prefix (French routes)
 const baseRoutes = [
@@ -151,9 +153,22 @@ const baseRoutes = [
   {
     path: '/conseils/:slug',
     name: 'ConseilDetail',
-    redirect: '/conseils',
+    component: BlogDetail,
     meta: { 
       logo: 'red', 
+      locale: 'fr',
+      seo: {
+        titleKey: 'navigation.realEstateAdvice',
+        descriptionKey: 'home.description',
+      },
+    },
+  },
+  {
+    path: '/annonce/:slug',
+    name: 'ProductDetail',
+    component: ProductDetail,
+    meta: { 
+      logo: 'blue', 
       locale: 'fr',
     },
   },

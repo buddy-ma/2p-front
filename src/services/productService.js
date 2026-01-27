@@ -81,6 +81,15 @@ export const productService = {
   },
 
   /**
+   * Get product by slug
+   * @param {String} slug - Product slug or reference
+   * @returns {Promise} Product detail data
+   */
+  getProductBySlug(slug) {
+    return api.get(`/products/${slug}`)
+  },
+
+  /**
    * Create a new product
    * @param {FormData} formData - Product form data including images
    * @returns {Promise} Created product data

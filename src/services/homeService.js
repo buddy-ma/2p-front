@@ -8,5 +8,14 @@ export const homeService = {
   getHomeData() {
     return api.get('/home')
   },
+
+  /**
+   * Get blog/article by slug
+   * @param {String} slug - Blog slug
+   * @returns {Promise} Blog detail data
+   */
+  getBlogBySlug(slug) {
+    return api.get(`/conseils/${slug}`)
+  },
 }
 
