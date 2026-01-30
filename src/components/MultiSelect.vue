@@ -1,67 +1,36 @@
 <template>
   <div ref="dropdownRef" class="relative">
-    <div
-      @click="toggleDropdown"
-      :class="`w-full px-4 py-2 border border-gray-300 rounded-lg cursor-pointer focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder} flex items-center justify-between`"
-    >
+    <div @click="toggleDropdown"
+      :class="`w-full px-4 py-2 border border-gray-300 rounded-lg cursor-pointer focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder} flex items-center justify-between`">
       <div class="flex flex-wrap gap-1 flex-1">
         <span v-if="selectedValues.length === 0" class="text-gray-500">
           {{ placeholder }}
         </span>
-        <span
-          v-for="(value, index) in selectedValues"
-          :key="index"
-          class="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm"
-        >
+        <span v-for="(value, index) in selectedValues" :key="index"
+          class="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">
           {{ getLabel(value) }}
-          <button
-            @click.stop="removeValue(value)"
-            class="hover:text-blue-900 focus:outline-none"
-          >
+          <button @click.stop="removeValue(value)" class="hover:text-blue-900 focus:outline-none">
             ×
           </button>
         </span>
       </div>
-      <svg
-        class="w-5 h-5 text-gray-500 transition-transform"
-        :class="{ 'rotate-180': isOpen }"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
+      <svg class="w-5 h-5 text-gray-500 transition-transform" :class="{ 'rotate-180': isOpen }" fill="none"
+        stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
       </svg>
     </div>
 
-    <div
-      v-if="isOpen"
-      class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto"
-    >
+    <div v-if="isOpen"
+      class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
       <div class="p-2">
-        <input
-          v-if="searchable"
-          v-model="searchQuery"
-          type="text"
-          placeholder="Rechercher..."
+        <input v-if="searchable" v-model="searchQuery" type="text" placeholder="Rechercher..."
           class="w-full px-3 py-2 mb-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          @click.stop
-        />
-        <div
-          v-for="option in filteredOptions"
-          :key="getValue(option)"
-          @click="toggleValue(option)"
-          :class="[
-            'px-3 py-2 cursor-pointer hover:bg-gray-100 rounded flex items-center',
-            isSelected(option) ? 'bg-blue-50' : ''
-          ]"
-        >
-          <input
-            type="checkbox"
-            :checked="isSelected(option)"
-            class="mr-2"
-            @click.stop
-            readonly
-          />
+          @click.stop />
+        <div v-for="option in filteredOptions" :key="getValue(option)" @click="toggleValue(option)" :class="[
+          'px-3 py-2 cursor-pointer hover:bg-gray-100 rounded flex items-center',
+          isSelected(option) ? 'bg-blue-50' : ''
+        ]">
+          <input type="checkbox" :checked="isSelected(option)" :class="isRTL ? 'ml-2' : 'mr-2'" @click.stop readonly />
           <span>{{ getLabel(option) }}</span>
         </div>
         <div v-if="filteredOptions.length === 0" class="px-3 py-2 text-gray-500 text-sm">
@@ -75,8 +44,12 @@
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useTheme } from '../composables/useTheme'
+import { useI18n } from '../composables/useI18n'
 
 const { colorClasses } = useTheme()
+const { currentLocale } = useI18n()
+
+const isRTL = computed(() => currentLocale.value === 'ar')
 
 const props = defineProps({
   modelValue: {
@@ -117,17 +90,21 @@ const getValue = (option) => {
 }
 
 const getLabel = (valueOrOption) => {
-  // If it's a string, return it directly
-  if (typeof valueOrOption === 'string') {
-    return valueOrOption
-  }
   // If it's an object (option), extract the label directly
   if (typeof valueOrOption === 'object' && valueOrOption !== null) {
     return valueOrOption[props.labelKey] || valueOrOption
   }
-  // Otherwise, try to find the option by value
-  const option = props.options.find(opt => getValue(opt) === valueOrOption)
-  return option ? (typeof option === 'object' ? option[props.labelKey] : option) : valueOrOption
+  // If it's a string or other value, try to find the option by value to get translated label
+  const option = props.options.find(opt => {
+    const optValue = getValue(opt)
+    return optValue === valueOrOption
+  })
+  if (option) {
+    // Return the translated label from the option
+    return typeof option === 'object' ? (option[props.labelKey] || option) : option
+  }
+  // Fallback: return the value as-is if no matching option found
+  return valueOrOption
 }
 
 const filteredOptions = computed(() => {
@@ -149,13 +126,13 @@ const isSelected = (option) => {
 const toggleValue = (option) => {
   const value = getValue(option)
   const index = selectedValues.value.indexOf(value)
-  
+
   if (index > -1) {
     selectedValues.value.splice(index, 1)
   } else {
     selectedValues.value.push(value)
   }
-  
+
   emit('update:modelValue', [...selectedValues.value])
 }
 
@@ -193,4 +170,3 @@ onUnmounted(() => {
   document.removeEventListener('click', closeDropdown)
 })
 </script>
-

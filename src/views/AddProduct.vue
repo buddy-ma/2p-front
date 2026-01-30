@@ -42,7 +42,7 @@
               ]">
                 {{ index + 1 }}
               </div>
-              <div class="ml-3 hidden sm:block">
+              <div :class="isRTL ? 'mr-3' : 'ml-3'" class="hidden sm:block">
                 <p :class="[
                   'text-sm font-medium',
                   step.active
@@ -69,17 +69,12 @@
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   {{ t('add-product.form.category') }}
                 </label>
-                <select 
-                  v-model.number="form.category"
+                <select v-model.number="form.category"
                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   required>
                   <option :value="null" disabled>{{ t('add-product.options.select_option') }}</option>
-                  <option 
-                    v-for="cat in categories" 
-                    :key="`cat-${cat.id}`" 
-                    :value="Number(cat.id)"
-                  >
-                    {{ cat.title }}
+                  <option v-for="cat in translatedCategories" :key="`cat-${cat.id}`" :value="Number(cat.id)">
+                    {{ cat.translatedTitle }}
                   </option>
                 </select>
               </div>
@@ -87,19 +82,12 @@
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   {{ t('add-product.form.type') }}
                 </label>
-                <select 
-                  :key="`type-select-${form.category}`"
-                  v-model.number="form.type"
+                <select :key="`type-select-${form.category}`" v-model.number="form.type"
                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  @change="getExtras" 
-                  required>
+                  @change="getExtras" required>
                   <option :value="null" disabled>{{ t('add-product.options.select_option') }}</option>
-                  <option 
-                    v-for="pt in validProductTypes" 
-                    :key="`type-${pt.id}`" 
-                    :value="Number(pt.id)"
-                  >
-                    {{ pt.title }}
+                  <option v-for="pt in validProductTypes" :key="`type-${pt.id}`" :value="Number(pt.id)">
+                    {{ pt.translatedTitle || pt.title }}
                   </option>
                 </select>
               </div>
@@ -123,13 +111,6 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {{ t('add-product.form.price') }}
-                </label>
-                <input v-model.number="form.prix" type="number"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   {{ t('add-product.form.price_per') }}
                 </label>
                 <select v-model="form.prix_by"
@@ -143,9 +124,9 @@
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {{ t('add-product.form.area') }}
+                  {{ t('add-product.form.price') }}
                 </label>
-                <input v-model="form.surface" type="text"
+                <input v-model.number="form.prix" type="number"
                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
               </div>
               <div>
@@ -158,6 +139,13 @@
                   <option value="hec">{{ t('add-product.options.hectare') }}</option>
                 </select>
               </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  {{ t('add-product.form.area') }}
+                </label>
+                <input v-model="form.surface" type="text"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+              </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -169,8 +157,8 @@
                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   @change="getQuartiers" required>
                   <option value="">{{ t('add-product.options.select_city') }}</option>
-                  <option v-for="ville in villes" :key="ville.id" :value="ville.title">
-                    {{ ville.title }}
+                  <option v-for="ville in translatedVilles" :key="ville.id" :value="ville.title">
+                    {{ ville.translatedTitle }}
                   </option>
                 </select>
               </div>
@@ -181,8 +169,8 @@
                 <select v-model="form.quartier"
                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
                   <option value="">{{ t('add-product.options.select_neighborhood') }}</option>
-                  <option v-for="quartier in quartiers" :key="quartier.id" :value="quartier.title">
-                    {{ quartier.title }}
+                  <option v-for="quartier in translatedQuartiers" :key="quartier.id" :value="quartier.title">
+                    {{ quartier.translatedTitle }}
                   </option>
                 </select>
               </div>
@@ -256,21 +244,10 @@
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {{ t('add-product.image_upload.drag_drop') }}
               </label>
-              <file-pond
-                ref="filePondInstance"
-                name="images"
-                :files="filePondFiles"
-                @addfile="handleFilePondAddFile"
-                @removefile="handleFilePondRemoveFile"
-                @reorderfiles="handleFilePondReorder"
-                allow-multiple
-                max-files="10"
-                accepted-file-types="image/*"
-                image-preview-height="200"
-                image-resize-target-width="1920"
-                image-resize-target-height="1080"
-                image-resize-mode="contain"
-                image-resize-upscale="false"
+              <file-pond ref="filePondInstance" name="images" :files="filePondFiles" @addfile="handleFilePondAddFile"
+                @removefile="handleFilePondRemoveFile" @reorderfiles="handleFilePondReorder" allow-multiple
+                max-files="10" accepted-file-types="image/*" image-preview-height="200" image-resize-target-width="1920"
+                image-resize-target-height="1080" image-resize-mode="contain" image-resize-upscale="false"
                 :label-idle="t('add-product.image_upload.drag_drop')"
                 :label-file-loading="t('add-product.image_upload.loading')"
                 :label-file-processing="t('add-product.image_upload.processing')"
@@ -284,9 +261,7 @@
                 :label-file-size-too-small="t('add-product.image_upload.too_small')"
                 :label-file-size-too-large="t('add-product.image_upload.too_large')"
                 :label-max-file-size-exceeded="t('add-product.image_upload.max_size')"
-                :label-max-files-exceeded="t('add-product.image_upload.max_files')"
-                class="filepond-wrapper"
-              />
+                :label-max-files-exceeded="t('add-product.image_upload.max_files')" class="filepond-wrapper" />
             </div>
 
             <div v-if="imagePreviews.length > 0" class="mt-6">
@@ -294,15 +269,26 @@
                 {{ t('add-product.image_upload.select_default') }}
               </label>
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div v-for="(img, index) in imagePreviews" :key="index" class="relative group cursor-pointer"
-                  @click="selectImage(index)">
-                  <img :src="img.url" class="w-full h-48 object-cover rounded-lg border-2 transition-all"
-                    :class="selectedImg === index ? 'border-blue-500 ring-2 ring-blue-300' : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'"
-                    alt="Preview" />
-                  <div v-if="selectedImg === index"
-                    class="absolute inset-0 bg-blue-500 bg-opacity-50 rounded-lg flex items-center justify-center">
-                    <span class="text-white font-semibold">{{ t('add-product.image_upload.default') }}</span>
+                <div v-for="(img, index) in imagePreviews" :key="index" class="relative group">
+                  <div class="cursor-pointer" @click="selectImage(index)">
+                    <img :src="img.url" class="w-full h-48 object-cover rounded-lg border-2 transition-all"
+                      :class="selectedImg === index ? 'border-blue-500 ring-2 ring-blue-300' : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'"
+                      alt="Preview" />
+                    <div v-if="selectedImg === index"
+                      class="absolute inset-0 bg-blue-500 bg-opacity-50 rounded-lg flex items-center justify-center pointer-events-none">
+                      <span class="text-white font-semibold">{{ t('add-product.image_upload.default') }}</span>
+                    </div>
                   </div>
+                  <button type="button" @click.stop="removeImage(index)" :class="[
+                    'absolute top-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-2 shadow-lg transition-all',
+                    isRTL ? 'left-2' : 'right-2',
+                    'opacity-90 hover:opacity-100 z-10'
+                  ]" :aria-label="t('add-product.image_upload.delete')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </div>
@@ -379,7 +365,7 @@
                 <label class="flex items-center">
                   <input v-model="form.hide_infos" type="checkbox"
                     class="rounded border-gray-300 dark:border-gray-600" />
-                  <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                  <span :class="isRTL ? 'mr-2' : 'ml-2'" class="text-sm text-gray-700 dark:text-gray-300">
                     {{ t('add-product.form.hide_phone') }}
                   </span>
                 </label>
@@ -408,7 +394,7 @@
                 <label class="flex items-center">
                   <input v-model="form.hide_infos" type="checkbox"
                     class="rounded border-gray-300 dark:border-gray-600" />
-                  <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                  <span :class="isRTL ? 'mr-2' : 'ml-2'" class="text-sm text-gray-700 dark:text-gray-300">
                     {{ t('add-product.form.hide_phone') }}
                   </span>
                 </label>
@@ -451,6 +437,7 @@ import { useI18n } from '../composables/useI18n'
 import { productService } from '../services/productService'
 import { authService } from '../services/authService'
 import bgImmobilierMaroc from '../assets/images/bgs/immobilier-Maroc-2P.webp'
+import propertiesData from '../locales/data/properties.js'
 
 // FilePond imports
 import vueFilePond from 'vue-filepond'
@@ -466,7 +453,9 @@ const FilePond = vueFilePond(FilePondPluginImagePreview, FilePondPluginImageResi
 const router = useRouter()
 const toast = useToast()
 const { colorClasses } = useTheme()
-const { t } = useI18n()
+const { t, currentLocale } = useI18n()
+
+const isRTL = computed(() => currentLocale.value === 'ar')
 
 const step1 = ref(true)
 const step2 = ref(false)
@@ -486,9 +475,177 @@ const imagePreviews = ref([])
 const images = ref([])
 const filePondFiles = ref([])
 
-// Computed property to ensure productTypes have valid IDs
+// Helper function to translate city names (matching Blade: __('cities.' . ucwords(str_replace('-', ' ', $city))))
+const translateCity = (cityTitle) => {
+  if (!cityTitle) return ''
+  // Convert dashes to spaces and capitalize words (matching ucwords)
+  const normalized = cityTitle.replace(/-/g, ' ').split(' ').map(word =>
+    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+  ).join(' ')
+  // Try to get translation from common.cities using the capitalized key (matching Laravel cities.php)
+  // First try with capitalized key, then lowercase fallback
+  let translation = t(`common.cities.${normalized}`)
+  if (translation === `common.cities.${normalized}`) {
+    // Fallback to lowercase key
+    translation = t(`common.cities.${normalized.toLowerCase()}`)
+  }
+  // If translation exists and is different from the key path, return it, otherwise return normalized
+  if (translation && translation !== `common.cities.${normalized}` && translation !== `common.cities.${normalized.toLowerCase()}`) {
+    return translation
+  }
+  return normalized
+}
+
+// Helper function to translate quartier names (matching Blade: __('quartiers.' . str_replace('-', ' ', $selected)))
+const translateQuartier = (quartierTitle) => {
+  if (!quartierTitle) return quartierTitle
+  // Convert dashes to spaces (matching Blade template)
+  // Keep original capitalization as quartiers.php keys match exact case
+  const normalized = quartierTitle.replace(/-/g, ' ')
+  // Try to get translation from common.quartiers using the exact quartier name as key
+  // The key should match exactly as stored in Laravel quartiers.php files (case-sensitive)
+  const translation = t(`common.quartiers.${normalized}`)
+  // If translation exists and is different from the key path, return it, otherwise return normalized
+  if (translation && translation !== `common.quartiers.${normalized}`) {
+    return translation
+  }
+  return normalized
+}
+
+// Helper function to translate category names
+const translateCategory = (categoryTitle) => {
+  if (!categoryTitle) return ''
+
+  const normalized = categoryTitle.trim()
+  const currentLang = currentLocale.value || 'fr'
+
+  // Category translations mapping
+  const categoryTranslations = {
+    fr: {
+      'Vente': 'Vente',
+      'Location': 'Location',
+      'Vacances': 'Vacances',
+      'Immo neuf': 'Immo neuf',
+      'Immobilier neuf': 'Immobilier neuf',
+    },
+    en: {
+      'Vente': 'For sale',
+      'Location': 'For rent',
+      'Vacances': 'Vacation rentals',
+      'Immo neuf': 'New real estate',
+      'Immobilier neuf': 'New real estate',
+    },
+    ar: {
+      'Vente': 'للبيع',
+      'Location': 'للكراء',
+      'Vacances': 'للعطل',
+      'Immo neuf': 'عقار جديد',
+      'Immobilier neuf': 'عقار جديد',
+    },
+  }
+
+  // Try to find translation
+  if (categoryTranslations[currentLang] && categoryTranslations[currentLang][normalized]) {
+    return categoryTranslations[currentLang][normalized]
+  }
+
+  // Fallback: try common translations
+  const commonTranslations = {
+    'Vente': { fr: 'Vente', en: 'For sale', ar: 'للبيع' },
+    'Location': { fr: 'Location', en: 'For rent', ar: 'للكراء' },
+    'Vacances': { fr: 'Vacances', en: 'Vacation rentals', ar: 'للعطل' },
+    'Immo neuf': { fr: 'Immo neuf', en: 'New real estate', ar: 'عقار جديد' },
+    'Immobilier neuf': { fr: 'Immobilier neuf', en: 'New real estate', ar: 'عقار جديد' },
+  }
+
+  if (commonTranslations[normalized] && commonTranslations[normalized][currentLang]) {
+    return commonTranslations[normalized][currentLang]
+  }
+
+  // Return original if no translation found
+  return normalized
+}
+
+// Computed property for translated categories
+const translatedCategories = computed(() => {
+  return categories.value.map(cat => ({
+    ...cat,
+    translatedTitle: translateCategory(cat.title || '')
+  }))
+})
+
+// Computed property for translated villes
+const translatedVilles = computed(() => {
+  return villes.value.map(ville => ({
+    ...ville,
+    translatedTitle: translateCity(ville.title || '')
+  }))
+})
+
+// Computed property for translated quartiers
+const translatedQuartiers = computed(() => {
+  return quartiers.value.map(quartier => ({
+    ...quartier,
+    translatedTitle: translateQuartier(quartier.title || quartier.title_original || '')
+  }))
+})
+
+// Helper function to translate product type names (similar to HeroSearch.vue)
+const translateProductType = (typeTitle) => {
+  if (!typeTitle) return ''
+
+  const normalized = typeTitle.trim()
+  const currentLang = currentLocale.value || 'fr'
+  const properties = propertiesData
+
+  // Try to find the French key by searching in all language translations
+  let foundKey = null
+
+  // Search in French translations (keys are in French)
+  for (const [key, value] of Object.entries(properties.fr || {})) {
+    if (value.toLowerCase() === normalized.toLowerCase() || key.toLowerCase() === normalized.toLowerCase()) {
+      foundKey = key
+      break
+    }
+  }
+
+  // If not found in French, search in English translations
+  if (!foundKey) {
+    for (const [key, value] of Object.entries(properties.en || {})) {
+      if (value.toLowerCase() === normalized.toLowerCase()) {
+        foundKey = key
+        break
+      }
+    }
+  }
+
+  // If not found in English, search in Arabic translations
+  if (!foundKey) {
+    for (const [key, value] of Object.entries(properties.ar || {})) {
+      if (value.toLowerCase() === normalized.toLowerCase()) {
+        foundKey = key
+        break
+      }
+    }
+  }
+
+  // If key found, get translation for current language
+  if (foundKey && properties[currentLang] && properties[currentLang][foundKey]) {
+    return properties[currentLang][foundKey]
+  }
+
+  // Return original title if no translation found
+  return normalized
+}
+
+// Computed property to ensure productTypes have valid IDs and translate them
 const validProductTypes = computed(() => {
-  return productTypes.value.filter(pt => pt && pt.id !== undefined && pt.id !== null)
+  return productTypes.value
+    .filter(pt => pt && pt.id !== undefined && pt.id !== null)
+    .map(pt => ({
+      ...pt,
+      translatedTitle: translateProductType(pt.title || '')
+    }))
 })
 
 const form = ref({
@@ -540,7 +697,7 @@ watch(() => form.value.category, (newVal, oldVal) => {
     form.value.type = null
     productExtras.value = []
   }
-  
+
   if (newVal !== null && newVal !== '' && newVal !== undefined) {
     loadProductTypes()
   } else {
@@ -576,7 +733,7 @@ async function loadInitialData() {
     villes.value = villesRes.data.villes
   } catch (error) {
     console.error('Error loading initial data:', error)
-    errors.value = ['Failed to load initial data']
+    errors.value = [t('add-product.errors.failedToLoad')]
   } finally {
     loading.value = false
   }
@@ -587,9 +744,14 @@ async function loadProductTypes() {
     // Reset type when loading new types for a different category
     form.value.type = null
     productExtras.value = []
-    
+
+    // Get current locale and language ID
+    const locale = localStorage.getItem('app_locale') || 'fr'
+    const languageId = locale === 'fr' ? 1 : locale === 'ar' ? 2 : 3
+
     const response = await productService.getTypes({
-      product_category_id: form.value.category
+      product_category_id: form.value.category,
+      language_id: languageId
     })
 
     console.log(response)
@@ -631,44 +793,44 @@ function validateStep1() {
   // Check if type is selected and exists in the available types
   const typeValue = form.value.type
   if (typeValue === null || typeValue === '' || typeValue === undefined) {
-    errors.value.push('Type is required')
+    errors.value.push(t('add-product.errors.typeRequired'))
   } else {
     // Verify the selected type exists in the current validProductTypes list
     if (validProductTypes.value.length > 0) {
       const typeExists = validProductTypes.value.some(pt => Number(pt.id) === Number(typeValue))
       if (!typeExists) {
-        errors.value.push('Please select a valid type')
+        errors.value.push(t('add-product.errors.selectValidType'))
         form.value.type = null // Reset invalid selection
       }
     } else if (productTypes.value.length === 0) {
-      errors.value.push('Please select a category first')
+      errors.value.push(t('add-product.errors.selectCategoryFirst'))
     }
   }
-  
+
   const categoryValue = form.value.category
   if (categoryValue === null || categoryValue === '' || categoryValue === undefined) {
-    errors.value.push('Category is required')
+    errors.value.push(t('add-product.errors.categoryRequired'))
   }
   if (!form.value.title || form.value.title.trim() === '') {
-    errors.value.push('Title is required')
+    errors.value.push(t('add-product.errors.titleRequired'))
   }
   // if (!form.value.description || form.value.description.trim() === '') {
-  //   errors.value.push('Description is required')
+  //   errors.value.push(t('add-product.errors.descriptionRequired'))
   // }
   if (!form.value.ville || form.value.ville === '' || form.value.ville === null) {
-    errors.value.push('City is required')
+    errors.value.push(t('add-product.errors.cityRequired'))
   }
   if (!form.value.address || form.value.address.trim() === '') {
-    errors.value.push('Address is required')
+    errors.value.push(t('add-product.errors.addressRequired'))
   }
   if (!form.value.prix || form.value.prix === '' || form.value.prix === null) {
-    errors.value.push('Price is required')
+    errors.value.push(t('add-product.errors.priceRequired'))
   }
   if (!form.value.unite_surface || form.value.unite_surface === '' || form.value.unite_surface === null) {
-    errors.value.push('Area unit is required')
+    errors.value.push(t('add-product.errors.areaUnitRequired'))
   }
   if (!form.value.surface || form.value.surface === '' || form.value.surface === null) {
-    errors.value.push('Area is required')
+    errors.value.push(t('add-product.errors.areaRequired'))
   }
   return errors.value.length === 0
 }
@@ -676,7 +838,7 @@ function validateStep1() {
 function validateStep2() {
   errors.value = []
   if (images.value.length === 0) {
-    errors.value.push('At least one image is required')
+    errors.value.push(t('add-product.errors.imageRequired'))
   }
   return errors.value.length === 0
 }
@@ -684,17 +846,17 @@ function validateStep2() {
 function validateStep3() {
   errors.value = []
   if (loginType.value === 'register') {
-    if (!userForm.value.firstname) errors.value.push('First name is required')
-    if (!userForm.value.lastname) errors.value.push('Last name is required')
-    if (!userForm.value.phone) errors.value.push('Phone is required')
-    if (!userForm.value.email) errors.value.push('Email is required')
-    if (!userForm.value.password) errors.value.push('Password is required')
+    if (!userForm.value.firstname) errors.value.push(t('add-product.errors.firstNameRequired'))
+    if (!userForm.value.lastname) errors.value.push(t('add-product.errors.lastNameRequired'))
+    if (!userForm.value.phone) errors.value.push(t('add-product.errors.phoneRequired'))
+    if (!userForm.value.email) errors.value.push(t('add-product.errors.emailRequired'))
+    if (!userForm.value.password) errors.value.push(t('add-product.errors.passwordRequired'))
     if (userForm.value.password !== userForm.value.password_confirmation) {
-      errors.value.push('Passwords do not match')
+      errors.value.push(t('add-product.errors.passwordsNotMatch'))
     }
   } else {
-    if (!userForm.value.email) errors.value.push('Email is required')
-    if (!userForm.value.password) errors.value.push('Password is required')
+    if (!userForm.value.email) errors.value.push(t('add-product.errors.emailRequired'))
+    if (!userForm.value.password) errors.value.push(t('add-product.errors.passwordRequired'))
   }
   return errors.value.length === 0
 }
@@ -741,7 +903,7 @@ function handleFilePondAddFile(error, file) {
     console.error('FilePond error:', error)
     return
   }
-  
+
   // Create preview URL
   const reader = new FileReader()
   reader.onload = (e) => {
@@ -751,7 +913,7 @@ function handleFilePondAddFile(error, file) {
       filePondId: file.id
     })
     images.value.push(file.file)
-    
+
     // Auto-select first image as default
     if (imagePreviews.value.length === 1) {
       selectedImg.value = 0
@@ -765,13 +927,13 @@ function handleFilePondRemoveFile(error, file) {
     console.error('FilePond remove error:', error)
     return
   }
-  
+
   // Find and remove from previews
   const index = imagePreviews.value.findIndex(img => img.filePondId === file.id)
   if (index !== -1) {
     imagePreviews.value.splice(index, 1)
     images.value.splice(index, 1)
-    
+
     // Adjust selected image index
     if (selectedImg.value >= imagePreviews.value.length) {
       selectedImg.value = Math.max(0, imagePreviews.value.length - 1)
@@ -783,7 +945,7 @@ function handleFilePondReorder(files) {
   // Update the order of images based on FilePond's new order
   const newPreviews = []
   const newImages = []
-  
+
   files.forEach(filePondFile => {
     const existingIndex = imagePreviews.value.findIndex(img => img.filePondId === filePondFile.id)
     if (existingIndex !== -1) {
@@ -791,13 +953,44 @@ function handleFilePondReorder(files) {
       newImages.push(images.value[existingIndex])
     }
   })
-  
+
   imagePreviews.value = newPreviews
   images.value = newImages
 }
 
 function selectImage(index) {
   selectedImg.value = index
+}
+
+function removeImage(index) {
+  if (index < 0 || index >= imagePreviews.value.length) return
+
+  // Remove from previews and images arrays
+  const removedPreview = imagePreviews.value[index]
+  imagePreviews.value.splice(index, 1)
+  images.value.splice(index, 1)
+
+  // Remove from FilePond if filePondInstance exists
+  if (filePondInstance.value && removedPreview.filePondId) {
+    try {
+      const pond = filePondInstance.value
+      const files = pond.getFiles()
+      const filePondFile = files.find(f => f.id === removedPreview.filePondId)
+      if (filePondFile) {
+        pond.removeFile(filePondFile.id)
+      }
+    } catch (error) {
+      console.error('Error removing file from FilePond:', error)
+    }
+  }
+
+  // Adjust selected image index
+  if (selectedImg.value >= imagePreviews.value.length) {
+    selectedImg.value = Math.max(0, imagePreviews.value.length - 1)
+  } else if (selectedImg.value > index) {
+    // If we removed an image before the selected one, adjust the index
+    selectedImg.value = selectedImg.value - 1
+  }
 }
 
 async function saveProduct() {
@@ -811,7 +1004,7 @@ async function saveProduct() {
 
     // Prepare form data with both product and auth data
     const formData = new FormData()
-    
+
     // Add product form data
     Object.keys(form.value).forEach(key => {
       if (key === 'hasextras') {
@@ -831,7 +1024,7 @@ async function saveProduct() {
     Object.keys(userForm.value).forEach(key => {
       formData.append(key, userForm.value[key])
     })
-    
+
     // Add login type
     formData.append('login_type', loginType.value)
 
@@ -844,7 +1037,7 @@ async function saveProduct() {
     // Create product with auth (combined endpoint - validates product first, then auth)
     // This prevents creating a user account if product validation fails
     const response = await productService.createProductWithAuth(formData)
-    
+
     // Store token from response
     if (response.data.token) {
       localStorage.setItem('auth_token', response.data.token)
@@ -861,8 +1054,8 @@ async function saveProduct() {
     }, 1500)
   } catch (error) {
     console.error('Error saving product:', error)
-    let errorMessage = 'Failed to save product. Please try again.'
-    
+    let errorMessage = t('add-product.errors.failedToSave')
+
     if (error.response && error.response.data) {
       if (error.response.data.errors) {
         const errorMessages = Object.values(error.response.data.errors).flat()
@@ -878,7 +1071,7 @@ async function saveProduct() {
     } else {
       errors.value = [errorMessage]
     }
-    
+
     // Show error toast
     toast.error(errorMessage, {
       duration: 5000

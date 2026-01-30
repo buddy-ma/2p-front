@@ -523,6 +523,7 @@ export default {
       max_files: 'Maximum number of files exceeded',
       select_default: 'Select default image',
       default: 'Default image',
+      delete: 'Delete image',
     },
   },
   decouvrezMaroc: {

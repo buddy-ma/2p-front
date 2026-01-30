@@ -133,10 +133,11 @@ import { getLocalizedPath } from '../utils/routeHelpers'
 import ExtrasFilter from './ExtrasFilter.vue'
 import bgImmobilierMaroc from '../assets/images/bgs/immobilier-Maroc-2P.webp'
 import MultiSelect from './MultiSelect.vue'
-import { ScanBarcode } from 'lucide-vue-next';
+import { ScanBarcode } from 'lucide-vue-next'
+import propertiesData from '../locales/data/properties.js'
 
 const { colorClasses } = useTheme()
-const { t } = useI18n()
+const { t, currentLocale } = useI18n()
 const router = useRouter()
 const route = useRoute()
 
@@ -281,26 +282,87 @@ const translateType = (typeTitle) => {
   // Types are usually already translated from API based on language_id
   // But we can add fallback translation from common.propertyTypes if needed
   const normalized = typeTitle.trim()
-  // Try to match common property type translations (normalized key: lowercase, no spaces)
+  const currentLang = currentLocale.value || 'fr'
+  const properties = propertiesData
+
+  // Try to find the French key by searching in all language translations
+  let foundKey = null
+
+  // Search in French translations (keys are in French)
+  for (const [key, value] of Object.entries(properties.fr || {})) {
+    if (value.toLowerCase() === normalized.toLowerCase() || key.toLowerCase() === normalized.toLowerCase()) {
+      foundKey = key
+      break
+    }
+  }
+
+  // If not found in French, search in English translations
+  if (!foundKey) {
+    for (const [key, value] of Object.entries(properties.en || {})) {
+      if (value.toLowerCase() === normalized.toLowerCase()) {
+        foundKey = key
+        break
+      }
+    }
+  }
+
+  // If not found in English, search in Arabic translations
+  if (!foundKey) {
+    for (const [key, value] of Object.entries(properties.ar || {})) {
+      if (value.toLowerCase() === normalized.toLowerCase()) {
+        foundKey = key
+        break
+      }
+    }
+  }
+
+  // If key found, get translation for current language
+  if (foundKey && properties[currentLang] && properties[currentLang][foundKey]) {
+    return properties[currentLang][foundKey]
+  }
+
+  // Fallback: Try direct translation lookup with normalized key
   const typeKey = normalized.toLowerCase().replace(/\s+/g, '')
   const translation = t(`common.propertyTypes.${typeKey}`)
-  // If translation exists and is different from the key path, return it, otherwise return original
   if (translation && translation !== `common.propertyTypes.${typeKey}`) {
     return translation
   }
-  // Return original title (already translated from API)
+
+  // Return original title if no translation found
   return normalized
 }
 
 // Computed property for translated types
 const translatedTypes = computed(() => {
-  return typesWithUniqueValues.value.map(type => {
+  const allPropertiesText = t('hero.allProperties')
+  const translated = typesWithUniqueValues.value.map(type => {
     if (!type) return null
     return {
       ...type,
       translatedTitle: translateType(type.title || '')
     }
   }).filter(Boolean)
+
+  // Remove duplicates of "All Properties" - keep only the first one
+  const seenAllProperties = new Set()
+  return translated.filter(type => {
+    if (!type) return false
+    const isAllProperties = type.translatedTitle === allPropertiesText ||
+      type.title === allPropertiesText ||
+      (type.type_title_original && (
+        type.type_title_original.toLowerCase() === 'toutes-les-propriétés' ||
+        type.type_title_original.toLowerCase() === 'toutes les propriétés' ||
+        type.type_title_original.toLowerCase() === 'all-properties'
+      ))
+
+    if (isAllProperties) {
+      if (seenAllProperties.has('all-properties')) {
+        return false // Skip duplicate
+      }
+      seenAllProperties.add('all-properties')
+    }
+    return true
+  })
 })
 
 
@@ -619,6 +681,33 @@ watch(() => route.query, async () => {
   }
 }, { deep: true })
 
+// Watch quartier selection - uncheck "toutelaville" when any other quartier is selected
+watch(() => searchForm.value.quartier, (newQuartiers) => {
+  // Skip on home page
+  if (isHomePage.value) {
+    return
+  }
+
+  // If any quartier other than "toutelaville" is selected, remove "toutelaville"
+  if (newQuartiers && newQuartiers.length > 0) {
+    const hasOtherQuartier = newQuartiers.some(q => {
+      const quartierValue = typeof q === 'string' ? q : (q?.title_original || q?.title || q)
+      return quartierValue !== 'toutelaville'
+    })
+
+    if (hasOtherQuartier) {
+      // Remove "toutelaville" if present
+      const index = newQuartiers.findIndex(q => {
+        const quartierValue = typeof q === 'string' ? q : (q?.title_original || q?.title || q)
+        return quartierValue === 'toutelaville'
+      })
+      if (index > -1) {
+        searchForm.value.quartier = newQuartiers.filter((_, i) => i !== index)
+      }
+    }
+  }
+}, { deep: true })
+
 // Load types when category changes
 const loadTypes = async (categoryId) => {
   try {
@@ -635,7 +724,26 @@ const loadTypes = async (categoryId) => {
 
     // Add "Toutes les propriétés" option if not present
     const allPropertiesText = t('hero.allProperties')
-    const hasAllProperties = types.value.some(t => t && t.title === allPropertiesText)
+    // Check if "All Properties" already exists by comparing both title and type_title_original
+    const hasAllProperties = types.value.some(t => {
+      if (!t) return false
+      // Check if title matches (case-insensitive, trimmed)
+      const titleMatch = t.title && t.title.trim().toLowerCase() === allPropertiesText.trim().toLowerCase()
+      // Check if type_title_original matches the expected value
+      const originalMatch = t.type_title_original && (
+        t.type_title_original.toLowerCase() === 'toutes-les-propriétés' ||
+        t.type_title_original.toLowerCase() === 'toutes les propriétés' ||
+        t.type_title_original.toLowerCase() === 'all-properties'
+      )
+      // Also check if the translated title matches any language version
+      const translatedMatch = t.title && (
+        t.title.trim() === 'جميع العقارات' ||
+        t.title.trim() === 'Toutes les propriétés' ||
+        t.title.trim() === 'All Properties' ||
+        t.title.trim() === 'All properties'
+      )
+      return titleMatch || originalMatch || translatedMatch
+    })
     if (!hasAllProperties) {
       types.value.unshift({
         id: 'all-properties',
