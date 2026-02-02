@@ -73,9 +73,29 @@
               {{ t('product.virtualTour') }}
             </h5>
             <div class="divider-fade mb-4"></div>
-            <iframe :src="product.vr_link" width="100%" height="640" frameborder="0"
-              allow="xr-spatial-tracking; gyroscope; accelerometer" allowfullscreen scrolling="no"
-              class="rounded-lg"></iframe>
+            <div class="relative rounded-lg overflow-hidden">
+              <!-- Preview with overlay -->
+              <div class="relative">
+                <iframe v-if="!isVrFullscreen" :src="product.vr_link" width="100%" height="640" frameborder="0"
+                  allow="xr-spatial-tracking; gyroscope; accelerometer" allowfullscreen scrolling="no"
+                  class="rounded-lg pointer-events-none"></iframe>
+                <!-- Overlay Layer -->
+                <div v-if="!isVrFullscreen" @click="openVrFullscreen"
+                  class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center cursor-pointer hover:bg-opacity-30 transition-all rounded-lg group">
+                  <div class="text-center">
+                    <div
+                      :class="`${colorClasses.bg} text-white px-8 py-4 rounded-lg shadow-lg flex flex-col items-center gap-3 group-hover:scale-105 transition-transform`">
+                      <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                      <span class="font-semibold text-lg">{{ t('product.startVirtualTour') }}</span>
+                      <span class="text-sm opacity-90">{{ t('product.clickToViewFullscreen') }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Video -->
@@ -510,6 +530,32 @@
       </div>
     </div>
 
+    <!-- Virtual Tour Fullscreen Modal -->
+    <div v-if="isVrFullscreen" class="fixed inset-0 z-50 bg-black flex flex-col">
+      <!-- Header with Close Button -->
+      <div class="flex items-center justify-between p-4 bg-black bg-opacity-50">
+        <h3 class="text-white text-xl font-semibold">{{ t('product.virtualTour') }}</h3>
+        <button @click="closeVrFullscreen"
+          class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-3 rounded-full transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- VR Iframe Container -->
+      <div class="flex-1 relative">
+        <iframe :src="product.vr_link" width="100%" height="100%" frameborder="0"
+          allow="xr-spatial-tracking; gyroscope; accelerometer" allowfullscreen scrolling="no"
+          class="absolute inset-0"></iframe>
+      </div>
+
+      <!-- Footer Instructions -->
+      <div class="p-4 bg-black bg-opacity-50 text-white text-sm text-center">
+        <p>{{ t('product.pressEscapeToExit') }}</p>
+      </div>
+    </div>
+
     <!-- Image Modal -->
     <div v-if="isImageModalOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90"
       @click.self="closeImageModal">
@@ -565,6 +611,7 @@ const error = ref(null)
 const currentImageIndex = ref(0)
 const isImageModalOpen = ref(false)
 const modalImageIndex = ref(0)
+const isVrFullscreen = ref(false)
 const phoneRevealed = ref(false)
 const companyContactExpanded = ref(false)
 const contactForm = ref({
@@ -711,9 +758,25 @@ const closeImageModal = () => {
 }
 
 const handleEscapeKey = (event) => {
-  if (event.key === 'Escape' && isImageModalOpen.value) {
-    closeImageModal()
+  if (event.key === 'Escape') {
+    if (isImageModalOpen.value) {
+      closeImageModal()
+    } else if (isVrFullscreen.value) {
+      closeVrFullscreen()
+    }
   }
+}
+
+const openVrFullscreen = () => {
+  isVrFullscreen.value = true
+  // Prevent body scroll when VR is fullscreen
+  document.body.style.overflow = 'hidden'
+}
+
+const closeVrFullscreen = () => {
+  isVrFullscreen.value = false
+  // Restore body scroll
+  document.body.style.overflow = ''
 }
 
 const loadProduct = async () => {
@@ -841,6 +904,10 @@ onUnmounted(() => {
   window.removeEventListener('keydown', handleEscapeKey)
   // Ensure body scroll is restored if component unmounts while modal is open
   document.body.style.overflow = ''
+  // Also restore if VR fullscreen is open
+  if (isVrFullscreen.value) {
+    isVrFullscreen.value = false
+  }
 })
 
 // Watch for route changes

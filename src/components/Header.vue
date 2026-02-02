@@ -12,7 +12,7 @@
         <!-- Desktop Navigation -->
         <nav class="hidden lg:flex items-center gap-6">
           <router-link to="/" :class="`text-gray-700 dark:text-gray-300 ${colorClasses.hoverText}`">{{ t('common.home')
-            }}</router-link>
+          }}</router-link>
           <div class="relative group">
             <button :class="`text-gray-700 dark:text-gray-300 ${colorClasses.hoverText} flex items-center`">
               {{ t('navigation.buy') }}
@@ -100,7 +100,7 @@
         <!-- Right Side Actions - Hidden on mobile -->
         <div class="hidden lg:flex items-center gap-4">
           <button :class="`px-4 py-2 text-gray-700 dark:text-gray-300 ${colorClasses.hoverText}`">{{ t('common.login')
-            }}</button>
+          }}</button>
           <router-link to="/ajouter-annonce"
             :class="`${colorClasses.bg} text-white px-4 py-2 rounded-lg ${colorClasses.hover} flex items-center`">
             <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -125,21 +125,37 @@
       <!-- Mobile Menu -->
       <div v-if="mobileMenuOpen" class="lg:hidden pb-4">
         <nav class="flex flex-col space-y-2">
-          <router-link to="/"
+          <router-link to="/" @click="closeMobileMenu"
             class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">{{
               t('common.home') }}</router-link>
-          <router-link to="/immobilier-a-vendre"
+          <router-link to="/immobilier-a-vendre" @click="closeMobileMenu"
             class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">{{
               t('navigation.buy') }}</router-link>
-          <router-link to="/location-immobiliere"
+          <router-link to="/location-immobiliere" @click="closeMobileMenu"
             class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">{{
               t('navigation.rent') }}</router-link>
-          <router-link to="/professionnels"
+          <router-link to="/professionnels" @click="closeMobileMenu"
             class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">{{
               t('navigation.services') }}</router-link>
-          <router-link to="/contact"
+          <router-link to="/contact" @click="closeMobileMenu"
             class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">{{
               t('common.contact') }}</router-link>
+
+          <!-- Add Project Button -->
+          <router-link to="/ajouter-annonce" @click="closeMobileMenu"
+            :class="`${colorClasses.bg} text-white px-4 py-2 rounded-lg ${colorClasses.hover} flex items-center justify-center mt-2`">
+            <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            {{ t('common.freeAd') }}
+          </router-link>
+
+          <!-- Login Button -->
+          <button @click="closeMobileMenu"
+            :class="`px-4 py-2 border-2 ${colorClasses.border} ${colorClasses.text} rounded-lg ${colorClasses.hoverText} text-center w-full font-semibold`">
+            {{ t('common.login') }}
+          </button>
+
           <div
             class="px-4 py-2 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 mt-2 pt-2">
             <span class="text-sm text-gray-600 dark:text-gray-400">{{ t('common.theme') }}</span>
@@ -185,4 +201,8 @@ const logos = {
 const logoPath = computed(() => {
   return logos[logoColor.value] || logos.blue
 })
+
+const closeMobileMenu = () => {
+  mobileMenuOpen.value = false
+}
 </script>
