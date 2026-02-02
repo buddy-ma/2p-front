@@ -21,7 +21,7 @@
     </div>
 
     <div v-if="isOpen"
-      class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
+      class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-[50vh] md:max-h-60 overflow-auto">
       <div class="p-2">
         <input v-if="searchable" v-model="searchQuery" type="text" placeholder="Rechercher..."
           class="w-full px-3 py-2 mb-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"

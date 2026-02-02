@@ -1,7 +1,7 @@
 <template>
   <section
     v-if="shouldShow"
-    class="mt-2 overflow-x-auto container mx-auto max-w-6xl px-10 z-10"
+    class="mt-2 overflow-x-auto container mx-auto max-w-6xl px-4 md:px-10 z-10"
   >
     <div class="flex flex-wrap items-center justify-center gap-2">
       <template

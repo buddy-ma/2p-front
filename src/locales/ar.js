@@ -382,6 +382,10 @@ export default {
     searchByReference: 'البحث بالرقم المرجعي',
     search: 'بحث',
   },
+  pagination: {
+    previous: 'السابق',
+    next: 'التالي',
+  },
   languages: {
     fr: 'الفرنسية',
     en: 'الإنجليزية',

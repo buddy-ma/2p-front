@@ -28,19 +28,9 @@
           </div>
         </div>
 
-        <!-- Pagination -->
-        <div v-if="data.products.links && data.products.links.length > 0" class="mt-8 flex justify-center">
-          <div class="flex flex-wrap gap-2">
-            <button v-for="link in data.products.links" :key="link.label" @click="loadPage(link.url)"
-              :disabled="!link.url" :class="[
-                'px-4 py-2 rounded-lg transition-colors',
-                link.active
-                  ? `${colorClasses.bg} text-white`
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300',
-                !link.url ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
-              ]" v-html="link.label"></button>
-          </div>
-        </div>
+        <!-- Smart Pagination -->
+        <SmartPagination v-if="data.products" :current-page="data.products.current_page || 1"
+          :total-pages="data.products.last_page || 1" :sibling-count="1" :boundary-count="1" />
 
         <!-- Body Links -->
         <div v-if="data?.bodyLinks && data.bodyLinks.length > 0" class="mt-6 flex flex-wrap justify-center gap-4">
@@ -157,6 +147,7 @@ import AdvertisingProduct from '../components/AdvertisingProduct.vue'
 import AdvertisingProductDefault from '../components/AdvertisingProductDefault.vue'
 import PageImage from '../components/PageImage.vue'
 import FooterLinks from '../components/FooterLinks.vue'
+import SmartPagination from '../components/SmartPagination.vue'
 import { useI18n } from '../composables/useI18n'
 import { useFooterLinks } from '../composables/useFooterLinks'
 
