@@ -1,4 +1,5 @@
 import api from './api'
+import axios from 'axios'
 
 export const productService = {
   /**
@@ -112,6 +113,39 @@ export const productService = {
     return api.post('/products/with-auth', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
+      }
+    })
+  },
+
+  /**
+   * Submit product contact form
+   * @param {Number} productId - Product ID
+   * @param {Object} contactData - Contact form data (fullname, phone, email, message)
+   * @returns {Promise} Success response
+   */
+  submitProductContact(productId, contactData) {
+    // Note: This route is in web.php, not api.php, so we use axios directly
+    const baseURL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:8001' : 'https://2p.ma')
+    return axios.post(`${baseURL}/produit/contact/${productId}`, contactData, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
+      }
+    })
+  },
+
+  /**
+   * Track phone view
+   * @param {Number} productId - Product ID
+   * @returns {Promise} Success response
+   */
+  trackPhoneView(productId) {
+    // Note: This route is in web.php, not api.php, so we use axios directly
+    const baseURL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:8001' : 'https://2p.ma')
+    return axios.get(`${baseURL}/vues_phone`, {
+      params: { id: productId },
+      headers: {
+        'Accept': 'application/json',
       }
     })
   },

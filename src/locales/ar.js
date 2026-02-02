@@ -254,7 +254,7 @@ export default {
     lastDay: 'اليوم الأخير!',
     minStay: 'الحد الأدنى للإقامة:',
     nights: 'ليالي',
-    information: 'المعلومات',
+    information: 'معلومات',
     companyInfo: 'الشركة',
     promoterInfo: 'المطور',
     ownerInfo: 'المالك',
@@ -295,6 +295,11 @@ export default {
     view3D: 'زيارة ثلاثية الأبعاد',
     rooms: 'غرف',
     share_on: 'مشاركة على',
+    owner_info: 'المالك',
+    company_info: 'الشركة',
+    promoter_info: 'المطور',
+    no_commercial: 'ملاحظة: المالك يرفض التسويق التجاري، اتصل بفريق 2P.',
+    no_commercial_simple: 'ملاحظة: المالك يرفض التسويق التجاري.',
   },
   contact: {
     meta: {

@@ -139,11 +139,13 @@ export function useLanguage() {
       const newPath = getLocalizedPath(currentPath, newLocale)
       
       setLocale(newLocale)
-      router.push(newPath)
+      // Refresh the page to ensure all components reload with the new language
+      window.location.href = newPath
     } catch (error) {
       console.error('Error switching language:', error)
-      // Fallback: just update locale without navigation
+      // Fallback: just update locale and refresh
       setLocale(newLocale)
+      window.location.reload()
     }
   }
 
