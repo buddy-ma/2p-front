@@ -383,6 +383,10 @@ export default {
     searchByReference: 'Search by reference',
     search: 'Search',
   },
+  pagination: {
+    previous: 'Previous',
+    next: 'Next',
+  },
   languages: {
     fr: 'French',
     en: 'English',

@@ -15,8 +15,8 @@
       </div>
 
       <!-- Mobile Title -->
-      <div class="md:hidden mb-5 py-4 px-3 bg-gray-100 rounded-2xl">
-        <h1 class="mb-3 text-primary text-center" style="font-size: 22px">
+      <div class="md:hidden mb-5 py-4 px-3 rounded-2xl">
+        <h1 class="mb-3 text-center text-white" style="font-size: 22px">
           {{ title || 'Immobilier Au Maroc De Particulier À Particulier' }}
         </h1>
       </div>
