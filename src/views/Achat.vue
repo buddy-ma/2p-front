@@ -58,7 +58,7 @@
           <div class="container max-w-6xl mx-auto px-4">
             <div class="sec-title">
               <h2 class="text-2xl font-semibold mb-6 text-center">
-                {{ data?.category_id === 3 ? t('index.similar.secondHand') : t('index.similar.search') }}
+                {{ data?.category_id === 3 ? t('similar.secondHand') : t('similar.search') }}
               </h2>
             </div>
             <div class="portfolio grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -239,6 +239,13 @@ const loadProducts = async () => {
     setHasFooterLinks(responseData?.footerLinks && responseData.footerLinks.length > 0)
   } catch (err) {
     console.error('Error loading products:', err)
+
+    // If 404 error, redirect to 404 page
+    if (err.response?.status === 404) {
+      router.push('/404')
+      return
+    }
+
     error.value = err.response?.data?.message || err.message || 'Failed to load products'
     // Initialize empty data structure so page still renders
     data.value = {

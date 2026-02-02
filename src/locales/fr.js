@@ -296,6 +296,11 @@ export default {
     view3D: 'Visite 3D',
     rooms: 'chambres',
     share_on: 'Partager sur',
+    owner_info: 'du propriétaire',
+    company_info: 'de l\'entreprise',
+    promoter_info: 'du promoteur',
+    no_commercial: 'NB : Le propriétaire refuse le démarchage commercial, contactez l\'équipe de 2P.',
+    no_commercial_simple: 'NB : Le propriétaire refuse le démarchage commercial.',
   },
   contact: {
     meta: {

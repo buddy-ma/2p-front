@@ -296,6 +296,11 @@ export default {
     view3D: '3D View',
     rooms: 'rooms',
     share_on: 'Share on',
+    owner_info: 'of the owner',
+    company_info: 'of the company',
+    promoter_info: 'of the promoter',
+    no_commercial: 'Note: The owner refuses commercial solicitation, contact the 2P team.',
+    no_commercial_simple: 'Note: The owner refuses commercial solicitation.',
   },
   contact: {
     meta: {
