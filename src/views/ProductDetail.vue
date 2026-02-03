@@ -297,9 +297,10 @@
               <div v-if="isAccessExpert && product.user?.company">
                 <ul :class="['space-y-3', companyContactExpanded ? 'company-contact-show' : 'company-contact']">
                   <!-- Company Logo -->
-                  <li v-if="product.user.company.logo" class="flex justify-center">
+                  <li v-if="product.user.company.logo" class="flex justify-start">
                     <img :src="getCompanyLogoUrl(product.user.company.logo)"
-                      :alt="`Logo de ${product.user.company.name}`" class="mb-3 w-32 h-32 object-contain rounded-lg" />
+                      :alt="`Logo de ${product.user.company.name}`"
+                      class="mb-3 w-auto object-cover object-center h-32 rounded-lg" />
                   </li>
 
                   <!-- Company Name -->
@@ -368,24 +369,25 @@
                 <a href="/nos-tarifs" target="_blank"
                   class="block mt-3 px-6 py-3 rounded-lg font-semibold text-white text-center transition"
                   style="background-color: #ff385c;">
-                  {{ t('product.our_prices') }}
+                  {{ t('product.ourPrices') }}
                 </a>
 
                 <!-- Show More/Less Button -->
                 <button v-if="product.proprietaire?.phone" @click="toggleCompanyContact"
                   class="w-full mt-3 px-6 py-3 rounded-lg font-semibold text-white transition" :class="colorClasses.bg">
-                  {{ companyContactExpanded ? t('product.show_less') : t('product.show_more') }}
+                  {{ companyContactExpanded ? t('product.showLess') : t('product.showMore') }}
                 </button>
+
               </div>
 
               <!-- Owner Information (Regular User) -->
               <div v-else>
                 <ul class="space-y-3">
                   <!-- Owner Logo -->
-                  <li v-if="product.proprietaire?.logo" class="flex justify-center">
+                  <li v-if="product.proprietaire?.logo" class="flex justify-start">
                     <img :src="getProductLogoUrl(product.proprietaire.logo)"
                       :alt="`${product.proprietaire.firstname} ${product.proprietaire.lastname}`"
-                      class="mb-3 w-32 h-32 object-contain rounded-lg" />
+                      class="mb-3 w-auto object-cover object-center h-32 rounded-lg" />
                   </li>
 
                   <!-- Owner Name -->
@@ -411,7 +413,7 @@
                   <button v-if="product.proprietaire?.phone && !phoneRevealed" @click="togglePhone"
                     class="w-full mt-3 px-6 py-3 rounded-lg font-semibold text-white transition"
                     :class="colorClasses.bg">
-                    {{ t('product.see_phone') }}
+                    {{ t('product.seePhone') }}
                   </button>
                 </ul>
               </div>
@@ -422,17 +424,17 @@
               <h4 class="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
                 {{ t('product.information') }}
                 <span v-if="isAccessExpert">
-                  {{ t('product.company_info') }}
+                  {{ t('product.companyInfo') }}
                 </span>
                 <span v-else-if="product.product_category_id === 3">
-                  {{ t('product.promoter_info') }}
+                  {{ t('product.promoterInfo') }}
                 </span>
                 <span v-else>
-                  {{ t('product.owner_info') }}
+                  {{ t('product.ownerInfo') }}
                 </span>
               </h4>
               <p class="text-gray-600 dark:text-gray-400">
-                {{ t('product.no_commercial_simple') }}
+                {{ t('product.noCommercialSimple') }}
               </p>
             </div>
 
@@ -853,6 +855,7 @@ const toggleCompanyContact = async () => {
     }
   }
   companyContactExpanded.value = !companyContactExpanded.value
+  phoneRevealed.value = !phoneRevealed.value
 }
 
 const shareInstagram = async () => {

@@ -128,15 +128,99 @@
           <router-link to="/" @click="closeMobileMenu"
             class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">{{
               t('common.home') }}</router-link>
-          <router-link to="/immobilier-a-vendre" @click="closeMobileMenu"
-            class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">{{
-              t('navigation.buy') }}</router-link>
-          <router-link to="/location-immobiliere" @click="closeMobileMenu"
-            class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">{{
-              t('navigation.rent') }}</router-link>
-          <router-link to="/professionnels" @click="closeMobileMenu"
-            class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">{{
-              t('navigation.services') }}</router-link>
+
+          <!-- Buy Menu Group -->
+          <div>
+            <button @click="toggleBuyMenu"
+              class="w-full px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-between">
+              <span>{{ t('navigation.buy') }}</span>
+              <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': buyMenuOpen }" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div v-if="buyMenuOpen" class="pl-4 space-y-1">
+              <router-link to="/immobilier-a-vendre" @click="closeMobileMenu"
+                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
+                  t('navigation.sale') }}</router-link>
+              <router-link to="/immobilier-neuf" @click="closeMobileMenu"
+                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
+                  t('navigation.immoneuf') }}</router-link>
+            </div>
+          </div>
+
+          <!-- Rent Menu Group -->
+          <div>
+            <button @click="toggleRentMenu"
+              class="w-full px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-between">
+              <span>{{ t('navigation.rent') }}</span>
+              <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': rentMenuOpen }" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div v-if="rentMenuOpen" class="pl-4 space-y-1">
+              <router-link to="/location-immobiliere" @click="closeMobileMenu"
+                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
+                  t('navigation.location') }}</router-link>
+              <router-link to="/location-vacances" @click="closeMobileMenu"
+                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
+                  t('navigation.vacation') }}</router-link>
+            </div>
+          </div>
+
+          <!-- Services Menu Group -->
+          <div>
+            <button @click="toggleServicesMenu"
+              class="w-full px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-between">
+              <span>{{ t('navigation.services') }}</span>
+              <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': servicesMenuOpen }" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div v-if="servicesMenuOpen" class="pl-4 space-y-1">
+              <router-link to="/service-vente" @click="closeMobileMenu"
+                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
+                  t('navigation.serviceSale') }}</router-link>
+              <router-link to="/service-promoteur" @click="closeMobileMenu"
+                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
+                  t('navigation.servicePromoter') }}</router-link>
+              <router-link to="/service-vacances" @click="closeMobileMenu"
+                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
+                  t('navigation.serviceVacation') }}</router-link>
+              <router-link to="/service-location" @click="closeMobileMenu"
+                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
+                  t('navigation.serviceLocation') }}</router-link>
+              <router-link to="/coworking" @click="closeMobileMenu"
+                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
+                  t('navigation.coworking') }}</router-link>
+              <router-link to="/nos-tarifs" @click="closeMobileMenu"
+                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
+                  t('navigation.pricing') }}</router-link>
+            </div>
+          </div>
+
+          <!-- News Menu Group -->
+          <div>
+            <button @click="toggleNewsMenu"
+              class="w-full px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-between">
+              <span>{{ t('navigation.news') }}</span>
+              <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': newsMenuOpen }" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div v-if="newsMenuOpen" class="pl-4 space-y-1">
+              <router-link to="/conseils" @click="closeMobileMenu"
+                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
+                  t('navigation.realEstateAdvice') }}</router-link>
+              <router-link to="/decouvrez-maroc" @click="closeMobileMenu"
+                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
+                  t('navigation.discoverMorocco') }}</router-link>
+            </div>
+          </div>
+
           <router-link to="/contact" @click="closeMobileMenu"
             class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">{{
               t('common.contact') }}</router-link>
@@ -189,6 +273,12 @@ const route = useRoute()
 const { logoColor, colorClasses } = useTheme()
 const { t } = useI18n()
 
+// Mobile menu submenu states
+const buyMenuOpen = ref(false)
+const rentMenuOpen = ref(false)
+const servicesMenuOpen = ref(false)
+const newsMenuOpen = ref(false)
+
 const logos = {
   blue: logoBlue,
   green: logoGreen,
@@ -204,5 +294,26 @@ const logoPath = computed(() => {
 
 const closeMobileMenu = () => {
   mobileMenuOpen.value = false
+  // Reset all submenus when closing mobile menu
+  buyMenuOpen.value = false
+  rentMenuOpen.value = false
+  servicesMenuOpen.value = false
+  newsMenuOpen.value = false
+}
+
+const toggleBuyMenu = () => {
+  buyMenuOpen.value = !buyMenuOpen.value
+}
+
+const toggleRentMenu = () => {
+  rentMenuOpen.value = !rentMenuOpen.value
+}
+
+const toggleServicesMenu = () => {
+  servicesMenuOpen.value = !servicesMenuOpen.value
+}
+
+const toggleNewsMenu = () => {
+  newsMenuOpen.value = !newsMenuOpen.value
 }
 </script>
