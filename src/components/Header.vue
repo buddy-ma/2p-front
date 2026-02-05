@@ -283,7 +283,6 @@ const logos = {
   blue: logoBlue,
   green: logoGreen,
   orange: logoOrange,
-  'orange-decouvrez': '/assets/images/logo-orange-decouvrez.svg',
   purple: logoPurple,
   red: logoRed,
 }

@@ -42,43 +42,99 @@ const baseRoutes = [
     path: '/professionnels',
     name: 'Professionnels',
     component: Professionnels,
-    meta: { logo: 'blue', locale: 'fr' },
+    meta: { 
+      logo: 'blue', 
+      locale: 'fr',
+      seo: {
+        titleKey: 'professionnels.meta.title',
+        descriptionKey: 'professionnels.meta.description',
+        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
+      },
+    },
   },
   {
     path: '/service-promoteur',
     name: 'ServicePromoteur',
     component: ServicePromoteur,
-    meta: { logo: 'blue', locale: 'fr' },
+    meta: { 
+      logo: 'blue', 
+      locale: 'fr',
+      seo: {
+        titleKey: 'servicePromoteur.meta.title',
+        descriptionKey: 'servicePromoteur.meta.description',
+        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
+      },
+    },
   },
   {
     path: '/service-location',
     name: 'ServiceLocation',
     component: ServiceLocation,
-    meta: { logo: 'blue', locale: 'fr' },
+    meta: { 
+      logo: 'blue', 
+      locale: 'fr',
+      seo: {
+        titleKey: 'serviceLocation.meta.title',
+        descriptionKey: 'serviceLocation.meta.description',
+        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
+      },
+    },
   },
   {
     path: '/service-vacances',
     name: 'ServiceVacances',
     component: ServiceVacances,
-    meta: { logo: 'blue', locale: 'fr' },
+    meta: { 
+      logo: 'blue', 
+      locale: 'fr',
+      seo: {
+        titleKey: 'serviceVacances.meta.title',
+        descriptionKey: 'serviceVacances.meta.description',
+        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
+      },
+    },
   },
   {
     path: '/service-vente',
     name: 'ServiceVente',
     component: ServiceVente,
-    meta: { logo: 'blue', locale: 'fr' },
+    meta: { 
+      logo: 'blue', 
+      locale: 'fr',
+      seo: {
+        titleKey: 'serviceVente.meta.title',
+        descriptionKey: 'serviceVente.meta.description',
+        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
+      },
+    },
   },
   {
     path: '/coworking',
     name: 'Coworking',
     component: Coworking,
-    meta: { logo: 'blue', locale: 'fr' },
+    meta: { 
+      logo: 'blue', 
+      locale: 'fr',
+      seo: {
+        titleKey: 'coworking.meta.title',
+        descriptionKey: 'coworking.meta.description',
+        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
+      },
+    },
   },
   {
     path: '/nos-tarifs',
     name: 'Tarifs',
     component: Tarifs,
-    meta: { logo: 'blue', locale: 'fr' },
+    meta: { 
+      logo: 'blue', 
+      locale: 'fr',
+      seo: {
+        titleKey: 'tarifs.meta.title',
+        descriptionKey: 'tarifs.meta.description',
+        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
+      },
+    },
   },
   {
     path: '/immobilier-a-vendre/:ville?/:quartier?/:type?/:extra?',
@@ -170,6 +226,11 @@ const baseRoutes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
+      seo: {
+        titleKey: 'productDetail.meta.title',
+        descriptionKey: 'productDetail.meta.description',
+        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
+      },
     },
   },
   {
@@ -177,7 +238,7 @@ const baseRoutes = [
     name: 'DecouvrezMaroc',
     component: DecouvrezMaroc,
     meta: { 
-      logo: 'orange-decouvrez', 
+      logo: 'orange', 
       locale: 'fr',
       seo: {
         titleKey: 'navigation.discoverMorocco',

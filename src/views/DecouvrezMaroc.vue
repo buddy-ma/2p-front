@@ -49,7 +49,7 @@ const setMetaTags = () => {
   setMetaTag('og:site_name', 'Particulier à Particulier', true)
   setMetaTag('og:image:width', '600', true)
   setMetaTag('og:image:height', '600', true)
-  setMetaTag('og:logo', '/assets/images/logo-orange-decouvrez.svg', true)
+  setMetaTag('og:logo', '../assets/images/logos/logo-orange.svg', true)
 
   // Twitter tags
   setMetaTag('twitter:card', 'summary_large_image')
@@ -111,16 +111,15 @@ const textAlign = computed(() => isRtl.value ? 'text-right' : 'text-left')
       <div class="container mx-auto px-4">
         <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
           <div class="w-full md:w-1/2 flex flex-col gap-3">
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-800">{{ t('decouvrezMaroc.content.section_title') }}</h2>
-            <h3 class="text-lg md:text-xl text-gray-700 font-semibold">{{ t('decouvrezMaroc.content.section_subtitle') }}</h3>
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-800">{{ t('decouvrezMaroc.content.section_title') }}
+            </h2>
+            <h3 class="text-lg md:text-xl text-gray-700 font-semibold">{{ t('decouvrezMaroc.content.section_subtitle')
+            }}</h3>
             <p class="text-gray-600">{{ t('decouvrezMaroc.content.description') }}</p>
           </div>
           <div class="w-full md:w-1/2 flex justify-center">
-            <img
-              class="w-auto object-contain rounded-lg shadow-md"
-              :src="heroImageUrl"
-              :alt="t('decouvrezMaroc.content.image_alt')"
-            />
+            <img class="w-auto object-contain rounded-lg shadow-md" :src="heroImageUrl"
+              :alt="t('decouvrezMaroc.content.image_alt')" />
           </div>
         </div>
       </div>
