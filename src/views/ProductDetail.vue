@@ -257,8 +257,8 @@
               loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="rounded-lg"></iframe>
           </div>
 
-          <!-- Similar Products -->
-          <div v-if="similarProducts && similarProducts.length > 0" class="mb-8">
+          <!-- Similar Products (Desktop only - shown in main content) -->
+          <div v-if="similarProducts && similarProducts.length > 0" class="mb-8 lg:block hidden">
             <h5 class="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
               {{ t('similar.title') }}
             </h5>
@@ -503,6 +503,16 @@
             </div>
           </div>
         </aside>
+
+        <!-- Similar Products (Mobile only - shown after sidebar) -->
+        <div v-if="similarProducts && similarProducts.length > 0" class="lg:hidden mb-8">
+          <h5 class="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+            {{ t('similar.title') }}
+          </h5>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <ProductCard v-for="similarProduct in similarProducts" :key="similarProduct.id" :product="similarProduct" />
+          </div>
+        </div>
       </div>
 
       <!-- Mobile Sticky Bar -->
@@ -899,6 +909,8 @@ const trackWhatsAppClick = async () => {
 }
 
 onMounted(() => {
+  // Scroll to top when component mounts
+  window.scrollTo({ top: 0, behavior: 'smooth' })
   loadProduct()
   window.addEventListener('keydown', handleEscapeKey)
 })
@@ -915,6 +927,8 @@ onUnmounted(() => {
 
 // Watch for route changes
 watch(() => route.params.slug, () => {
+  // Scroll to top when route changes (different product)
+  window.scrollTo({ top: 0, behavior: 'smooth' })
   loadProduct()
 })
 </script>

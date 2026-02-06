@@ -32,6 +32,8 @@ export default {
     parMetre: 'metre',
     aPartirDe: 'from',
     loading: 'Loading...',
+    done: 'Done',
+    cancel: 'Cancel',
     cities: citiesData.en,
     quartiers: quartiersData.en,
     propertyTypes: propertiesData.en,
