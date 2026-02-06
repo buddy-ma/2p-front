@@ -367,6 +367,18 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    // If navigating to ProductDetail, always scroll to top
+    if (to.name === 'ProductDetail' || to.name === 'ProductDetail_en' || to.name === 'ProductDetail_ar') {
+      return { top: 0, behavior: 'smooth' }
+    }
+    // If there's a saved position (e.g., browser back/forward), use it
+    if (savedPosition) {
+      return savedPosition
+    }
+    // Otherwise scroll to top
+    return { top: 0, behavior: 'smooth' }
+  },
 })
 
 // Setup language guard

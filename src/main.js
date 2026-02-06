@@ -3,6 +3,30 @@ import './style.css'
 import App from './App.vue'
 import router from './router'
 
+// Set favicon dynamically from assets
+const setFavicon = async () => {
+  try {
+    // Import favicon from assets - Vite will process it
+    const faviconModule = await import('./assets/images/favicon.ico?url')
+    const faviconLink = document.getElementById('favicon-link') || document.querySelector("link[rel~='icon']")
+    if (faviconLink) {
+      faviconLink.href = faviconModule.default
+    } else {
+      // Create new link if it doesn't exist
+      const link = document.createElement('link')
+      link.id = 'favicon-link'
+      link.rel = 'icon'
+      link.type = 'image/x-icon'
+      link.href = faviconModule.default
+      document.getElementsByTagName('head')[0].appendChild(link)
+    }
+  } catch (error) {
+    console.warn('Could not load favicon from assets:', error)
+  }
+}
+
+setFavicon()
+
 // Global error handler
 window.addEventListener('error', (event) => {
   console.error('Global error:', event.error)

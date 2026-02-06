@@ -62,7 +62,7 @@
           </div>
 
           <!-- Vacation Filters -->
-          <div v-if="activeTab === 'vacances'" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div v-if="activeTab === 'vacances'" class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <input v-model="searchForm.date_arrivee" type="date" :min="new Date().toISOString().split('T')[0]"
                 :placeholder="t('hero.arrivalDate')"

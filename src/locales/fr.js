@@ -32,6 +32,8 @@ export default {
     parMetre: 'mètre',
     aPartirDe: 'à partir de',
     loading: 'Chargement...',
+    done: 'Terminé',
+    cancel: 'Annuler',
     cities: citiesData.fr,
     quartiers: quartiersData.fr,
     propertyTypes: propertiesData.fr,

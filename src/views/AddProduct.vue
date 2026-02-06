@@ -69,27 +69,17 @@
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   {{ t('add-product.form.category') }}
                 </label>
-                <select v-model.number="form.category"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  required>
-                  <option :value="null" disabled>{{ t('add-product.options.select_option') }}</option>
-                  <option v-for="cat in translatedCategories" :key="`cat-${cat.id}`" :value="Number(cat.id)">
-                    {{ cat.translatedTitle }}
-                  </option>
-                </select>
+                <MultiSelect v-model="categoryArray" :options="translatedCategories"
+                  :placeholder="t('add-product.options.select_option')" label-key="translatedTitle" value-key="id"
+                  :searchable="true" @update:modelValue="handleCategoryChange" />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   {{ t('add-product.form.type') }}
                 </label>
-                <select :key="`type-select-${form.category}`" v-model.number="form.type"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  @change="getExtras" required>
-                  <option :value="null" disabled>{{ t('add-product.options.select_option') }}</option>
-                  <option v-for="pt in validProductTypes" :key="`type-${pt.id}`" :value="Number(pt.id)">
-                    {{ pt.translatedTitle || pt.title }}
-                  </option>
-                </select>
+                <MultiSelect :key="`type-select-${form.category}`" v-model="typeArray" :options="validProductTypes"
+                  :placeholder="t('add-product.options.select_option')" label-key="translatedTitle" value-key="id"
+                  :searchable="true" @update:modelValue="handleTypeChange" />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -113,14 +103,9 @@
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   {{ t('add-product.form.price_per') }}
                 </label>
-                <select v-model="form.prix_by"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                  <option value="fix">{{ t('add-product.options.total') }}</option>
-                  <option value="par metre">{{ t('add-product.options.per_m2') }}</option>
-                  <option value="par jour">{{ t('add-product.options.per_day') }}</option>
-                  <option value="par mois">{{ t('add-product.options.per_month') }}</option>
-                  <option value="a partir de">{{ t('add-product.options.starting_from') }}</option>
-                </select>
+                <MultiSelect v-model="prixByArray" :options="prixByOptions"
+                  :placeholder="t('add-product.options.select_option')" label-key="label" value-key="value"
+                  :searchable="true" @update:modelValue="handlePrixByChange" />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -133,11 +118,9 @@
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   {{ t('add-product.form.area_unit') }}
                 </label>
-                <select v-model="form.unite_surface"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                  <option value="m²">{{ t('add-product.options.m2') }}</option>
-                  <option value="hec">{{ t('add-product.options.hectare') }}</option>
-                </select>
+                <MultiSelect v-model="uniteSurfaceArray" :options="uniteSurfaceOptions"
+                  :placeholder="t('add-product.options.select_option')" label-key="label" value-key="value"
+                  :searchable="true" @update:modelValue="handleUniteSurfaceChange" />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -153,26 +136,17 @@
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   {{ t('add-product.form.city') }}
                 </label>
-                <select v-model="form.ville"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  @change="getQuartiers" required>
-                  <option value="">{{ t('add-product.options.select_city') }}</option>
-                  <option v-for="ville in translatedVilles" :key="ville.id" :value="ville.title">
-                    {{ ville.translatedTitle }}
-                  </option>
-                </select>
+                <MultiSelect v-model="villeArray" :options="translatedVilles"
+                  :placeholder="t('add-product.options.select_city')" label-key="translatedTitle" value-key="title"
+                  :searchable="true" @update:modelValue="handleVilleChange" />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   {{ t('add-product.form.neighborhood') }}
                 </label>
-                <select v-model="form.quartier"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                  <option value="">{{ t('add-product.options.select_neighborhood') }}</option>
-                  <option v-for="quartier in translatedQuartiers" :key="quartier.id" :value="quartier.title">
-                    {{ quartier.translatedTitle }}
-                  </option>
-                </select>
+                <MultiSelect v-model="quartierArray" :options="translatedQuartiers"
+                  :placeholder="t('add-product.options.select_neighborhood')" label-key="translatedTitle"
+                  value-key="title" :searchable="true" @update:modelValue="handleQuartierChange" />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -438,6 +412,7 @@ import { productService } from '../services/productService'
 import { authService } from '../services/authService'
 import bgImmobilierMaroc from '../assets/images/bgs/immobilier-Maroc-2P.webp'
 import propertiesData from '../locales/data/properties.js'
+import MultiSelect from '../components/MultiSelect.vue'
 
 // FilePond imports
 import vueFilePond from 'vue-filepond'
@@ -474,6 +449,28 @@ const productExtras = ref([])
 const imagePreviews = ref([])
 const images = ref([])
 const filePondFiles = ref([])
+
+// Array versions for MultiSelect components (single selection)
+const categoryArray = ref([])
+const typeArray = ref([])
+const prixByArray = ref([])
+const uniteSurfaceArray = ref([])
+const villeArray = ref([])
+const quartierArray = ref([])
+
+// Options for prix_by and unite_surface
+const prixByOptions = computed(() => [
+  { value: 'fix', label: t('add-product.options.total') },
+  { value: 'par metre', label: t('add-product.options.per_m2') },
+  { value: 'par jour', label: t('add-product.options.per_day') },
+  { value: 'par mois', label: t('add-product.options.per_month') },
+  { value: 'a partir de', label: t('add-product.options.starting_from') }
+])
+
+const uniteSurfaceOptions = computed(() => [
+  { value: 'm²', label: t('add-product.options.m2') },
+  { value: 'hec', label: t('add-product.options.hectare') }
+])
 
 // Helper function to translate city names (matching Blade: __('cities.' . ucwords(str_replace('-', ' ', $city))))
 const translateCity = (cityTitle) => {
@@ -691,35 +688,149 @@ const steps = computed(() => [
   { title: t('add-product.steps.identification'), active: step3.value }
 ])
 
-watch(() => form.value.category, (newVal, oldVal) => {
-  // Always reset type when category changes (even if switching between categories)
-  if (newVal !== oldVal) {
+// Handler functions for MultiSelect components (enforce single selection)
+function handleCategoryChange(value) {
+  // Keep only the last selected value (single selection)
+  const selectedValue = Array.isArray(value) && value.length > 0 ? value[value.length - 1] : null
+  if (selectedValue !== null) {
+    categoryArray.value = [selectedValue]
+    form.value.category = Number(selectedValue)
+    // Reset type when category changes
     form.value.type = null
+    typeArray.value = []
     productExtras.value = []
-  }
-
-  if (newVal !== null && newVal !== '' && newVal !== undefined) {
     loadProductTypes()
   } else {
-    // Reset type when category is cleared
+    categoryArray.value = []
+    form.value.category = null
     productTypes.value = []
   }
-})
+}
+
+function handleTypeChange(value) {
+  // Keep only the last selected value (single selection)
+  const selectedValue = Array.isArray(value) && value.length > 0 ? value[value.length - 1] : null
+  if (selectedValue !== null) {
+    typeArray.value = [selectedValue]
+    form.value.type = Number(selectedValue)
+    getExtras()
+  } else {
+    typeArray.value = []
+    form.value.type = null
+  }
+}
+
+function handlePrixByChange(value) {
+  // Keep only the last selected value (single selection)
+  const selectedValue = Array.isArray(value) && value.length > 0 ? value[value.length - 1] : null
+  if (selectedValue !== null) {
+    prixByArray.value = [selectedValue]
+    form.value.prix_by = selectedValue
+  } else {
+    prixByArray.value = ['fix']
+    form.value.prix_by = 'fix'
+  }
+}
+
+function handleUniteSurfaceChange(value) {
+  // Keep only the last selected value (single selection)
+  const selectedValue = Array.isArray(value) && value.length > 0 ? value[value.length - 1] : null
+  if (selectedValue !== null) {
+    uniteSurfaceArray.value = [selectedValue]
+    form.value.unite_surface = selectedValue
+  } else {
+    uniteSurfaceArray.value = ['m²']
+    form.value.unite_surface = 'm²'
+  }
+}
+
+function handleVilleChange(value) {
+  // Keep only the last selected value (single selection)
+  const selectedValue = Array.isArray(value) && value.length > 0 ? value[value.length - 1] : null
+  if (selectedValue !== null) {
+    villeArray.value = [selectedValue]
+    form.value.ville = selectedValue
+    getQuartiers()
+  } else {
+    villeArray.value = []
+    form.value.ville = ''
+    quartiers.value = []
+    quartierArray.value = []
+    form.value.quartier = ''
+  }
+}
+
+function handleQuartierChange(value) {
+  // Keep only the last selected value (single selection)
+  const selectedValue = Array.isArray(value) && value.length > 0 ? value[value.length - 1] : null
+  if (selectedValue !== null) {
+    quartierArray.value = [selectedValue]
+    form.value.quartier = selectedValue
+  } else {
+    quartierArray.value = []
+    form.value.quartier = ''
+  }
+}
+
+watch(() => form.value.category, (newVal) => {
+  // Sync categoryArray with form.category
+  if (newVal !== null && newVal !== undefined) {
+    categoryArray.value = [newVal]
+  } else {
+    categoryArray.value = []
+  }
+}, { immediate: true })
 
 watch(() => form.value.type, (newVal) => {
-  if (newVal !== null && newVal !== '' && newVal !== undefined) {
-    getExtras()
+  // Sync typeArray with form.type
+  if (newVal !== null && newVal !== undefined) {
+    typeArray.value = [newVal]
+  } else {
+    typeArray.value = []
   }
-})
+}, { immediate: true })
+
+watch(() => form.value.prix_by, (newVal) => {
+  // Sync prixByArray with form.prix_by
+  if (newVal) {
+    prixByArray.value = [newVal]
+  } else {
+    prixByArray.value = ['fix']
+  }
+}, { immediate: true })
+
+watch(() => form.value.unite_surface, (newVal) => {
+  // Sync uniteSurfaceArray with form.unite_surface
+  if (newVal) {
+    uniteSurfaceArray.value = [newVal]
+  } else {
+    uniteSurfaceArray.value = ['m²']
+  }
+}, { immediate: true })
 
 watch(() => form.value.ville, (newVal) => {
+  // Sync villeArray with form.ville
   if (newVal) {
-    getQuartiers()
+    villeArray.value = [newVal]
+  } else {
+    villeArray.value = []
   }
-})
+}, { immediate: true })
+
+watch(() => form.value.quartier, (newVal) => {
+  // Sync quartierArray with form.quartier
+  if (newVal) {
+    quartierArray.value = [newVal]
+  } else {
+    quartierArray.value = []
+  }
+}, { immediate: true })
 
 onMounted(async () => {
   await loadInitialData()
+  // Initialize arrays with default values
+  prixByArray.value = ['fix']
+  uniteSurfaceArray.value = ['m²']
 })
 
 async function loadInitialData() {

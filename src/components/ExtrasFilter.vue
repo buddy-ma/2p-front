@@ -1,48 +1,33 @@
 <template>
-  <section
-    v-if="shouldShow"
-    class="mt-2 overflow-x-auto container mx-auto max-w-6xl px-4 md:px-10 z-10"
-  >
+  <section v-if="shouldShow" class="mt-2 overflow-x-auto container mx-auto max-w-6xl px-4 md:px-10 z-10">
     <div class="flex flex-wrap items-center justify-center gap-2">
-      <template
-        v-for="(translated, originale, index) in sortedExtras"
-        :key="originale"
-      >
-        <a
-          :href="getExtraUrl(originale)"
-          :class="[
-            'inline-flex items-center px-3 py-1 text-sm rounded-full transition-all duration-200',
-            isSelected(originale)
-              ? `${colorClasses.bg} text-white shadow-sm`
-              : [
-                  'bg-white/50',
-                  'text-gray-100',
-                  'border',
-                  'border-gray-300',
-                  `hover:${colorClasses.bg}`,
-                  'hover:bg-white/30',
-                  'hover:border-transparent'
-                ].join(' '),
-            index >= showMoreLimit && !isExpanded ? 'hidden' : ''
-          ]"
-          @click.prevent="handleExtraClick(originale)"
-        >
+      <template v-for="(translated, originale, index) in sortedExtras" :key="originale">
+        <a :href="getExtraUrl(originale)" :class="[
+          'inline-flex items-center px-3 py-1 text-sm rounded-full transition-all duration-200',
+          isSelected(originale)
+            ? `${colorClasses.bg} text-white shadow-sm`
+            : [
+              'bg-white/50',
+              'text-gray-100',
+              'border',
+              'border-gray-300',
+              `hover:${colorClasses.bg}`,
+              'hover:bg-white/30',
+              'hover:border-transparent'
+            ].join(' '),
+          index >= showMoreLimit && !isExpanded ? 'hidden' : ''
+        ]" @click.prevent="handleExtraClick(originale)">
           {{ translated }}
         </a>
       </template>
-      <button
-        v-if="extrasCount > showMoreLimit"
-        type="button"
-        :class="[
-          'inline-flex items-center px-3 py-1 text-sm rounded-full transition-all duration-200 cursor-pointer',
-          'bg-white',
-          colorClasses.text,
-          'border',
-          'border-gray-300',
-          `hover:${colorClasses.bg}`,
-        ].join(' ')"
-        @click.prevent="toggleShowMore"
-      >
+      <button v-if="extrasCount > showMoreLimit" type="button" :class="[
+        'inline-flex items-center px-3 py-1 text-sm rounded-full transition-all duration-200 cursor-pointer',
+        'bg-white',
+        colorClasses.text,
+        'border',
+        'border-gray-300',
+        `hover:${colorClasses.bg}`,
+      ].join(' ')" @click.prevent="toggleShowMore">
         {{ isExpanded ? t('hero.showLess') : t('hero.showMore') }}
       </button>
     </div>
@@ -132,11 +117,11 @@ const isSelected = (originale) => {
   return props.extra && props.extra.includes(originale)
 }
 
-// Build URL for extra filter - matching Blade template logic
-const getExtraUrl = (originale) => {
+// Helper function to build path with extra added/removed
+const buildPathWithExtra = (originale) => {
   const locale = localStorage.getItem('app_locale') || 'fr'
 
-  // Get base route from path (matching Blade's Request::path() first segment logic)
+  // Get current path without locale prefix
   let path = route.path
 
   // Remove locale prefix if present
@@ -148,53 +133,73 @@ const getExtraUrl = (originale) => {
     path = path.substring(1)
   }
 
-  // Get first segment (base route) - matching Blade's substr($url, 0, $firstSlash)
-  const firstSlash = path.indexOf('/')
-  const baseRoute = firstSlash !== -1 ? path.substring(0, firstSlash) : path
-
-  // Build link path matching Blade template logic
-  let link = ''
-  if (props.ville && props.ville !== 'maroc' && props.ville !== '') {
-    link += '/' + props.ville.replace(/\s+/g, '-')
-    if (props.quartier && props.quartier !== 'toutelaville' && props.quartier !== '') {
-      link += '/' + props.quartier.replace(/\s+/g, '-')
-      if (props.typesImmobilier && props.typesImmobilier[0] && props.typesImmobilier[0] !== '') {
-        const typeValue = String(props.typesImmobilier[0]).replace(/\s+/g, '-')
-        link += '/' + typeValue
-      }
-    } else if (props.typesImmobilier && props.typesImmobilier[0] && props.typesImmobilier[0] !== '') {
-      link += '/toutelaville/' + String(props.typesImmobilier[0]).replace(/\s+/g, '-')
-    }
-  }
-
-  // Determine if we should add or remove the extra (matching Blade logic)
-  const currentExtra = props.extra && props.extra[0] ? props.extra[0] : ''
+  // Normalize the extra value
   const normalizedOriginale = originale.replace(/\s+/g, '-')
 
-  let href = ''
-  if (!currentExtra || currentExtra === '') {
-    // No extra selected, add it
-    href = '/' + baseRoute + link + '/' + normalizedOriginale
+  // Check if this extra is already in the path
+  const pathSegments = path.split('/').filter(segment => segment !== '')
+  const extraIndex = pathSegments.findIndex(segment =>
+    segment.toLowerCase() === normalizedOriginale.toLowerCase() ||
+    decodeURIComponent(segment).toLowerCase() === originale.toLowerCase()
+  )
+
+  // Build new path
+  let newPath = ''
+  if (extraIndex !== -1) {
+    // Extra is already in path, remove it
+    pathSegments.splice(extraIndex, 1)
+    newPath = '/' + pathSegments.join('/')
   } else {
-    if (!props.extra.includes(originale)) {
-      // Extra not in selected list, add it
-      href = '/' + baseRoute + link + '/' + normalizedOriginale
+    // Extra not in path, add it to the end
+    if (pathSegments.length > 0) {
+      newPath = '/' + pathSegments.join('/') + '/' + normalizedOriginale
     } else {
-      // Extra already selected, remove it
-      href = '/' + baseRoute + link
+      newPath = '/' + normalizedOriginale
     }
   }
 
-  // Clean up the URL
-  href = href.replace(/\s+/g, '-').replace(/%20/g, '-')
+  return { newPath, locale }
+}
 
-  // Build localized path
-  return getLocalizedPath(href, locale)
+// Build URL for extra filter - preserving current path and query parameters
+const getExtraUrl = (originale) => {
+  const { newPath, locale } = buildPathWithExtra(originale)
+
+  // Preserve all query parameters from the current route
+  const query = { ...route.query }
+
+  // Build localized path with query parameters
+  const localizedPath = getLocalizedPath(newPath, locale)
+
+  // Add query parameters to the URL
+  const queryString = Object.keys(query)
+    .map(key => {
+      const value = query[key]
+      if (Array.isArray(value)) {
+        return value.map(v => `${encodeURIComponent(key)}=${encodeURIComponent(v)}`).join('&')
+      }
+      return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+    })
+    .filter(Boolean)
+    .join('&')
+
+  return queryString ? `${localizedPath}?${queryString}` : localizedPath
 }
 
 const handleExtraClick = (originale) => {
-  const url = getExtraUrl(originale)
-  router.push(url)
+  const { newPath, locale } = buildPathWithExtra(originale)
+
+  // Preserve all query parameters from the current route
+  const query = { ...route.query }
+
+  // Build localized path
+  const localizedPath = getLocalizedPath(newPath, locale)
+
+  // Navigate with path and query
+  router.push({
+    path: localizedPath,
+    query: query
+  })
 }
 
 const toggleShowMore = () => {

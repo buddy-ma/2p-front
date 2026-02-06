@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
     build: {
       assetsDir: 'assets',
       // Ensure all image assets are included
-      assetsInclude: ['**/*.webp', '**/*.svg', '**/*.png', '**/*.jpg', '**/*.jpeg'],
+      assetsInclude: ['**/*.webp', '**/*.svg', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.ico'],
       // Increase chunk size warning limit
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
