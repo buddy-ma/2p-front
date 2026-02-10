@@ -610,6 +610,15 @@ import ProductCard from '../components/ProductCard.vue'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
 
+defineOptions({
+  name: 'ProductDetail',
+  seo: {
+    titleKey: 'productDetail.meta.title',
+    descriptionKey: 'productDetail.meta.description',
+    image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp'
+  }
+})
+
 const route = useRoute()
 const router = useRouter()
 const { colorClasses } = useTheme()

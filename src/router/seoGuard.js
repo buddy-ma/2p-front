@@ -135,8 +135,20 @@ export function setupSEOGuard(router) {
       }
     }
     
-    // Get SEO meta from route
-    const seoMeta = to.meta?.seo || {}
+    // Get SEO meta from component's defineOptions or route meta
+    // Priority: component's defineOptions > route meta
+    let seoMeta = {}
+    
+    // Try to get SEO from matched components
+    const matchedComponents = to.matched.flatMap(record => Object.values(record.components || {}))
+    const componentWithSEO = matchedComponents.find(component => component?.seo)
+    
+    if (componentWithSEO?.seo) {
+      seoMeta = componentWithSEO.seo
+    } else if (to.meta?.seo) {
+      // Fallback to route meta (for backwards compatibility)
+      seoMeta = to.meta.seo
+    }
     
     // Build SEO data
     const title = seoMeta.titleKey ? getTranslation(seoMeta.titleKey, locale) : getTranslation('home.title', locale)

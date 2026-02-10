@@ -31,11 +31,6 @@ const baseRoutes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
-      seo: {
-        titleKey: 'home.title',
-        descriptionKey: 'home.description',
-        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
-      },
     },
   },
   {
@@ -45,11 +40,6 @@ const baseRoutes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
-      seo: {
-        titleKey: 'professionnels.meta.title',
-        descriptionKey: 'professionnels.meta.description',
-        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
-      },
     },
   },
   {
@@ -59,11 +49,6 @@ const baseRoutes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
-      seo: {
-        titleKey: 'servicePromoteur.meta.title',
-        descriptionKey: 'servicePromoteur.meta.description',
-        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
-      },
     },
   },
   {
@@ -73,11 +58,6 @@ const baseRoutes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
-      seo: {
-        titleKey: 'serviceLocation.meta.title',
-        descriptionKey: 'serviceLocation.meta.description',
-        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
-      },
     },
   },
   {
@@ -87,11 +67,6 @@ const baseRoutes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
-      seo: {
-        titleKey: 'serviceVacances.meta.title',
-        descriptionKey: 'serviceVacances.meta.description',
-        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
-      },
     },
   },
   {
@@ -101,11 +76,6 @@ const baseRoutes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
-      seo: {
-        titleKey: 'serviceVente.meta.title',
-        descriptionKey: 'serviceVente.meta.description',
-        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
-      },
     },
   },
   {
@@ -115,11 +85,6 @@ const baseRoutes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
-      seo: {
-        titleKey: 'coworking.meta.title',
-        descriptionKey: 'coworking.meta.description',
-        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
-      },
     },
   },
   {
@@ -129,11 +94,6 @@ const baseRoutes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
-      seo: {
-        titleKey: 'tarifs.meta.title',
-        descriptionKey: 'tarifs.meta.description',
-        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
-      },
     },
   },
   {
@@ -143,11 +103,6 @@ const baseRoutes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
-      seo: {
-        titleKey: 'achat.title',
-        descriptionKey: 'achat.description',
-        image: '/assets/images/main_pages/Annonces-immobilier-a-vendre-au-Maroc.webp',
-      },
     },
   },
   {
@@ -157,11 +112,6 @@ const baseRoutes = [
     meta: { 
       logo: 'orange', 
       locale: 'fr',
-      seo: {
-        titleKey: 'vacances.title',
-        descriptionKey: 'vacances.description',
-        image: '/assets/images/main_pages/Annonces-de-locations-de-vacances-au-Maroc.webp',
-      },
     },
   },
   {
@@ -171,11 +121,6 @@ const baseRoutes = [
     meta: { 
       logo: 'purple', 
       locale: 'fr',
-      seo: {
-        titleKey: 'location.title',
-        descriptionKey: 'location.description',
-        image: '/assets/images/main_pages/Annonces-immobilier-a-louer-au-Maroc.webp',
-      },
     },
   },
   {
@@ -185,11 +130,6 @@ const baseRoutes = [
     meta: { 
       logo: 'green', 
       locale: 'fr',
-      seo: {
-        titleKey: 'immoneuf.title',
-        descriptionKey: 'immoneuf.description',
-        image: '/assets/images/main_pages/Annonces-immobilier-neuf-a-vendre-au-Maroc.webp',
-      },
     },
   },
   {
@@ -199,11 +139,6 @@ const baseRoutes = [
     meta: { 
       logo: 'red', 
       locale: 'fr',
-      seo: {
-        titleKey: 'navigation.realEstateAdvice',
-        descriptionKey: 'home.description',
-        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
-      },
     },
   },
   {
@@ -213,10 +148,6 @@ const baseRoutes = [
     meta: { 
       logo: 'red', 
       locale: 'fr',
-      seo: {
-        titleKey: 'navigation.realEstateAdvice',
-        descriptionKey: 'home.description',
-      },
     },
   },
   {
@@ -226,11 +157,6 @@ const baseRoutes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
-      seo: {
-        titleKey: 'productDetail.meta.title',
-        descriptionKey: 'productDetail.meta.description',
-        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
-      },
     },
   },
   {
@@ -240,11 +166,6 @@ const baseRoutes = [
     meta: { 
       logo: 'orange', 
       locale: 'fr',
-      seo: {
-        titleKey: 'navigation.discoverMorocco',
-        descriptionKey: 'home.description',
-        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
-      },
     },
   },
   {
@@ -258,11 +179,6 @@ const baseRoutes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
-      seo: {
-        titleKey: 'contact.meta.title',
-        descriptionKey: 'contact.meta.description',
-        image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp',
-      },
     },
   },
   {
@@ -272,10 +188,6 @@ const baseRoutes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
-      seo: {
-        titleKey: 'add-product.title',
-        descriptionKey: 'add-product.description',
-      },
     },
   },
   {
@@ -285,10 +197,6 @@ const baseRoutes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
-      seo: {
-        titleKey: 'error404.meta.title',
-        descriptionKey: 'error404.meta.description',
-      },
     },
   },
   {
@@ -298,10 +206,6 @@ const baseRoutes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
-      seo: {
-        titleKey: 'error410.meta.title',
-        descriptionKey: 'error410.meta.description',
-      },
     },
   },
 ]
@@ -356,10 +260,6 @@ const routes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
-      seo: {
-        titleKey: 'error404.meta.title',
-        descriptionKey: 'error404.meta.description',
-      },
     },
   },
 ]

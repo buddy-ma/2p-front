@@ -149,10 +149,21 @@ import FooterLinks from '../components/FooterLinks.vue'
 import SmartPagination from '../components/SmartPagination.vue'
 import { useI18n } from '../composables/useI18n'
 import { useFooterLinks } from '../composables/useFooterLinks'
+import { useSEO } from '../composables/useSEO'
+
+defineOptions({
+  name: 'Achat',
+  seo: {
+    titleKey: 'achat.title',
+    descriptionKey: 'achat.description',
+    image: '/assets/images/main_pages/Annonces-immobilier-a-vendre-au-Maroc.webp'
+  }
+})
 
 const { colorClasses } = useTheme()
 const { t } = useI18n()
 const { setHasFooterLinks } = useFooterLinks()
+const { updateSEO } = useSEO()
 const route = useRoute()
 const router = useRouter()
 const data = ref(null)
@@ -225,6 +236,15 @@ const loadProducts = async () => {
 
 
     data.value = responseData
+
+    // Update dynamic SEO with page data
+    if (responseData?.page?.mainTitle || responseData?.page?.mainText) {
+      updateSEO({
+        title: responseData.page.mainTitle || t('achat.title'),
+        description: responseData.page.mainText || t('achat.description'),
+        image: '/assets/images/main_pages/Annonces-immobilier-a-vendre-au-Maroc.webp'
+      })
+    }
 
     // Update FooterLinks status
     setHasFooterLinks(responseData?.footerLinks && responseData.footerLinks.length > 0)

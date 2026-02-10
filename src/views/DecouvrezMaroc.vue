@@ -5,6 +5,15 @@ import { useLanguage } from '../composables/useLanguage'
 import DecouvrezFilter from '../components/DecouvrezFilter.vue'
 import heroImageUrl from '../assets/images/bgs/DECOUVREZ-LE-MAROC-2p.webp'
 
+defineOptions({
+  name: 'DecouvrezMaroc',
+  seo: {
+    titleKey: 'navigation.discoverMorocco',
+    descriptionKey: 'home.description',
+    image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp'
+  }
+})
+
 const { t } = useI18n()
 const { currentLocale } = useLanguage()
 

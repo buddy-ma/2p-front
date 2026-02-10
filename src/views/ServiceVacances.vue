@@ -479,6 +479,15 @@ import { ref, onMounted } from 'vue'
 import { serviceService } from '../services/serviceService'
 import { useI18n } from '../composables/useI18n'
 
+defineOptions({
+  name: 'ServiceVacances',
+  seo: {
+    titleKey: 'serviceVacances.meta.title',
+    descriptionKey: 'serviceVacances.meta.description',
+    image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp'
+  }
+})
+
 const { t } = useI18n()
 const data = ref(null)
 const loading = ref(true)

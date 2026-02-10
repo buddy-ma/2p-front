@@ -75,6 +75,15 @@
 import { ref, onMounted } from 'vue'
 import { serviceService } from '../services/serviceService'
 
+defineOptions({
+  name: 'ServiceLocation',
+  seo: {
+    titleKey: 'serviceLocation.meta.title',
+    descriptionKey: 'serviceLocation.meta.description',
+    image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp'
+  }
+})
+
 const data = ref(null)
 const loading = ref(true)
 const error = ref(null)

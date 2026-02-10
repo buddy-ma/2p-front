@@ -84,6 +84,14 @@ import { useRouter } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
 import bgImage from '../assets/images/bgs/immobilier-Maroc-2P.webp'
 
+defineOptions({
+  name: 'NotFound404',
+  seo: {
+    titleKey: 'error404.meta.title',
+    descriptionKey: 'error404.meta.description'
+  }
+})
+
 const router = useRouter()
 const { t } = useI18n()
 
