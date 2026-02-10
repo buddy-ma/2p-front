@@ -517,7 +517,10 @@ const populateFormFromRoute = async () => {
   }
 
   // Handle quartiers
-  if (query.quartiers) {
+  // If multiple villes selected, automatically set to 'toutelaville'
+  if (searchForm.value.ville.length > 1) {
+    searchForm.value.quartier = ['toutelaville']
+  } else if (query.quartiers) {
     // Multiple quartiers from query
     const quartiersList = query.quartiers.split(',').map(q => q.replace(/-/g, ' '))
     searchForm.value.quartier = quartiersList.map(q => {
@@ -813,21 +816,17 @@ const handleVilleChange = async (selectedVilles) => {
     return
   }
 
-  // Don't clear quartier if it's already set from route params
-  const hadQuartier = searchForm.value.quartier.length > 0
-  if (!hadQuartier) {
-    searchForm.value.quartier = []
-  }
-
   if (!selectedVilles || selectedVilles.length === 0) {
-    if (!hadQuartier) {
-      quartiers.value = []
-    }
+    searchForm.value.quartier = []
+    quartiers.value = []
     return
   }
 
   // If single ville selected, load quartiers
   if (selectedVilles.length === 1) {
+    // Don't clear quartier if it's already set from route params
+    const hadQuartier = searchForm.value.quartier.length > 0
+    
     await loadQuartiersForVille(selectedVilles[0])
 
     // Auto-select "toutelaville" for vacation if no quartier was set
@@ -835,10 +834,9 @@ const handleVilleChange = async (selectedVilles) => {
       searchForm.value.quartier = ['toutelaville']
     }
   } else {
-    // Multiple villes selected - clear quartiers only if not set from route
-    if (!hadQuartier) {
-      quartiers.value = []
-    }
+    // Multiple villes selected - automatically set to 'toutelaville' and disable quartier selection
+    searchForm.value.quartier = ['toutelaville']
+    quartiers.value = []
   }
 }
 

@@ -136,23 +136,33 @@ const buildPathWithExtra = (originale) => {
   // Normalize the extra value
   const normalizedOriginale = originale.replace(/\s+/g, '-')
 
-  // Check if this extra is already in the path
+  // Get all available extras (normalized)
+  const allExtras = Object.keys(props.extras || {}).map(key => key.replace(/\s+/g, '-').toLowerCase())
+
+  // Split path and filter out empty segments
   const pathSegments = path.split('/').filter(segment => segment !== '')
+
+  // Check if this specific extra is already in the path
   const extraIndex = pathSegments.findIndex(segment =>
     segment.toLowerCase() === normalizedOriginale.toLowerCase() ||
     decodeURIComponent(segment).toLowerCase() === originale.toLowerCase()
   )
 
+  // Remove ALL extras from path segments (not just the current one)
+  const cleanedSegments = pathSegments.filter(segment => {
+    const normalizedSegment = segment.toLowerCase()
+    return !allExtras.includes(normalizedSegment)
+  })
+
   // Build new path
   let newPath = ''
   if (extraIndex !== -1) {
-    // Extra is already in path, remove it
-    pathSegments.splice(extraIndex, 1)
-    newPath = '/' + pathSegments.join('/')
+    // Extra was already selected, just remove it (and any other extras)
+    newPath = '/' + cleanedSegments.join('/')
   } else {
-    // Extra not in path, add it to the end
-    if (pathSegments.length > 0) {
-      newPath = '/' + pathSegments.join('/') + '/' + normalizedOriginale
+    // Extra not selected, add it to the cleaned path
+    if (cleanedSegments.length > 0) {
+      newPath = '/' + cleanedSegments.join('/') + '/' + normalizedOriginale
     } else {
       newPath = '/' + normalizedOriginale
     }

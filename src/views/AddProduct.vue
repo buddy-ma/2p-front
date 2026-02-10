@@ -105,7 +105,7 @@
                 </label>
                 <MultiSelect v-model="prixByArray" :options="prixByOptions"
                   :placeholder="t('add-product.options.select_option')" label-key="label" value-key="value"
-                  :searchable="true" @update:modelValue="handlePrixByChange" />
+                  :searchable="false" @update:modelValue="handlePrixByChange" />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -120,7 +120,7 @@
                 </label>
                 <MultiSelect v-model="uniteSurfaceArray" :options="uniteSurfaceOptions"
                   :placeholder="t('add-product.options.select_option')" label-key="label" value-key="value"
-                  :searchable="true" @update:modelValue="handleUniteSurfaceChange" />
+                  :searchable="false" @update:modelValue="handleUniteSurfaceChange" />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
