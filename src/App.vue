@@ -6,6 +6,7 @@
     </main>
     <Footer v-if="!hasFooterLinks" />
     <Toaster />
+    <LoadingIndicator />
   </div>
 </template>
 
@@ -15,6 +16,7 @@ import { useRoute } from 'vue-router'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import Toaster from './components/ui/Toaster.vue'
+import LoadingIndicator from './components/ui/LoadingIndicator.vue'
 import { useLanguage } from './composables/useLanguage'
 import { useDarkMode } from './composables/useDarkMode'
 import { useSEO } from './composables/useSEO'
