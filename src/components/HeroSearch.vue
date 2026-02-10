@@ -1033,6 +1033,10 @@ watch(activeTab, async (newTab) => {
   -moz-appearance: none;
   appearance: none;
   padding-left: 2.75rem !important;
+  min-height: 42px;
+  height: 42px;
+  line-height: 1.5;
+  font-size: 1rem;
 }
 
 .date-input::-webkit-calendar-picker-indicator {
@@ -1041,18 +1045,32 @@ watch(activeTab, async (newTab) => {
   width: 100%;
   height: 100%;
   cursor: pointer;
+  left: 0;
+  top: 0;
 }
 
 .date-input::-webkit-datetime-edit {
   color: #374151;
+  line-height: 1.5;
+  padding: 0;
+  min-height: 1.5em;
 }
 
 .date-input::-webkit-datetime-edit-fields-wrapper {
   padding: 0;
+  line-height: 1.5;
 }
 
 .date-input::-webkit-datetime-edit-text {
   color: #6b7280;
+  padding: 0 0.125rem;
+}
+
+/* Placeholder styling for empty date inputs */
+.date-input::-webkit-datetime-edit-day-field:not([aria-valuenow]),
+.date-input::-webkit-datetime-edit-month-field:not([aria-valuenow]),
+.date-input::-webkit-datetime-edit-year-field:not([aria-valuenow]) {
+  color: #9ca3af;
 }
 
 /* Hide calendar icon when date is selected (optional) */
