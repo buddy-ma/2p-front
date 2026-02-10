@@ -63,15 +63,21 @@
 
           <!-- Vacation Filters -->
           <div v-if="activeTab === 'vacances'" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div>
+            <div class="relative">
               <input v-model="searchForm.date_arrivee" type="date" :min="new Date().toISOString().split('T')[0]"
                 :placeholder="t('hero.arrivalDate')"
-                :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`" />
+                :class="`date-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`" />
+              <svg class="calendar-icon absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
             </div>
-            <div>
+            <div class="relative">
               <input v-model="searchForm.date_depart" type="date" :min="minDepartureDate"
                 :placeholder="t('hero.departureDate')"
-                :class="`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`" />
+                :class="`date-input w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 ${colorClasses.ring} ${colorClasses.focusBorder}`" />
+              <svg class="calendar-icon absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
             </div>
             <div>
               <input v-model.number="searchForm.nbr_adultes" type="number" min="1" :placeholder="t('hero.adultsCount')"
@@ -1017,3 +1023,61 @@ watch(activeTab, async (newTab) => {
   await switchType(newTab)
 })
 </script>
+
+<style scoped>
+/* Date input styling for iOS and all browsers */
+.date-input {
+  background-color: white;
+  color: #374151;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-left: 2.75rem !important;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.date-input::-webkit-datetime-edit {
+  color: #374151;
+}
+
+.date-input::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+.date-input::-webkit-datetime-edit-text {
+  color: #6b7280;
+}
+
+/* Hide calendar icon when date is selected (optional) */
+.date-input:focus ~ .calendar-icon,
+.date-input:not(:placeholder-shown) ~ .calendar-icon {
+  opacity: 0.5;
+}
+
+/* Dark mode support */
+.dark .date-input {
+  background-color: #1f2937;
+  color: #f9fafb;
+}
+
+.dark .date-input::-webkit-datetime-edit {
+  color: #f9fafb;
+}
+
+.dark .date-input::-webkit-datetime-edit-text {
+  color: #9ca3af;
+}
+
+/* Position calendar icon */
+.calendar-icon {
+  z-index: 1;
+  transition: opacity 0.2s;
+}
+</style>
