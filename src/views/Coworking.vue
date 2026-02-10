@@ -75,6 +75,15 @@
 import { ref, onMounted } from 'vue'
 import { serviceService } from '../services/serviceService'
 
+defineOptions({
+  name: 'Coworking',
+  seo: {
+    titleKey: 'coworking.meta.title',
+    descriptionKey: 'coworking.meta.description',
+    image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp'
+  }
+})
+
 const data = ref(null)
 const loading = ref(true)
 const error = ref(null)

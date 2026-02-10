@@ -150,10 +150,21 @@ import FooterLinks from '../components/FooterLinks.vue'
 import SmartPagination from '../components/SmartPagination.vue'
 import { useI18n } from '../composables/useI18n'
 import { useFooterLinks } from '../composables/useFooterLinks'
+import { useSEO } from '../composables/useSEO'
+
+defineOptions({
+  name: 'Location',
+  seo: {
+    titleKey: 'location.title',
+    descriptionKey: 'location.description',
+    image: '/assets/images/main_pages/Annonces-immobilier-a-louer-au-Maroc.webp'
+  }
+})
 
 const { colorClasses } = useTheme()
 const { t } = useI18n()
 const { setHasFooterLinks } = useFooterLinks()
+const { updateSEO } = useSEO()
 const route = useRoute()
 const router = useRouter()
 const data = ref(null)
@@ -225,6 +236,15 @@ const loadProducts = async () => {
 
 
     data.value = responseData
+
+    // Update dynamic SEO with page data
+    if (responseData?.page?.mainTitle || responseData?.page?.mainText) {
+      updateSEO({
+        title: responseData.page.mainTitle || t('location.title'),
+        description: responseData.page.mainText || t('location.description'),
+        image: '/assets/images/main_pages/Annonces-immobilier-a-louer-au-Maroc.webp'
+      })
+    }
 
     // Update FooterLinks status
     setHasFooterLinks(responseData?.footerLinks && responseData.footerLinks.length > 0)

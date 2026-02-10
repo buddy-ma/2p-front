@@ -202,6 +202,15 @@ import { useTheme } from '../composables/useTheme'
 import { useI18n } from '../composables/useI18n'
 import { homeService } from '../services/homeService'
 import HeroSearch from '../components/HeroSearch.vue'
+
+defineOptions({
+  name: 'Home',
+  seo: {
+    titleKey: 'home.title',
+    descriptionKey: 'home.description',
+    image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp'
+  }
+})
 import ProductCard from '../components/ProductCard.vue'
 import logoBlueSmall from '../assets/images/logos/logo-blue-small.svg'
 import logoWhiteSmall from '../assets/images/logos/logo-white-small.svg'

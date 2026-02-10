@@ -202,10 +202,10 @@
                 {{ t('add-product.form.extras') }}
               </label>
               <div class="flex flex-wrap gap-2">
-                <label v-for="extra in productExtras" :key="extra.id"
+                <label v-for="extra in productExtras" :key="extra.id" :for="`extra-${extra.id}`"
                   class="inline-flex items-center px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
                   :class="form.hasextras.includes(extra.title) ? colorClasses.bg + ' text-white border-transparent' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'">
-                  <input v-model="form.hasextras" type="checkbox" :value="extra.title" class="sr-only" />
+                  <input :id="`extra-${extra.id}`" v-model="form.hasextras" type="checkbox" :value="extra.title" class="sr-only" />
                   <span>{{ extra.title }}</span>
                 </label>
               </div>
@@ -336,8 +336,8 @@
                 </div>
               </div>
               <div class="mt-4">
-                <label class="flex items-center">
-                  <input v-model="form.hide_infos" type="checkbox"
+                <label for="hide-infos-register" class="flex items-center cursor-pointer">
+                  <input id="hide-infos-register" v-model="form.hide_infos" type="checkbox"
                     class="rounded border-gray-300 dark:border-gray-600" />
                   <span :class="isRTL ? 'mr-2' : 'ml-2'" class="text-sm text-gray-700 dark:text-gray-300">
                     {{ t('add-product.form.hide_phone') }}
@@ -365,8 +365,8 @@
                 </div>
               </div>
               <div class="mt-4">
-                <label class="flex items-center">
-                  <input v-model="form.hide_infos" type="checkbox"
+                <label for="hide-infos-login" class="flex items-center cursor-pointer">
+                  <input id="hide-infos-login" v-model="form.hide_infos" type="checkbox"
                     class="rounded border-gray-300 dark:border-gray-600" />
                   <span :class="isRTL ? 'mr-2' : 'ml-2'" class="text-sm text-gray-700 dark:text-gray-300">
                     {{ t('add-product.form.hide_phone') }}
@@ -411,6 +411,14 @@ import { useI18n } from '../composables/useI18n'
 import { productService } from '../services/productService'
 import { authService } from '../services/authService'
 import bgImmobilierMaroc from '../assets/images/bgs/immobilier-Maroc-2P.webp'
+
+defineOptions({
+  name: 'AddProduct',
+  seo: {
+    titleKey: 'add-product.title',
+    descriptionKey: 'add-product.description'
+  }
+})
 import propertiesData from '../locales/data/properties.js'
 import MultiSelect from '../components/MultiSelect.vue'
 

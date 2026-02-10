@@ -5,6 +5,15 @@ import { useLanguage } from '../composables/useLanguage'
 import ConseilFilter from '../components/ConseilFilter.vue'
 import ConseilImmobilierImage from '../assets/images/immobilier/CONSEILSIMMOBILIER.webp'
 
+defineOptions({
+  name: 'Conseils',
+  seo: {
+    titleKey: 'navigation.realEstateAdvice',
+    descriptionKey: 'home.description',
+    image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp'
+  }
+})
+
 const { t } = useI18n()
 const { currentLocale } = useLanguage()
 

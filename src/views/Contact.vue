@@ -252,6 +252,15 @@ import { MapPin, Phone, Mail, Facebook, Instagram, Youtube, Linkedin } from 'luc
 import { useI18n } from '../composables/useI18n'
 import { useLanguage } from '../composables/useLanguage'
 import { useTheme } from '../composables/useTheme'
+
+defineOptions({
+  name: 'Contact',
+  seo: {
+    titleKey: 'contact.meta.title',
+    descriptionKey: 'contact.meta.description',
+    image: '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp'
+  }
+})
 import { useSEO } from '../composables/useSEO'
 import api from '../services/api'
 import bgImage from '../assets/images/bgs/immobilier-Maroc-2P.webp'

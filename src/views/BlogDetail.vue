@@ -90,6 +90,14 @@ import { useRoute, useRouter } from 'vue-router'
 import { homeService } from '../services/homeService'
 import { useI18n } from '../composables/useI18n'
 import AdvertisingLong from '../components/AdvertisingLong.vue'
+
+defineOptions({
+  name: 'BlogDetail',
+  seo: {
+    titleKey: 'navigation.realEstateAdvice',
+    descriptionKey: 'home.description'
+  }
+})
 import AdvertisingLongDefault from '../components/AdvertisingLongDefault.vue'
 import AdvertisingBanner from '../components/AdvertisingBanner.vue'
 import AdvertisingBannerDefault from '../components/AdvertisingBannerDefault.vue'
