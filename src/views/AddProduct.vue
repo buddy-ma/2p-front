@@ -77,7 +77,7 @@
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   {{ t('add-product.form.type') }}
                 </label>
-                <MultiSelect :key="`type-select-${form.category}`" v-model="typeArray" :options="validProductTypes"
+                <MultiSelect v-model="typeArray" :options="validProductTypes"
                   :placeholder="t('add-product.options.select_option')" label-key="translatedTitle" value-key="id"
                   :searchable="true" @update:modelValue="handleTypeChange" />
               </div>
@@ -205,7 +205,8 @@
                 <label v-for="extra in productExtras" :key="extra.id" :for="`extra-${extra.id}`"
                   class="inline-flex items-center px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
                   :class="form.hasextras.includes(extra.title) ? colorClasses.bg + ' text-white border-transparent' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'">
-                  <input :id="`extra-${extra.id}`" v-model="form.hasextras" type="checkbox" :value="extra.title" class="sr-only" />
+                  <input :id="`extra-${extra.id}`" v-model="form.hasextras" type="checkbox" :value="extra.title"
+                    class="sr-only" />
                   <span>{{ extra.title }}</span>
                 </label>
               </div>
@@ -650,12 +651,14 @@ const translateProductType = (typeTitle) => {
 
 // Computed property to ensure productTypes have valid IDs and translate them
 const validProductTypes = computed(() => {
-  return productTypes.value
+  const types = productTypes.value
     .filter(pt => pt && pt.id !== undefined && pt.id !== null)
     .map(pt => ({
       ...pt,
       translatedTitle: translateProductType(pt.title || '')
     }))
+
+  return types
 })
 
 const form = ref({
@@ -705,31 +708,39 @@ const steps = computed(() => [
 function handleCategoryChange(value) {
   // Keep only the last selected value (single selection)
   const selectedValue = Array.isArray(value) && value.length > 0 ? value[value.length - 1] : null
-  if (selectedValue !== null) {
-    categoryArray.value = [selectedValue]
-    form.value.category = Number(selectedValue)
-    // Reset type when category changes
-    form.value.type = null
-    typeArray.value = []
-    productExtras.value = []
-    loadProductTypes()
-  } else {
-    categoryArray.value = []
-    form.value.category = null
-    productTypes.value = []
+
+  // Only proceed if the value actually changed
+  if (selectedValue !== form.value.category) {
+    if (selectedValue !== null) {
+      categoryArray.value = [selectedValue]
+      form.value.category = selectedValue
+      // Reset type when category changes
+      form.value.type = null
+      typeArray.value = []
+      productExtras.value = []
+      loadProductTypes()
+    } else {
+      categoryArray.value = []
+      form.value.category = null
+      productTypes.value = []
+    }
   }
 }
 
 function handleTypeChange(value) {
   // Keep only the last selected value (single selection)
   const selectedValue = Array.isArray(value) && value.length > 0 ? value[value.length - 1] : null
-  if (selectedValue !== null) {
-    typeArray.value = [selectedValue]
-    form.value.type = Number(selectedValue)
-    getExtras()
-  } else {
-    typeArray.value = []
-    form.value.type = null
+
+  // Only proceed if the value actually changed (use loose equality to handle string/number mismatch)
+  if (selectedValue != form.value.type) {
+    if (selectedValue !== null) {
+      typeArray.value = [selectedValue]
+      form.value.type = selectedValue // Don't convert - keep the same type as the option
+      getExtras()
+    } else {
+      typeArray.value = []
+      form.value.type = null
+    }
   }
 }
 
@@ -785,21 +796,37 @@ function handleQuartierChange(value) {
   }
 }
 
-watch(() => form.value.category, (newVal) => {
+watch(() => form.value.category, (newVal, oldVal) => {
   // Sync categoryArray with form.category
-  if (newVal !== null && newVal !== undefined) {
-    categoryArray.value = [newVal]
-  } else {
-    categoryArray.value = []
+  // Only sync if the value actually changed (prevent infinite loop from MultiSelect updates)
+  if (newVal !== oldVal) {
+    if (newVal !== null && newVal !== undefined) {
+      // Check if categoryArray already has this value to prevent unnecessary updates
+      if (categoryArray.value.length !== 1 || categoryArray.value[0] !== newVal) {
+        categoryArray.value = [newVal]
+      }
+    } else {
+      if (categoryArray.value.length !== 0) {
+        categoryArray.value = []
+      }
+    }
   }
 }, { immediate: true })
 
-watch(() => form.value.type, (newVal) => {
+watch(() => form.value.type, (newVal, oldVal) => {
   // Sync typeArray with form.type
-  if (newVal !== null && newVal !== undefined) {
-    typeArray.value = [newVal]
-  } else {
-    typeArray.value = []
+  // Only sync if the value actually changed (prevent infinite loop from MultiSelect updates)
+  if (newVal !== oldVal) {
+    if (newVal !== null && newVal !== undefined) {
+      // Check if typeArray already has this value to prevent unnecessary updates
+      if (typeArray.value.length !== 1 || typeArray.value[0] !== newVal) {
+        typeArray.value = [newVal]
+      }
+    } else {
+      if (typeArray.value.length !== 0) {
+        typeArray.value = []
+      }
+    }
   }
 }, { immediate: true })
 
@@ -878,9 +905,9 @@ async function loadProductTypes() {
       language_id: languageId
     })
 
-    console.log(response)
     // Ensure all types have valid IDs
-    productTypes.value = (response.data.types || []).filter(pt => pt && pt.id !== undefined && pt.id !== null)
+    const filteredTypes = (response.data.types || []).filter(pt => pt && pt.id !== undefined && pt.id !== null)
+    productTypes.value = filteredTypes
   } catch (error) {
     console.error('Error loading product types:', error)
     productTypes.value = []
