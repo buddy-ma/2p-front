@@ -2,15 +2,16 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from '../composables/useI18n'
 import { useLanguage } from '../composables/useLanguage'
-import { useRouter } from 'vue-router'
+import { useTheme } from '../composables/useTheme'
 import api from '../services/api'
 import NoSearchResultsImage from '../assets/images/elements/no-search-results.svg'
 import backgroundImage from '../assets/images/bgs/Conseils-immobilier-maroc-2p.webp'
-import { Grip } from 'lucide-vue-next';
+import { Grip } from 'lucide-vue-next'
+import BlogArticlesSection from './BlogArticlesSection.vue'
 
 const { t } = useI18n()
 const { currentLocale } = useLanguage()
-const router = useRouter()
+const { colorClasses } = useTheme()
 
 const searchInput = ref('')
 const conseils = ref([])
@@ -60,28 +61,6 @@ const handleSearch = () => {
   fetchArticles(selected.value)
 }
 
-const stripHtmlTags = (html) => {
-  const tmp = document.createElement('DIV')
-  tmp.innerHTML = html
-  return tmp.textContent || tmp.innerText || ''
-}
-
-const truncateText = (text, length = 170) => {
-  const cleanText = stripHtmlTags(text)
-  return cleanText.length > length ? cleanText.substring(0, length) + '...' : cleanText
-}
-
-const getImageUrl = (blog) => {
-  if (blog.image) {
-    return `https://2p.ma/images/${blog.image}`
-  }
-  return 'https://2p.ma/assets/images/blog/b-10.jpg'
-}
-
-const goToArticle = (slug) => {
-  router.push(`/conseils/${slug}`)
-}
-
 // Watch search input with debounce
 let searchTimeout
 watch(searchInput, () => {
@@ -114,14 +93,23 @@ onMounted(async () => {
             class="w-full flex flex-col md:flex-row gap-4 md:gap-2 items-stretch bg-white/90 rounded-xl shadow-lg px-4 py-4 max-h-[120px]">
             <input v-model="searchInput" type="text"
               :placeholder="t('decouvrezMaroc.conseils.filter.hero.search_placeholder')"
-              class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 text-gray-900 bg-white"
+              :class="[
+                'w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 text-gray-900 bg-white',
+                colorClasses.ring
+              ]"
               @keyup.enter="handleSearch" autocomplete="off" />
-            <button type="submit"
-              class="hidden md:inline-block h-full w-auto whitespace-nowrap bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+            <button type="submit" :class="[
+              'hidden md:inline-block h-full w-auto whitespace-nowrap text-white px-6 py-2 rounded-lg font-semibold transition-colors',
+              colorClasses.bg,
+              colorClasses.hover
+            ]">
               {{ t('decouvrezMaroc.conseils.filter.hero.search_button') }}
             </button>
-            <button type="submit"
-              class="md:hidden inline-flex justify-center items-center h-full w-10 h-10 bg-red-600 hover:bg-red-700 text-white rounded-lg">
+            <button type="submit" :class="[
+              'md:hidden inline-flex justify-center items-center w-10 h-10 text-white rounded-lg',
+              colorClasses.bg,
+              colorClasses.hover
+            ]">
               <i class="fa fa-search"></i>
             </button>
           </form>
@@ -134,14 +122,14 @@ onMounted(async () => {
       <div class="mx-auto text-center w-full h-full md:max-w-6xl max-w-full overflow-x-auto small-scrollbar px-4 flex items-center justify-center whitespace-nowrap relative">
         <a @click.prevent="getCategory(0)" :class="[
           'px-5 h-[50px] leading-[50px] inline-block text-sm font-medium uppercase text-[#495960] cursor-pointer transition-[border-width] duration-200 border-b-0 border-[#495960] hover:text-[#495960] focus:text-[#495960] visited:text-[#495960] no-underline',
-          selected === 0 ? 'text-red-600 font-bold' : ''
+          selected === 0 ? `${colorClasses.text} font-bold` : ''
         ]">
           <Grip class="w-4 h-4 inline-block mr-2" />
           <span class="hidden max-[600px]:inline-block"><i class="fa fa-caret-down"></i></span>
         </a>
         <div v-for="category in categoryConseils" :key="category.id" @click="getCategory(category.id)" :class="[
           'px-5 h-[50px] leading-[50px] inline-block text-sm font-medium uppercase text-[#495960] cursor-pointer transition-[border-width] duration-200 border-b-0 border-[#495960] hover:text-[#495960] focus:text-[#495960] visited:text-[#495960] no-underline',
-          selected === category.id ? 'text-red-600 font-bold' : ''
+          selected === category.id ? `${colorClasses.text} font-bold` : ''
         ]">
           {{ category.title }}
           <span class="hidden max-[600px]:inline-block"><i class="fa fa-caret-down"></i></span>
@@ -149,53 +137,10 @@ onMounted(async () => {
       </div>
     </div>
 
-    <!-- Articles Section -->
-    <section class="w-full py-8 bg-gray-50">
-      <div class="container mx-auto px-36">
-        <div v-if="isLoading" class="text-center py-12">
-          <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
-          <p class="mt-4 text-gray-600">{{ t('common.loading') }}</p>
-        </div>
-
-        <div v-else-if="error" class="text-center py-12">
-          <p class="text-red-600">{{ error }}</p>
-        </div>
-
-        <div v-else-if="conseils.length === 0" class="flex flex-wrap">
-          <div class="w-1/3 hidden md:block"></div>
-          <div class="w-full md:w-1/3 text-center">
-            <img class="max-w-full h-auto mx-auto" :src="NoSearchResultsImage" alt="no-search-results" />
-            <div class="text-center mt-3">
-              <h3 class="text-xl font-semibold">{{ t('decouvrezMaroc.conseils.filter.no_results.title') }}</h3>
-              <p class="text-gray-600">{{ t('decouvrezMaroc.conseils.filter.no_results.message') }}</p>
-            </div>
-          </div>
-          <div class="w-1/3 hidden md:block"></div>
-        </div>
-
-        <div v-else class="flex flex-wrap -mx-3">
-          <div v-for="result in conseils" :key="result.id" @click.prevent="goToArticle(result.slug)"
-            class="w-full md:w-1/2 xl:w-1/3 px-3 mb-6 cursor-pointer">
-            <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-2">
-              <a @click.prevent="goToArticle(result.slug)" class="cursor-pointer block">
-                <div>
-                  <img class="w-full h-48 object-cover rounded-t-lg" :src="getImageUrl(result)" :alt="result.slug" />
-                </div>
-              </a>
-              <div class="p-2 min-h-[150px]">
-                <a @click.prevent="goToArticle(result.slug)" class="cursor-pointer block">
-                  <h3 class="text-lg font-semibold mb-2 text-gray-800">
-                    {{ result.title }}
-                  </h3>
-                </a>
-                <div>
-                  <p class="text-gray-600 text-sm">{{ truncateText(result.text) }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <BlogArticlesSection :items="conseils" :loading="isLoading" :error="error" :show-empty-state="true"
+      :empty-image="NoSearchResultsImage" :empty-title="t('decouvrezMaroc.conseils.filter.no_results.title')"
+      :empty-message="t('decouvrezMaroc.conseils.filter.no_results.message')" variant="filter"
+      :loading-spinner-class="colorClasses.border" section-class="w-full py-8 bg-gray-50"
+      container-class="container mx-auto px-36" />
   </div>
 </template>

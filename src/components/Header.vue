@@ -265,11 +265,11 @@ import LanguageSwitcher from './LanguageSwitcher.vue'
 import logoBlue from '../assets/images/logos/logo-blue.svg'
 import logoGreen from '../assets/images/logos/logo-green.svg'
 import logoOrange from '../assets/images/logos/logo-orange.svg'
+import logoOrangeDecouvrez from '../assets/images/logos/logo-orange-decouvrez.svg'
 import logoPurple from '../assets/images/logos/logo-purple.svg'
 import logoRed from '../assets/images/logos/logo-red.svg'
 
 const mobileMenuOpen = ref(false)
-const route = useRoute()
 const { logoColor, colorClasses } = useTheme()
 const { t } = useI18n()
 
@@ -283,6 +283,7 @@ const logos = {
   blue: logoBlue,
   green: logoGreen,
   orange: logoOrange,
+  orangeDecouvrez: logoOrangeDecouvrez,
   purple: logoPurple,
   red: logoRed,
 }

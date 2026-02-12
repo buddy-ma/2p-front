@@ -425,13 +425,18 @@ import MultiSelect from '../components/MultiSelect.vue'
 // FilePond imports
 import vueFilePond from 'vue-filepond'
 import 'filepond/dist/filepond.min.css'
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import FilePondPluginImageResize from 'filepond-plugin-image-resize'
 
 // Register FilePond plugins and create component
 // Export as component for template use
-const FilePond = vueFilePond(FilePondPluginImagePreview, FilePondPluginImageResize)
+const FilePond = vueFilePond(
+  FilePondPluginFileValidateType,
+  FilePondPluginImagePreview,
+  FilePondPluginImageResize
+)
 
 const router = useRouter()
 const toast = useToast()
@@ -1020,6 +1025,13 @@ function goBack() {
 function handleFilePondAddFile(error, file) {
   if (error) {
     console.error('FilePond error:', error)
+    return
+  }
+
+  if (!file?.file?.type?.startsWith('image/')) {
+    if (filePondInstance.value && file.id) {
+      filePondInstance.value.removeFile(file.id)
+    }
     return
   }
 

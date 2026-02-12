@@ -118,19 +118,19 @@ onMounted(async () => {
               v-model="searchInput" 
               type="text"
               :placeholder="t('decouvrezMaroc.filter.hero.search_placeholder')"
-              class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
+              class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#ff7503] text-gray-900 bg-white"
               @keyup.enter="handleSearch"
               autocomplete="off"
             />
             <button 
               type="submit"
-              class="hidden md:inline-block h-full w-auto whitespace-nowrap bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+              class="hidden md:inline-block h-full w-auto whitespace-nowrap bg-[#ff7503] hover:bg-[#ff7503]/90 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
             >
               {{ t('decouvrezMaroc.filter.hero.search_button') }}
             </button>
             <button 
               type="submit"
-              class="md:hidden inline-flex justify-center items-center h-full w-10 h-10 bg-orange-500 hover:bg-orange-600 text-white rounded-lg"
+              class="md:hidden inline-flex justify-center items-center w-10 h-10 bg-[#ff7503] hover:bg-[#ff7503]/90 text-white rounded-lg"
             >
               <i class="fa fa-search"></i>
             </button>
@@ -146,7 +146,7 @@ onMounted(async () => {
           @click.prevent="getCategory(0)" 
           :class="[
             'px-5 h-[50px] leading-[50px] inline-block text-sm font-medium uppercase text-[#495960] cursor-pointer transition-[border-width] duration-200 border-b-0 border-[#495960] hover:text-[#495960] focus:text-[#495960] visited:text-[#495960] no-underline',
-            selected === 0 ? 'text-orange-500 font-bold' : ''
+            selected === 0 ? 'text-[#ff7503] font-bold' : ''
           ]"
         >
           <Grip class="w-4 h-4 inline-block mr-2" />
@@ -158,7 +158,7 @@ onMounted(async () => {
           @click="getCategory(category.id)" 
           :class="[
             'px-5 h-[50px] leading-[50px] inline-block text-sm font-medium uppercase text-[#495960] cursor-pointer transition-[border-width] duration-200 border-b-0 border-[#495960] hover:text-[#495960] focus:text-[#495960] visited:text-[#495960] no-underline',
-            selected === category.id ? 'text-orange-500 font-bold' : ''
+            selected === category.id ? 'text-[#ff7503] font-bold' : ''
           ]"
         >
           {{ category.title }}
@@ -171,7 +171,7 @@ onMounted(async () => {
     <section class="w-full py-8 bg-gray-50">
       <div class="container mx-auto px-36">
         <div v-if="isLoading" class="text-center py-12">
-          <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+          <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#ff7503]"></div>
           <p class="mt-4 text-gray-600">{{ t('common.loading') }}</p>
         </div>
 
