@@ -137,7 +137,7 @@ const baseRoutes = [
     name: 'Conseils',
     component: Conseils,
     meta: { 
-      logo: 'red', 
+      logo: 'pink', 
       locale: 'fr',
     },
   },
@@ -146,7 +146,7 @@ const baseRoutes = [
     name: 'ConseilDetail',
     component: BlogDetail,
     meta: { 
-      logo: 'red', 
+      logo: 'pink', 
       locale: 'fr',
     },
   },
@@ -164,7 +164,7 @@ const baseRoutes = [
     name: 'DecouvrezMaroc',
     component: DecouvrezMaroc,
     meta: { 
-      logo: 'orange', 
+      logo: 'orangeDecouvrez', 
       locale: 'fr',
     },
   },
@@ -267,16 +267,8 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior(to, from, savedPosition) {
-    // If navigating to ProductDetail, always scroll to top
-    if (to.name === 'ProductDetail' || to.name === 'ProductDetail_en' || to.name === 'ProductDetail_ar') {
-      return { top: 0, behavior: 'smooth' }
-    }
-    // If there's a saved position (e.g., browser back/forward), use it
-    if (savedPosition) {
-      return savedPosition
-    }
-    // Otherwise scroll to top
+  scrollBehavior() {
+    // Always reset scroll to the top on route changes.
     return { top: 0, behavior: 'smooth' }
   },
 })

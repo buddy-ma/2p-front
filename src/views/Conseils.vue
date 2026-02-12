@@ -116,20 +116,23 @@ const textAlign = computed(() => isRtl.value ? 'text-right' : 'text-left')
     <ConseilFilter />
 
     <!-- Content Section -->
-    <section class="bg-white py-24">
-      <div class="container mx-auto px-4">
-        <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
-          <div class="w-full md:w-1/2 flex flex-col gap-3">
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-800">{{ t('decouvrezMaroc.conseils.content.section_title') }}</h2>
-            <h3 class="text-lg md:text-xl text-gray-700 font-semibold">{{ t('decouvrezMaroc.conseils.content.section_subtitle') }}</h3>
-            <p class="text-gray-600">{{ t('decouvrezMaroc.conseils.content.description') }}</p>
+    <section class="bg-white py-20">
+      <div class="container mx-auto px-36">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-12">
+          <div class="w-full md:w-1/2 flex flex-col space-y-2 md:pr-12">
+            <h2 class="text-xl md:text-2xl font-bold text-gray-900">
+              {{ t('decouvrezMaroc.conseils.content.section_title') }}
+            </h2>
+            <h3 class="text-base md:text-lg font-semibold text-gray-700">
+              {{ t('decouvrezMaroc.conseils.content.section_subtitle') }}
+            </h3>
+            <p class="text-sm md:text-base text-gray-600">
+              {{ t('decouvrezMaroc.conseils.content.description') }}
+            </p>
           </div>
-          <div class="w-full md:w-1/2 flex justify-center">
-            <img
-              class="w-auto object-contain rounded-lg shadow-md"
-              :src="ConseilImmobilierImage"
-              :alt="t('decouvrezMaroc.conseils.content.image_alt')"
-            />
+          <div class="w-full md:w-auto flex justify-center">
+            <img class="max-w-md w-full rounded-lg object-contain" :src="ConseilImmobilierImage"
+              :alt="t('decouvrezMaroc.conseils.content.image_alt')" />
           </div>
         </div>
       </div>

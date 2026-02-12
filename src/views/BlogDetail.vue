@@ -21,9 +21,10 @@
     <!-- Blog Content -->
     <div v-else-if="blog" class="container mx-auto px-4 py-8">
       <!-- Long Advertising -->
-      <AdvertisingLong v-if="longAdvertising" :advertising="longAdvertising" />
-      <AdvertisingLongDefault v-else category-id="conseils" />
-
+      <div v-if="!blog.is_internal">
+        <AdvertisingLong v-if="longAdvertising" :advertising="longAdvertising" />
+        <AdvertisingLongDefault v-else category-id="conseils" />
+      </div>
       <!-- Blog Title -->
       <h1 class="text-3xl md:text-4xl font-bold text-blue-600 mb-6 mt-8 capitalize">
         {{ blog.title }}
@@ -32,54 +33,29 @@
       <!-- Blog Content -->
       <div class="prose prose-lg max-w-none dark:prose-invert mb-8">
         <div v-html="blog.text" class="text-gray-700 dark:text-gray-300"></div>
-        
+
         <!-- PDF Download -->
-        <a
-          v-if="blog.pdf_link"
-          :href="getPdfUrl(blog.pdf_link)"
-          target="_blank"
-          class="inline-flex items-center mt-8 px-6 py-3 rounded-lg font-bold bg-blue-600 text-white hover:bg-blue-700 transition"
-        >
+        <a v-if="blog.pdf_link" :href="getPdfUrl(blog.pdf_link)" target="_blank"
+          class="inline-flex items-center mt-8 px-6 py-3 rounded-lg font-bold bg-blue-600 text-white hover:bg-blue-700 transition">
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
           Télécharger la brochure PDF
         </a>
       </div>
 
       <!-- Banner Advertising -->
-      <AdvertisingBanner v-if="bannerAdvertising && bannerAdvertising.length >= 2" :advertisements="bannerAdvertising" />
-      <AdvertisingBannerDefault v-else category-id="conseils" />
+      <div v-if="!blog.is_internal">
+        <AdvertisingBanner v-if="bannerAdvertising && bannerAdvertising.length >= 2"
+          :advertisements="bannerAdvertising" />
+        <AdvertisingBannerDefault v-else category-id="conseils" />
+      </div>
 
       <!-- Similar Articles -->
-      <div v-if="similaires && similaires.length > 0" class="mt-12">
-        <h2 class="text-2xl font-semibold mb-6 text-gray-900 dark:text-gray-100">
-          {{ t('similar.articles') }}
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div
-            v-for="similar in similaires"
-            :key="similar.id"
-            @click="router.push(`/conseils/${similar.slug}`)"
-            class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
-          >
-            <img
-              v-if="similar.image"
-              :src="getImageUrl(similar.image)"
-              :alt="similar.title"
-              class="w-full h-48 object-cover"
-            />
-            <div class="p-4">
-              <h3 class="font-bold text-lg mb-2 line-clamp-2 text-gray-900 dark:text-gray-100">
-                {{ similar.title }}
-              </h3>
-              <p v-if="similar.subtitle" class="text-gray-600 dark:text-gray-400 text-sm line-clamp-2">
-                {{ similar.subtitle }}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <BlogArticlesSection v-if="similaires && similaires.length > 0" :items="similaires"
+        :heading="t('similar.articles')" variant="similar" section-class="mt-12"
+        heading-class="text-2xl font-semibold mb-6 text-gray-900 dark:text-gray-100" />
     </div>
   </div>
 </template>
@@ -101,6 +77,7 @@ defineOptions({
 import AdvertisingLongDefault from '../components/AdvertisingLongDefault.vue'
 import AdvertisingBanner from '../components/AdvertisingBanner.vue'
 import AdvertisingBannerDefault from '../components/AdvertisingBannerDefault.vue'
+import BlogArticlesSection from '../components/BlogArticlesSection.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -112,11 +89,6 @@ const longAdvertising = ref(null)
 const bannerAdvertising = ref(null)
 const loading = ref(true)
 const error = ref(null)
-
-const getImageUrl = (imagePath) => {
-  if (!imagePath) return '/assets/images/default.jpg'
-  return `https://cdn.2p.ma/blog/images/${imagePath}`
-}
 
 const getPdfUrl = (pdfPath) => {
   if (!pdfPath) return ''
@@ -130,10 +102,10 @@ const loadBlog = async () => {
     const slug = route.params.slug
     const response = await homeService.getBlogBySlug(slug)
     const data = response.data || response
-    
+
     blog.value = data.blog
     similaires.value = data.similaires || []
-    
+
     // TODO: Load advertising data if needed
   } catch (err) {
     console.error('Error loading blog:', err)

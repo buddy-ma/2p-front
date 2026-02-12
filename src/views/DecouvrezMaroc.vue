@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useI18n } from '../composables/useI18n'
 import { useLanguage } from '../composables/useLanguage'
 import DecouvrezFilter from '../components/DecouvrezFilter.vue'
@@ -16,7 +16,6 @@ defineOptions({
 
 const { t } = useI18n()
 const { currentLocale } = useLanguage()
-
 // Meta tags management
 const setMetaTags = () => {
   const metaDescription = t('decouvrezMaroc.meta.description')
@@ -58,7 +57,6 @@ const setMetaTags = () => {
   setMetaTag('og:site_name', 'Particulier à Particulier', true)
   setMetaTag('og:image:width', '600', true)
   setMetaTag('og:image:height', '600', true)
-  setMetaTag('og:logo', '../assets/images/logos/logo-orange.svg', true)
 
   // Twitter tags
   setMetaTag('twitter:card', 'summary_large_image')
@@ -95,7 +93,7 @@ const loadCSS = () => {
     const link = document.createElement('link')
     link.id = linkId
     link.rel = 'stylesheet'
-    link.href = '/assets/css/colors/orange.css'
+    link.href = '/assets/css/colors/orangeD.css'
     document.head.appendChild(link)
   }
 }
