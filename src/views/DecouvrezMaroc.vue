@@ -3,7 +3,7 @@ import { computed, onMounted } from 'vue'
 import { useI18n } from '../composables/useI18n'
 import { useLanguage } from '../composables/useLanguage'
 import DecouvrezFilter from '../components/DecouvrezFilter.vue'
-import heroImageUrl from '../assets/images/bgs/DECOUVREZ-LE-MAROC-2p.webp'
+import heroImageUrl from '../assets/images/immobilier/DECOUVREZ-LE-MAROC.webp'
 
 defineOptions({
   name: 'DecouvrezMaroc',

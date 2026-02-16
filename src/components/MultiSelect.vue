@@ -31,8 +31,8 @@
           'px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 rounded flex items-center text-gray-900 dark:text-white',
           isSelected(option) ? 'bg-blue-50 dark:bg-blue-900/30' : ''
         ]">
-          <input type="checkbox" :checked="isSelected(option)" :class="isRTL ? 'ml-2' : 'mr-2'"
-            @click.stop="toggleValue(option)" readonly />
+          <input type="checkbox" :checked="isSelected(option)" class="mr-2" @click.stop="toggleValue(option)"
+            readonly />
           <span>{{ getLabel(option) }}</span>
         </div>
         <div v-if="filteredOptions.length === 0" class="px-3 py-2 text-gray-500 dark:text-gray-400 text-sm">
@@ -61,9 +61,7 @@ import { useTheme } from '../composables/useTheme'
 import { useI18n } from '../composables/useI18n'
 
 const { colorClasses } = useTheme()
-const { currentLocale, t } = useI18n()
-
-const isRTL = computed(() => currentLocale.value === 'ar')
+const { t } = useI18n()
 
 const props = defineProps({
   modelValue: {

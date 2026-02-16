@@ -99,8 +99,9 @@
 
         <!-- Right Side Actions - Hidden on mobile -->
         <div class="hidden lg:flex items-center gap-4">
-          <button :class="`px-4 py-2 text-gray-700 dark:text-gray-300 ${colorClasses.hoverText}`">{{ t('common.login')
-          }}</button>
+          <button :class="`px-4 py-2 text-gray-700 dark:text-gray-300 ${colorClasses.hoverText}`"
+            @click="handleLogin()">{{ t('common.login')
+            }}</button>
           <router-link to="/ajouter-annonce"
             :class="`${colorClasses.bg} text-white px-4 py-2 rounded-lg ${colorClasses.hover} flex items-center`">
             <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -257,7 +258,6 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
 import { useTheme } from '../composables/useTheme'
 import { useI18n } from '../composables/useI18n'
 import DarkModeToggle from './DarkModeToggle.vue'
@@ -291,6 +291,10 @@ const logos = {
 const logoPath = computed(() => {
   return logos[logoColor.value] || logos.blue
 })
+
+const handleLogin = () => {
+  window.location.href = import.meta.env.VITE_ACCOUNT_URL || 'https://account.2p.ma'
+}
 
 const closeMobileMenu = () => {
   mobileMenuOpen.value = false

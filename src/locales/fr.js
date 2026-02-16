@@ -569,10 +569,10 @@ export default {
       twitter_description: 'Explorez le Maroc à travers nos articles et guides complets sur les villes, la culture, le tourisme et l\'immobilier.',
     },
     content: {
-      section_title: 'Découvrez le Maroc',
-      section_subtitle: 'Explorez les merveilles du Royaume',
-      description: 'Le Maroc est un pays riche en histoire, culture et paysages magnifiques. Découvrez nos guides complets sur les villes marocaines, la culture locale, les meilleures destinations touristiques et tout ce que vous devez savoir sur l\'immobilier au Maroc.',
-      image_alt: 'Découvrez le Maroc',
+        section_title: "Explorez les villes marocaines",
+        section_subtitle: "Une culture à découvrir !",
+        description: "Découvrez le Maroc grâce à notre guide immobilier et de voyage, qui vous fournit toutes les informations essentielles pour planifier votre séjour. Plus qu’un simple guide, notre blog est une véritable source d’inspiration et d’informations sur les villes et quartiers du Maroc. Vous y trouverez des articles détaillés sur les zones les plus dynamiques, les quartiers prisés pour s’installer ou investir, ainsi que des conseils pratiques pour mieux comprendre l’environnement local. Explorez les merveilles du Maroc : une gastronomie raffinée, une culture vibrante, des marchés animés et des monuments emblématiques qui témoignent de la richesse du pays. Notre guide propose une immersion complète dans chaque ville, avec un aperçu des attractions incontournables, des activités à ne pas manquer et de l’histoire fascinante de chaque région. Du nord au sud, le Maroc révèle des paysages d’une diversité exceptionnelle : les montagnes majestueuses de l’Atlas, les dunes dorées du Sahara, les vallées verdoyantes et les plages superbes de l’Atlantique et de la Méditerranée.Les villes marocaines, avec leur architecture unique, leurs souks colorés, leurs spécialités culinaires savoureuses et leur hospitalité légendaire, séduisent chaque visiteur. Que vous soyez en quête d’aventure, de découvertes culturelles, de détente au bord de la mer ou d’opportunités d’investissement immobilier, notre guide vous accompagne pas à pas pour tirer le meilleur de votre expérience au Maroc.",
+        image_alt: "Annonce immobilière particulier à particulier",
     },
     filter: {
       hero: {
@@ -595,10 +595,10 @@ export default {
         twitter_description: 'Découvrez nos conseils et guides complets sur l\'immobilier au Maroc. Achat, vente, location - tous nos conseils d\'experts.',
       },
       content: {
-        section_title: 'Conseils Immobiliers',
-        section_subtitle: 'Votre guide complet pour l\'immobilier au Maroc',
-        description: 'Que vous souhaitiez acheter, vendre ou louer un bien immobilier au Maroc, nos experts vous accompagnent avec des conseils pratiques et des guides détaillés pour faire les meilleurs choix.',
-        image_alt: 'Conseils Immobiliers',
+        section_title: "Actualités et conseils immobiliers au Maroc",
+        section_subtitle: "Stratégies juridiques, financières et tendances",
+        description: "Restez à jour avec les dernières réglementations, conseils immobiliers au Maroc, obligations, formalités et actualités du secteur immobilier au Maroc, en matière d’achat, de vente ou de location immobilières. Notre plateforme vous offre un accès privilégié à toutes ces informations essentielles. Que vous soyez un acheteur, un vendeur, ou un locataire, nous vous fournissons les conseils pertinents pour vous guider dans vos décisions. De plus, nous vous tenons informés des obligations légales afin que vous puissiez mener vos transactions en toute conformité. Soyez au fait des actualités récentes du marché immobilier marocain et restez informé des formalités requises pour garantir le succès de vos projets immobiliers. Que ce soit pour comprendre les réglementations légales complexes, trouver des conseils sur le financement immobilier ou découvrir les quartiers émergents, ce guide fournit une expertise complète pour aider les individus à prendre des décisions éclairées dans le domaine de l’immobilier au Maroc. Vous y trouverez également des astuces pratiques pour éviter les erreurs fréquentes lors de vos démarches.Profitez d’un contenu clair, actualisé et accessible pour réussir chaque étape de votre projet immobilier.",
+        image_alt: "Actualités et conseils immobiliers au Maroc",
       },
       filter: {
         hero: {
