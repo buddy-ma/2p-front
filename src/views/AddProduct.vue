@@ -202,14 +202,10 @@
                 {{ t('add-product.form.extras') }}
               </label>
               <div class="flex flex-wrap gap-2">
-                <button
-                  v-for="(extra, index) in productExtras"
-                  :key="extra.id || extra.title || index"
-                  type="button"
+                <button v-for="(extra, index) in productExtras" :key="extra.id || extra.title || index" type="button"
                   class="inline-flex items-center px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
                   :class="isExtraSelected(extra) ? colorClasses.bg + ' text-white border-transparent' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'"
-                  @click="toggleExtra(extra)"
-                >
+                  @click="toggleExtra(extra)">
                   <span>{{ extra.title }}</span>
                 </button>
               </div>
@@ -224,9 +220,9 @@
               </label>
               <file-pond ref="filePondInstance" name="images" :files="filePondFiles" @addfile="handleFilePondAddFile"
                 @removefile="handleFilePondRemoveFile" @reorderfiles="handleFilePondReorder" allow-multiple
-                max-files="10" :accepted-file-types="acceptedImageTypes" image-preview-height="200" image-resize-target-width="1920"
-                image-resize-target-height="1080" image-resize-mode="contain" image-resize-upscale="false"
-                :label-idle="t('add-product.image_upload.drag_drop')"
+                max-files="10" :accepted-file-types="acceptedImageTypes" image-preview-height="200"
+                image-resize-target-width="1920" image-resize-target-height="1080" image-resize-mode="contain"
+                image-resize-upscale="false" :label-idle="t('add-product.image_upload.drag_drop')"
                 :label-file-loading="t('add-product.image_upload.loading')"
                 :label-file-processing="t('add-product.image_upload.processing')"
                 :label-file-processing-complete="t('add-product.image_upload.complete')"
@@ -1336,8 +1332,10 @@ async function saveProduct() {
 
     // Redirect to home page after a short delay
     setTimeout(() => {
-      router.push('/')
+      // Redirect to account page
+      window.location.href = import.meta.env.VITE_ACCOUNT_URL || 'https://account.2p.ma'
     }, 1500)
+
   } catch (error) {
     console.error('Error saving product:', error)
     let errorMessage = t('add-product.errors.failedToSave')
