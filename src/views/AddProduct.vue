@@ -202,13 +202,16 @@
                 {{ t('add-product.form.extras') }}
               </label>
               <div class="flex flex-wrap gap-2">
-                <label v-for="extra in productExtras" :key="extra.id" :for="`extra-${extra.id}`"
+                <button
+                  v-for="(extra, index) in productExtras"
+                  :key="extra.id || extra.title || index"
+                  type="button"
                   class="inline-flex items-center px-3 py-1 rounded-full border border-gray-300 dark:border-gray-600 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
-                  :class="form.hasextras.includes(extra.title) ? colorClasses.bg + ' text-white border-transparent' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'">
-                  <input :id="`extra-${extra.id}`" v-model="form.hasextras" type="checkbox" :value="extra.title"
-                    class="sr-only" />
+                  :class="isExtraSelected(extra) ? colorClasses.bg + ' text-white border-transparent' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'"
+                  @click="toggleExtra(extra)"
+                >
                   <span>{{ extra.title }}</span>
-                </label>
+                </button>
               </div>
             </div>
           </div>
@@ -221,7 +224,7 @@
               </label>
               <file-pond ref="filePondInstance" name="images" :files="filePondFiles" @addfile="handleFilePondAddFile"
                 @removefile="handleFilePondRemoveFile" @reorderfiles="handleFilePondReorder" allow-multiple
-                max-files="10" accepted-file-types="image/*" image-preview-height="200" image-resize-target-width="1920"
+                max-files="10" :accepted-file-types="acceptedImageTypes" image-preview-height="200" image-resize-target-width="1920"
                 image-resize-target-height="1080" image-resize-mode="contain" image-resize-upscale="false"
                 :label-idle="t('add-product.image_upload.drag_drop')"
                 :label-file-loading="t('add-product.image_upload.loading')"
@@ -405,7 +408,7 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useToast } from '../composables/useToast'
 import { useTheme } from '../composables/useTheme'
 import { useI18n } from '../composables/useI18n'
@@ -440,6 +443,7 @@ const FilePond = vueFilePond(
 )
 
 const router = useRouter()
+const route = useRoute()
 const toast = useToast()
 const { colorClasses } = useTheme()
 const { t, currentLocale } = useI18n()
@@ -704,6 +708,33 @@ const steps = computed(() => [
   { title: t('add-product.steps.identification'), active: step3.value }
 ])
 
+const activeStep = computed(() => {
+  if (step1.value) return 1
+  if (step2.value) return 2
+  return 3
+})
+
+const acceptedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/webp']
+const maxImageSizeBytes = 5 * 1024 * 1024
+
+function resetPageScroll() {
+  window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+}
+
+function getValidationMessage(key, fallback) {
+  const message = t(key)
+  return message === key ? fallback : message
+}
+
+function showValidationFeedback() {
+  if (errors.value.length > 0) {
+    resetPageScroll()
+    toast.error(errors.value[0], {
+      duration: 4000
+    })
+  }
+}
+
 // Handler functions for MultiSelect components (enforce single selection)
 function handleCategoryChange(value) {
   // Keep only the last selected value (single selection)
@@ -716,6 +747,7 @@ function handleCategoryChange(value) {
       form.value.category = selectedValue
       // Reset type when category changes
       form.value.type = null
+      form.value.hasextras = []
       typeArray.value = []
       productExtras.value = []
       loadProductTypes()
@@ -736,6 +768,7 @@ function handleTypeChange(value) {
     if (selectedValue !== null) {
       typeArray.value = [selectedValue]
       form.value.type = selectedValue // Don't convert - keep the same type as the option
+      form.value.hasextras = []
       getExtras()
     } else {
       typeArray.value = []
@@ -866,7 +899,16 @@ watch(() => form.value.quartier, (newVal) => {
   }
 }, { immediate: true })
 
+watch(() => route.fullPath, () => {
+  resetPageScroll()
+})
+
+watch(activeStep, () => {
+  resetPageScroll()
+})
+
 onMounted(async () => {
+  resetPageScroll()
   await loadInitialData()
   // Initialize arrays with default values
   prixByArray.value = ['fix']
@@ -926,6 +968,31 @@ async function getExtras() {
   }
 }
 
+function getExtraTitle(extra) {
+  return (extra?.title || '').trim()
+}
+
+function isExtraSelected(extra) {
+  const title = getExtraTitle(extra)
+  return Array.isArray(form.value.hasextras) && title !== '' && form.value.hasextras.includes(title)
+}
+
+function toggleExtra(extra) {
+  const title = getExtraTitle(extra)
+  if (!title) return
+
+  if (!Array.isArray(form.value.hasextras)) {
+    form.value.hasextras = []
+  }
+
+  const index = form.value.hasextras.indexOf(title)
+  if (index === -1) {
+    form.value.hasextras.push(title)
+  } else {
+    form.value.hasextras.splice(index, 1)
+  }
+}
+
 async function getQuartiers() {
   if (!form.value.ville) return
   try {
@@ -964,15 +1031,24 @@ function validateStep1() {
   }
   if (!form.value.title || form.value.title.trim() === '') {
     errors.value.push(t('add-product.errors.titleRequired'))
+  } else if (form.value.title.trim().length > 255) {
+    errors.value.push(getValidationMessage('add-product.errors.titleMax', 'Le titre ne doit pas depasser 255 caracteres'))
   }
   // if (!form.value.description || form.value.description.trim() === '') {
   //   errors.value.push(t('add-product.errors.descriptionRequired'))
   // }
   if (!form.value.ville || form.value.ville === '' || form.value.ville === null) {
     errors.value.push(t('add-product.errors.cityRequired'))
+  } else if (String(form.value.ville).trim().length > 255) {
+    errors.value.push(getValidationMessage('add-product.errors.cityMax', 'La ville ne doit pas depasser 255 caracteres'))
+  }
+  if (form.value.quartier && String(form.value.quartier).trim().length > 255) {
+    errors.value.push(getValidationMessage('add-product.errors.neighborhoodMax', 'Le quartier ne doit pas depasser 255 caracteres'))
   }
   if (!form.value.address || form.value.address.trim() === '') {
     errors.value.push(t('add-product.errors.addressRequired'))
+  } else if (form.value.address.trim().length > 255) {
+    errors.value.push(getValidationMessage('add-product.errors.addressMax', "L'adresse ne doit pas depasser 255 caracteres"))
   }
   if (!form.value.prix || form.value.prix === '' || form.value.prix === null) {
     errors.value.push(t('add-product.errors.priceRequired'))
@@ -983,6 +1059,7 @@ function validateStep1() {
   if (!form.value.surface || form.value.surface === '' || form.value.surface === null) {
     errors.value.push(t('add-product.errors.areaRequired'))
   }
+  showValidationFeedback()
   return errors.value.length === 0
 }
 
@@ -990,25 +1067,63 @@ function validateStep2() {
   errors.value = []
   if (images.value.length === 0) {
     errors.value.push(t('add-product.errors.imageRequired'))
+  } else {
+    const hasInvalidType = images.value.some((img) => !acceptedImageTypes.includes(img.type))
+    if (hasInvalidType) {
+      errors.value.push(t('add-product.image_upload.invalid_type'))
+    }
+
+    const hasTooLargeImage = images.value.some((img) => img.size > maxImageSizeBytes)
+    if (hasTooLargeImage) {
+      errors.value.push(t('add-product.image_upload.max_size'))
+    }
   }
+  showValidationFeedback()
   return errors.value.length === 0
 }
 
 function validateStep3() {
   errors.value = []
+  const emailValue = (userForm.value.email || '').trim()
+  const passwordValue = userForm.value.password || ''
+  const isEmailFormatValid = emailValue !== '' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)
+
   if (loginType.value === 'register') {
-    if (!userForm.value.firstname) errors.value.push(t('add-product.errors.firstNameRequired'))
-    if (!userForm.value.lastname) errors.value.push(t('add-product.errors.lastNameRequired'))
-    if (!userForm.value.phone) errors.value.push(t('add-product.errors.phoneRequired'))
-    if (!userForm.value.email) errors.value.push(t('add-product.errors.emailRequired'))
-    if (!userForm.value.password) errors.value.push(t('add-product.errors.passwordRequired'))
+    const firstNameValue = (userForm.value.firstname || '').trim()
+    const lastNameValue = (userForm.value.lastname || '').trim()
+    const phoneValue = (userForm.value.phone || '').trim()
+
+    if (!firstNameValue) errors.value.push(t('add-product.errors.firstNameRequired'))
+    if (!lastNameValue) errors.value.push(t('add-product.errors.lastNameRequired'))
+    if (!phoneValue) errors.value.push(t('add-product.errors.phoneRequired'))
+    if (!emailValue) errors.value.push(t('add-product.errors.emailRequired'))
+    if (!passwordValue) errors.value.push(t('add-product.errors.passwordRequired'))
+    if (firstNameValue.length > 50) {
+      errors.value.push(getValidationMessage('add-product.errors.firstNameMax', 'Le prenom ne doit pas depasser 50 caracteres'))
+    }
+    if (lastNameValue.length > 50) {
+      errors.value.push(getValidationMessage('add-product.errors.lastNameMax', 'Le nom ne doit pas depasser 50 caracteres'))
+    }
+    if (emailValue && !isEmailFormatValid) {
+      errors.value.push(getValidationMessage('add-product.errors.emailInvalid', "Le format de l'email est invalide"))
+    }
+    if (passwordValue && (passwordValue.length < 8 || passwordValue.length > 15)) {
+      errors.value.push(getValidationMessage('add-product.errors.passwordLength', 'Le mot de passe doit contenir entre 8 et 15 caracteres'))
+    }
     if (userForm.value.password !== userForm.value.password_confirmation) {
       errors.value.push(t('add-product.errors.passwordsNotMatch'))
     }
   } else {
-    if (!userForm.value.email) errors.value.push(t('add-product.errors.emailRequired'))
-    if (!userForm.value.password) errors.value.push(t('add-product.errors.passwordRequired'))
+    if (!emailValue) errors.value.push(t('add-product.errors.emailRequired'))
+    if (!passwordValue) errors.value.push(t('add-product.errors.passwordRequired'))
+    if (emailValue && !isEmailFormatValid) {
+      errors.value.push(getValidationMessage('add-product.errors.emailInvalid', "Le format de l'email est invalide"))
+    }
+    if (passwordValue && (passwordValue.length < 8 || passwordValue.length > 15)) {
+      errors.value.push(getValidationMessage('add-product.errors.passwordLength', 'Le mot de passe doit contenir entre 8 et 15 caracteres'))
+    }
   }
+  showValidationFeedback()
   return errors.value.length === 0
 }
 
@@ -1052,13 +1167,26 @@ function goBack() {
 function handleFilePondAddFile(error, file) {
   if (error) {
     console.error('FilePond error:', error)
+    errors.value = [t('add-product.image_upload.error')]
+    showValidationFeedback()
     return
   }
 
-  if (!file?.file?.type?.startsWith('image/')) {
+  if (!file?.file || !acceptedImageTypes.includes(file.file.type)) {
     if (filePondInstance.value && file.id) {
       filePondInstance.value.removeFile(file.id)
     }
+    errors.value = [t('add-product.image_upload.invalid_type')]
+    showValidationFeedback()
+    return
+  }
+
+  if (file.file.size > maxImageSizeBytes) {
+    if (filePondInstance.value && file.id) {
+      filePondInstance.value.removeFile(file.id)
+    }
+    errors.value = [t('add-product.image_upload.max_size')]
+    showValidationFeedback()
     return
   }
 

@@ -57,7 +57,7 @@ try {
   const appElement = document.getElementById('app')
   if (appElement) {
     appElement.innerHTML = `
-      <div style="padding: 20px; font-family: Arial, sans-serif; color: #d32f2f;">
+      <div style="padding: 20px; font-family: 'Poppins', sans-serif; color: #d32f2f;">
         <h1>Application Error</h1>
         <p>Failed to initialize the application. Please check the browser console for details.</p>
         <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; overflow-x: auto;">${error.message}\n${error.stack}</pre>
