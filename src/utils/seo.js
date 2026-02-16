@@ -110,8 +110,16 @@ export function hasQueryParams() {
 
 /**
  * Get robots meta content based on environment and query params
+ * Migration mode: returns 'noindex, follow' to prevent indexing while allowing crawling
  */
 export function getRobotsContent() {
+  // Check for migration mode first
+  const isMigrationMode = import.meta.env.VITE_MIGRATION_MODE === 'true'
+  
+  if (isMigrationMode) {
+    return 'noindex, follow'
+  }
+  
   // In production, check for query params
   if (import.meta.env.PROD) {
     if (hasQueryParams()) {
