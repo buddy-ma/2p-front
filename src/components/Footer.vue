@@ -8,7 +8,7 @@
         </div>
 
         <!-- Nos Services -->
-        <div>
+        <!-- <div>
           <h4 class="text-lg font-semibold mb-4">{{ t('footer.ourServices') }}</h4>
           <ul class="space-y-2">
             <li><router-link to="/service-vente"
@@ -30,7 +30,7 @@
                 class="text-gray-300 dark:text-gray-400 hover:text-white transition-colors">{{ t('navigation.pricing')
                 }}</router-link></li>
           </ul>
-        </div>
+        </div> -->
 
         <!-- Liens Utiles -->
         <div>

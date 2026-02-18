@@ -47,6 +47,7 @@
                   t('navigation.vacation') }}</router-link>
             </div>
           </div>
+          <!-- 
           <div class="relative group">
             <button :class="`text-gray-700 dark:text-gray-300 ${colorClasses.hoverText} flex items-center`">
               {{ t('navigation.services') }}
@@ -76,6 +77,7 @@
                   t('navigation.pricing') }}</router-link>
             </div>
           </div>
+          -->
           <div class="relative group">
             <button :class="`text-gray-700 dark:text-gray-300 ${colorClasses.hoverText} flex items-center`">
               {{ t('navigation.news') }}

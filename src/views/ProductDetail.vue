@@ -366,11 +366,11 @@
                 </ul>
 
                 <!-- Our Prices Button -->
-                <a href="/nos-tarifs" target="_blank"
+                <!-- <a href="/nos-tarifs" target="_blank"
                   class="block mt-3 px-6 py-3 rounded-lg font-semibold text-white text-center transition"
                   style="background-color: #ff385c;">
                   {{ t('product.ourPrices') }}
-                </a>
+                </a> -->
 
                 <!-- Show More/Less Button -->
                 <button v-if="product.proprietaire?.phone" @click="toggleCompanyContact"
