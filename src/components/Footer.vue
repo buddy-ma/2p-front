@@ -4,10 +4,10 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <!-- Logo -->
         <div>
-          <img :src="logoPath" alt="2P" class="h-12 mb-4" />
+          <img :src="logoPath" alt="2P" class="h-12 mb-4" width="120" height="48" loading="lazy" />
         </div>
 
-        <!-- Nos Services -->
+        <!-- 
         <div>
           <h4 class="text-lg font-semibold mb-4">{{ t('footer.ourServices') }}</h4>
           <ul class="space-y-2">
@@ -31,6 +31,7 @@
                 }}</router-link></li>
           </ul>
         </div>
+        -->
 
         <!-- Liens Utiles -->
         <div>

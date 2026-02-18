@@ -658,8 +658,16 @@ const populateFormFromRoute = async () => {
   }
 }
 
-// Load initial data
+// Preload LCP image for better performance
 onMounted(async () => {
+  // Preload the hero background image (LCP element)
+  const link = document.createElement('link')
+  link.rel = 'preload'
+  link.as = 'image'
+  link.href = bgPath.value
+  link.setAttribute('fetchpriority', 'high')
+  document.head.appendChild(link)
+
   try {
     // Load villes first
     const homeResponse = await homeService.getHomeData()

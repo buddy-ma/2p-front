@@ -45,10 +45,21 @@ onMounted(() => {
   // Initialize dark mode
   initializeDarkMode()
 
-  // Initialize analytics (only in production)
+  // Initialize analytics (only in production) - deferred for performance
   if (import.meta.env.PROD) {
-    initializeAnalytics()
-    addVerificationTags()
+    // Delay analytics loading until after critical rendering
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        initializeAnalytics()
+        addVerificationTags()
+      }, { timeout: 2000 })
+    } else {
+      // Fallback: load after page is interactive
+      setTimeout(() => {
+        initializeAnalytics()
+        addVerificationTags()
+      }, 2000)
+    }
   }
 })
 </script>

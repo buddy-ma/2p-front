@@ -652,7 +652,7 @@ const translateProductType = (typeTitle) => {
 // Computed property to ensure productTypes have valid IDs and translate them
 const validProductTypes = computed(() => {
   const types = productTypes.value
-    .filter(pt => pt && pt.id !== undefined && pt.id !== null)
+    .filter(pt => pt && pt.id !== undefined && pt.id !== null && (pt.title || pt.type_title_original))
     .map(pt => ({
       ...pt,
       translatedTitle: translateProductType(pt.title || '')
@@ -943,8 +943,8 @@ async function loadProductTypes() {
       language_id: languageId
     })
 
-    // Ensure all types have valid IDs
-    const filteredTypes = (response.data.types || []).filter(pt => pt && pt.id !== undefined && pt.id !== null)
+    // Filter out null/undefined types and ensure they have valid IDs and at least a title or type_title_original
+    const filteredTypes = (response.data.types || []).filter(pt => pt && pt.id !== undefined && pt.id !== null && (pt.title || pt.type_title_original))
     productTypes.value = filteredTypes
   } catch (error) {
     console.error('Error loading product types:', error)
@@ -1011,6 +1011,7 @@ function validateStep1() {
   } else {
     // Verify the selected type exists in the current validProductTypes list
     if (validProductTypes.value.length > 0) {
+      // Compare IDs (handle both string and number formats)
       const typeExists = validProductTypes.value.some(pt => Number(pt.id) === Number(typeValue))
       if (!typeExists) {
         errors.value.push(t('add-product.errors.selectValidType'))

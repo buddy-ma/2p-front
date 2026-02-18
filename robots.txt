@@ -1,0 +1,51 @@
+User-agent: *
+Allow: /
+
+# =========================
+# Bloquer les paramètres de filtres
+# =========================
+Disallow: /*?price=
+Disallow: /*?surface=
+Disallow: /*?sort=
+Disallow: /*?filter=
+Disallow: /*?min=
+Disallow: /*?max=
+
+# =========================
+# Autoriser les pages principales
+# =========================
+Allow: /*/immobilier-a-vendre/
+Allow: /*/location-immobiliere/
+Allow: /*/location-vacances/
+
+# =========================
+# Bloquer la recherche interne
+# =========================
+Disallow: /search
+
+# =========================
+# Bloquer API & zones techniques
+# =========================
+Disallow: /api/
+Disallow: /storage/
+Disallow: /admin/
+Disallow: /dashboard/
+
+# =========================
+# Bloquer fichiers système / build
+# =========================
+Disallow: /node_modules/
+Disallow: /vendor/
+
+# =========================
+# Bloquer URLs temporaires / debug
+# =========================
+Disallow: /*preview
+Disallow: /*token=
+Disallow: /*sessionid=
+
+# =========================
+# Sitemap
+# =========================
+Sitemap: https://www.2p.ma/sitemap.xml
+

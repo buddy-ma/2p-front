@@ -35,7 +35,7 @@
       <div v-if="product.images && product.images.length > 0" class="mb-8">
         <div class="relative">
           <div class="overflow-hidden rounded-lg cursor-pointer" @click="openImageModal(currentImageIndex)">
-            <img :src="currentImage" :alt="product.title" class="w-full h-[400px] md:h-[600px] object-cover" />
+            <img :src="currentImage" :alt="product.title" class="w-full h-[400px] md:h-[600px] object-cover" width="800" height="600" loading="eager" fetchpriority="high" />
           </div>
           <!-- Navigation Arrows -->
           <button v-if="product.images.length > 1" @click.stop="previousImage"
@@ -59,7 +59,7 @@
               currentImageIndex === index ? 'border-blue-600' : 'border-transparent hover:border-gray-300'
             ]">
             <img :src="getImageUrl(image.image)" :alt="`${product.title} - Image ${index + 1}`"
-              class="w-full h-full object-cover" />
+              class="w-full h-full object-cover" width="80" height="80" loading="lazy" />
           </button>
         </div>
       </div>
@@ -365,12 +365,12 @@
                   </li>
                 </ul>
 
-                <!-- Our Prices Button -->
+                <!--
                 <a href="/nos-tarifs" target="_blank"
                   class="block mt-3 px-6 py-3 rounded-lg font-semibold text-white text-center transition"
                   style="background-color: #ff385c;">
                   {{ t('product.ourPrices') }}
-                </a>
+                </a> -->
 
                 <!-- Show More/Less Button -->
                 <button v-if="product.proprietaire?.phone" @click="toggleCompanyContact"
@@ -444,6 +444,43 @@
             <h4 id="contact-title" class="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
               {{ t('product.contact') }}
             </h4>
+            
+            <!-- Rate Limit Error Message -->
+            <div v-if="rateLimitError" class="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+              <div class="flex items-start">
+                <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400 mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <div class="flex-1">
+                  <p class="text-sm font-medium text-yellow-800 dark:text-yellow-200 mb-2">
+                    {{ rateLimitError.message || t('product.rateLimitMessage') }}
+                  </p>
+                  <p v-if="retryAttempts > 0" class="text-xs text-yellow-700 dark:text-yellow-300 mb-3">
+                    {{ t('product.retryAttempts') }} {{ retryAttempts }}/{{ maxRetryAttempts }}
+                  </p>
+                  <div class="flex gap-2">
+                    <button 
+                      @click="retryContact" 
+                      :disabled="isRetrying || retryAttempts >= maxRetryAttempts"
+                      :class="`px-4 py-2 rounded-lg font-semibold text-sm transition ${
+                        isRetrying || retryAttempts >= maxRetryAttempts
+                          ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                          : `${colorClasses.bg} text-white hover:opacity-90`
+                      }`">
+                      <span v-if="isRetrying">{{ t('product.retrying') }}</span>
+                      <span v-else-if="retryAttempts >= maxRetryAttempts">{{ t('product.maxRetriesReached') }}</span>
+                      <span v-else>{{ t('product.retryButton') }}</span>
+                    </button>
+                    <button 
+                      @click="clearRateLimitError"
+                      class="px-4 py-2 rounded-lg font-semibold text-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                      {{ t('product.close') }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
             <form @submit.prevent="submitContact" class="space-y-4">
               <input v-model="contactForm.fullname" type="text" :placeholder="t('product.fullName')" required
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
@@ -641,6 +678,10 @@ const contactForm = ref({
   email: '',
   message: '',
 })
+const rateLimitError = ref(null)
+const retryAttempts = ref(0)
+const maxRetryAttempts = ref(5)
+const isRetrying = ref(false)
 
 const currentImage = computed(() => {
   if (!product.value?.images || product.value.images.length === 0) {
@@ -827,11 +868,17 @@ const loadProduct = async () => {
   }
 }
 
-const submitContact = async () => {
+const submitContact = async (isRetry = false) => {
   try {
     if (!product.value?.id) {
       showToast('Erreur: Produit introuvable', 'error')
       return
+    }
+
+    // Reset rate limit error if starting a new attempt
+    if (!isRetry) {
+      rateLimitError.value = null
+      retryAttempts.value = 0
     }
 
     showToast(t('product.send') + ' - ' + t('common.loading'), 'info')
@@ -845,12 +892,62 @@ const submitContact = async () => {
 
     await productService.submitProductContact(product.value.id, formData)
 
+    // Success - reset all error states
+    rateLimitError.value = null
+    retryAttempts.value = 0
+    isRetrying.value = false
     showToast('Message envoyé avec succès', 'success')
     contactForm.value = { fullname: '', phone: '', email: '', message: '' }
   } catch (err) {
     console.error('Error submitting contact form:', err)
-    showToast('Erreur lors de l\'envoi du message', 'error')
+    
+    // Check if it's a rate limit error (429) or CSRF token expiration (419)
+    if (err.response?.status === 429 || err.response?.status === 419) {
+      const errorMessage = err.response?.data?.message || err.message || t('product.rateLimitMessage')
+      const retryAfter = err.response?.headers?.['retry-after'] || err.response?.data?.retry_after
+      
+      rateLimitError.value = {
+        message: errorMessage,
+        retryAfter: retryAfter ? parseInt(retryAfter) : null,
+        timestamp: Date.now()
+      }
+      
+      // Don't show generic error toast, the UI will show the rate limit message
+      return
+    }
+    
+    // For other errors, show the error toast
+    rateLimitError.value = null
+    showToast(err.response?.data?.message || 'Erreur lors de l\'envoi du message', 'error')
   }
+}
+
+const retryContact = async () => {
+  if (retryAttempts.value >= maxRetryAttempts.value) {
+    showToast(t('product.maxRetriesReached') + ` (${maxRetryAttempts.value}). ` + t('product.rateLimitMessage'), 'error')
+    return
+  }
+
+  isRetrying.value = true
+  retryAttempts.value++
+  
+  // Exponential backoff: wait 2^attempts seconds (max 30 seconds)
+  const waitTime = Math.min(Math.pow(2, retryAttempts.value) * 1000, 30000)
+  
+  // If there's a retry-after header, use that instead
+  if (rateLimitError.value?.retryAfter) {
+    await new Promise(resolve => setTimeout(resolve, rateLimitError.value.retryAfter * 1000))
+  } else {
+    await new Promise(resolve => setTimeout(resolve, waitTime))
+  }
+  
+  isRetrying.value = false
+  await submitContact(true)
+}
+
+const clearRateLimitError = () => {
+  rateLimitError.value = null
+  retryAttempts.value = 0
 }
 
 const togglePhone = async () => {

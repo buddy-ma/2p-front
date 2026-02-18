@@ -3,7 +3,7 @@
     class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
     @click="goToProduct">
     <div class="relative w-full h-48">
-      <img :src="productImage" :alt="product.title" class="w-full h-48 object-cover" />
+      <img :src="productImage" :alt="product.title" class="w-full h-48 object-cover" width="400" height="192" loading="lazy" />
       <div class="absolute inset-0 bg-black opacity-20"></div>
 
       <!-- Badges container -->

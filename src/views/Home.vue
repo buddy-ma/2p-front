@@ -18,6 +18,9 @@
               :src="logoBlueSmall" 
               alt="Immobilier au Maroc de particulier à particulier" 
               class="inline-block h-8 md:h-12 relative -top-1"
+              width="120"
+              height="48"
+              loading="lazy"
             />
           </span> ?
         </h2>
@@ -75,9 +78,12 @@
           {{ t('home.stepsTitle') }} <span class="font-normal">{{ t('home.stepsSubtitle') }}</span>
           <span>
             <img 
-              :src="logoWhiteSmall"
-              alt="2P Service Premium"
+              :src="logoWhiteSmall" 
+              alt="2P Service Premium" 
               class="inline-block h-7 ml-2 align-middle"
+              width="100"
+              height="28"
+              loading="lazy"
             />
           </span>
         </h2>
@@ -156,11 +162,14 @@
           <h2 class="text-white text-center text-xl md:text-2xl font-semibold mb-8 capitalize">
             {{ t('home.soldThanksTo') }} 
             <span :class="colorClasses.textLight">
-              <img 
-                :src="logoWhiteSmall" 
-                alt="Immobilier au Maroc de particulier à particulier" 
-                class="inline-block h-8 md:h-12 relative -top-1"
-              />
+            <img 
+              :src="logoWhiteSmall" 
+              alt="Immobilier au Maroc de particulier à particulier" 
+              class="inline-block h-8 md:h-12 relative -top-1"
+              width="120"
+              height="48"
+              loading="lazy"
+            />
             </span> 
             {{ t('home.soldThanksToText') }}
           </h2>

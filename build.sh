@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Production build script for Octa8 Frontend v2
-# Uses pnpm as the package manager
+# Uses bun as the package manager
 
 set -e  # Exit on any error
 
@@ -17,19 +17,16 @@ cd "$SCRIPT_DIR"
 
 echo -e "${GREEN}🚀 Starting production build...${NC}"
 
-# Check if pnpm is available (via npx or direct command)
-if ! command -v pnpm &> /dev/null && ! command -v npx &> /dev/null; then
-    echo -e "${RED}❌ Error: pnpm is not installed and npx is not available${NC}"
-    echo "Please install pnpm first: npm install -g pnpm"
-    exit 1
-fi
-
-# Use npx pnpm if pnpm is not directly available
-if command -v pnpm &> /dev/null; then
-    PNPM_CMD="pnpm"
+# Find bun (check PATH first, then default install location)
+if command -v bun &> /dev/null; then
+    BUN_CMD="bun"
+elif [ -x "$HOME/.bun/bin/bun" ]; then
+    BUN_CMD="$HOME/.bun/bin/bun"
 else
-    PNPM_CMD="npx pnpm"
-    echo -e "${YELLOW}ℹ️  Using npx pnpm (pnpm not in PATH)${NC}"
+    echo -e "${RED}❌ Error: bun is not installed${NC}"
+    echo "Please install bun: curl -fsSL https://bun.sh/install | bash"
+    echo "Then add to ~/.bashrc: export BUN_INSTALL=\"\$HOME/.bun\" && export PATH=\"\$BUN_INSTALL/bin:\$PATH\""
+    exit 1
 fi
 
 # Clean dist directory
@@ -49,9 +46,9 @@ echo -e "${GREEN}   ✓ index.html created from index-new.html${NC}"
 echo -e "${YELLOW}🧹 Cleaning Vite cache...${NC}"
 rm -rf node_modules/.vite
 
-# Run production build with pnpm
+# Run production build with bun
 echo -e "${YELLOW}🔨 Building for production...${NC}"
-$PNPM_CMD run build
+$BUN_CMD run build
 
 # Check if build was successful
 if [ -d "dist" ] && [ "$(ls -A dist)" ]; then

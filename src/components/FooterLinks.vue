@@ -31,10 +31,10 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <!-- Logo -->
           <div class="col-md-3 col-6">
-            <img :src="logoPath" style="max-width: 200px" alt="Immobilier de particulier à particulier" />
+            <img :src="logoPath" style="max-width: 200px" alt="Immobilier de particulier à particulier" width="200" height="80" loading="lazy" />
           </div>
 
-          <!-- Nos Services -->
+          <!-- 
           <div class="col-md-3 col-6">
             <div class="navigation">
               <h4 class="text-white mb-4">{{ t('footer.ourServices') }}</h4>
@@ -61,6 +61,7 @@
               </div>
             </div>
           </div>
+          -->
 
           <!-- Liens Utiles -->
           <div class="col-md-3 col-6">

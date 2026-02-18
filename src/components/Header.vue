@@ -5,7 +5,7 @@
         <!-- Logo -->
         <div class="flex items-center">
           <router-link to="/" class="flex items-center">
-            <img :src="logoPath" alt="2P" class="h-10" />
+            <img :src="logoPath" alt="2P" class="h-10" width="120" height="40" loading="eager" />
           </router-link>
         </div>
 
@@ -47,35 +47,38 @@
                   t('navigation.vacation') }}</router-link>
             </div>
           </div>
-          <div class="relative group">
-            <button :class="`text-gray-700 dark:text-gray-300 ${colorClasses.hoverText} flex items-center`">
-              {{ t('navigation.services') }}
-              <svg class="w-4 h-4 ms-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <div
-              class="absolute top-full start-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-              <router-link to="/service-vente"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
-                  t('navigation.serviceSale') }}</router-link>
-              <router-link to="/service-promoteur"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
-                  t('navigation.servicePromoter') }}</router-link>
-              <router-link to="/service-vacances"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
-                  t('navigation.serviceVacation') }}</router-link>
-              <router-link to="/service-location"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
-                  t('navigation.serviceLocation') }}</router-link>
-              <router-link to="/coworking"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
-                  t('navigation.coworking') }}</router-link>
-              <router-link to="/nos-tarifs"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
-                  t('navigation.pricing') }}</router-link>
+          <!-- 
+            <div class="relative group">
+              <button :class="`text-gray-700 dark:text-gray-300 ${colorClasses.hoverText} flex items-center`">
+                {{ t('navigation.services') }}
+                <svg class="w-4 h-4 ms-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div
+                class="absolute top-full start-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                <router-link to="/service-vente"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
+                    t('navigation.serviceSale') }}</router-link>
+                <router-link to="/service-promoteur"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
+                    t('navigation.servicePromoter') }}</router-link>
+                <router-link to="/service-vacances"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
+                    t('navigation.serviceVacation') }}</router-link>
+                <router-link to="/service-location"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
+                    t('navigation.serviceLocation') }}</router-link>
+                <router-link to="/coworking"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
+                    t('navigation.coworking') }}</router-link>
+                <router-link to="/nos-tarifs"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
+                    t('navigation.pricing') }}</router-link>
+              </div>
             </div>
-          </div>
+          -->
+
           <div class="relative group">
             <button :class="`text-gray-700 dark:text-gray-300 ${colorClasses.hoverText} flex items-center`">
               {{ t('navigation.news') }}
@@ -116,7 +119,9 @@
         </div>
 
         <!-- Mobile Menu Button -->
-        <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden">
+        <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden"
+         aria-label="Ouvrir le menu mobile"
+          title="Ouvrir le menu mobile">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -170,7 +175,7 @@
             </div>
           </div>
 
-          <!-- Services Menu Group -->
+          <!--
           <div>
             <button @click="toggleServicesMenu"
               class="w-full px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-between">
@@ -201,7 +206,7 @@
                   t('navigation.pricing') }}</router-link>
             </div>
           </div>
-
+          -->
           <!-- News Menu Group -->
           <div>
             <button @click="toggleNewsMenu"
@@ -236,7 +241,7 @@
           </router-link>
 
           <!-- Login Button -->
-          <button @click="closeMobileMenu"
+          <button @click="handleLogin()"
             :class="`px-4 py-2 border-2 ${colorClasses.border} ${colorClasses.text} rounded-lg ${colorClasses.hoverText} text-center w-full font-semibold`">
             {{ t('common.login') }}
           </button>

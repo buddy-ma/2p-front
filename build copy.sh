@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Production build script for Octa8 Frontend v2
-# Uses pnpm as the package manager
+# Uses bun as the package manager
 
 set -e  # Exit on any error
 
@@ -17,10 +17,10 @@ cd "$SCRIPT_DIR"
 
 echo -e "${GREEN}🚀 Starting production build...${NC}"
 
-# Check if pnpm is installed
-if ! command -v pnpm &> /dev/null; then
-    echo -e "${RED}❌ Error: pnpm is not installed${NC}"
-    echo "Please install pnpm first: npm install -g pnpm"
+# Check if bun is installed
+if ! command -v bun &> /dev/null; then
+    echo -e "${RED}❌ Error: bun is not installed${NC}"
+    echo "Please install bun: curl -fsSL https://bun.sh/install | bash"
     exit 1
 fi
 
@@ -41,9 +41,9 @@ echo -e "${GREEN}   ✓ index.html created from index-new.html${NC}"
 echo -e "${YELLOW}🧹 Cleaning Vite cache...${NC}"
 rm -rf node_modules/.vite
 
-# Run production build with pnpm
+# Run production build with bun
 echo -e "${YELLOW}🔨 Building for production...${NC}"
-pnpm run build
+bun run build
 
 # Check if build was successful
 if [ -d "dist" ] && [ "$(ls -A dist)" ]; then

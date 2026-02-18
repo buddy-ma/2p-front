@@ -11,18 +11,12 @@ const ANALYTICS_LOADED = {
 }
 
 /**
- * Load Google Analytics
+ * Load Google Analytics (deferred for performance)
  */
 export function loadGoogleAnalytics() {
   if (typeof window === 'undefined' || ANALYTICS_LOADED.gtag) return
   
-  // Load gtag script
-  const script = document.createElement('script')
-  script.async = true
-  script.src = 'https://www.googletagmanager.com/gtag/js?id=G-LFPV895XGZ'
-  document.head.appendChild(script)
-  
-  // Initialize dataLayer
+  // Initialize dataLayer early (doesn't block)
   window.dataLayer = window.dataLayer || []
   function gtag() {
     window.dataLayer.push(arguments)
@@ -32,17 +26,33 @@ export function loadGoogleAnalytics() {
   gtag('config', 'AW-10939895437')
   gtag('config', 'G-LFPV895XGZ')
   
-  ANALYTICS_LOADED.gtag = true
+  // Defer script loading until idle or after 2 seconds
+  const loadScript = () => {
+    const script = document.createElement('script')
+    script.async = true
+    script.defer = true
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-LFPV895XGZ'
+    document.head.appendChild(script)
+    ANALYTICS_LOADED.gtag = true
+  }
+  
+  // Use requestIdleCallback if available, otherwise setTimeout
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(loadScript, { timeout: 2000 })
+  } else {
+    setTimeout(loadScript, 2000)
+  }
 }
 
 /**
- * Load Facebook Pixel
+ * Load Facebook Pixel (deferred for performance)
  */
 export function loadFacebookPixel() {
   if (typeof window === 'undefined' || ANALYTICS_LOADED.facebook) return
   
   if (window.fbq) return
   
+  // Initialize fbq queue early (doesn't block)
   window.fbq = function() {
     window.fbq.callMethod ? window.fbq.callMethod.apply(window.fbq, arguments) : window.fbq.queue.push(arguments)
   }
@@ -52,40 +62,37 @@ export function loadFacebookPixel() {
   window.fbq.version = '2.0'
   window.fbq.queue = []
   
-  const script = document.createElement('script')
-  script.async = true
-  script.src = 'https://connect.facebook.net/en_US/fbevents.js'
-  const firstScript = document.getElementsByTagName('script')[0]
-  firstScript.parentNode.insertBefore(script, firstScript)
-  
   window.fbq('init', '1027173928317519')
   window.fbq('track', 'PageView')
   
-  ANALYTICS_LOADED.facebook = true
+  // Defer script loading until idle or after 3 seconds
+  const loadScript = () => {
+    const script = document.createElement('script')
+    script.async = true
+    script.defer = true
+    script.src = 'https://connect.facebook.net/en_US/fbevents.js'
+    document.head.appendChild(script)
+    ANALYTICS_LOADED.facebook = true
+  }
+  
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(loadScript, { timeout: 3000 })
+  } else {
+    setTimeout(loadScript, 3000)
+  }
 }
 
 /**
- * Load Yandex Metrika
+ * Load Yandex Metrika (deferred for performance)
  */
 export function loadYandexMetrika() {
   if (typeof window === 'undefined' || ANALYTICS_LOADED.yandex) return
   
-  (function(m, e, t, r, i, k, a) {
-    m[i] = m[i] || function() {
-      (m[i].a = m[i].a || []).push(arguments)
-    }
-    m[i].l = 1 * new Date()
-    for (var j = 0; j < document.scripts.length; j++) {
-      if (document.scripts[j].src === r) {
-        return
-      }
-    }
-    k = e.createElement(t)
-    a = e.getElementsByTagName(t)[0]
-    k.async = 1
-    k.src = r
-    a.parentNode.insertBefore(k, a)
-  })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym')
+  // Initialize ym queue early (doesn't block)
+  window.ym = window.ym || function() {
+    (window.ym.a = window.ym.a || []).push(arguments)
+  }
+  window.ym.l = 1 * new Date()
   
   window.ym(97358163, 'init', {
     clickmap: true,
@@ -94,27 +101,59 @@ export function loadYandexMetrika() {
     webvisor: true,
   })
   
-  ANALYTICS_LOADED.yandex = true
+  // Defer script loading until idle or after 4 seconds
+  const loadScript = () => {
+    // Check if already loaded
+    for (var j = 0; j < document.scripts.length; j++) {
+      if (document.scripts[j].src === 'https://mc.yandex.ru/metrika/tag.js') {
+        ANALYTICS_LOADED.yandex = true
+        return
+      }
+    }
+    
+    const k = document.createElement('script')
+    const a = document.getElementsByTagName('script')[0]
+    k.async = 1
+    k.defer = true
+    k.src = 'https://mc.yandex.ru/metrika/tag.js'
+    a.parentNode.insertBefore(k, a)
+    ANALYTICS_LOADED.yandex = true
+  }
+  
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(loadScript, { timeout: 4000 })
+  } else {
+    setTimeout(loadScript, 4000)
+  }
 }
 
 /**
- * Load Microsoft Clarity
+ * Load Microsoft Clarity (deferred for performance)
  */
 export function loadClarity() {
   if (typeof window === 'undefined' || ANALYTICS_LOADED.clarity) return
   
-  ;(function(c, l, a, r, i, t, y) {
-    c[a] = c[a] || function() {
-      (c[a].q = c[a].q || []).push(arguments)
-    }
-    t = l.createElement(r)
-    t.async = 1
-    t.src = 'https://www.clarity.ms/tag/' + i
-    y = l.getElementsByTagName(r)[0]
-    y.parentNode.insertBefore(t, y)
-  })(window, document, 'clarity', 'script', 'mbgrxongwo')
+  // Initialize clarity queue early (doesn't block)
+  window.clarity = window.clarity || function() {
+    (window.clarity.q = window.clarity.q || []).push(arguments)
+  }
   
-  ANALYTICS_LOADED.clarity = true
+  // Defer script loading until idle or after 5 seconds
+  const loadScript = () => {
+    const t = document.createElement('script')
+    const y = document.getElementsByTagName('script')[0]
+    t.async = 1
+    t.defer = true
+    t.src = 'https://www.clarity.ms/tag/mbgrxongwo'
+    y.parentNode.insertBefore(t, y)
+    ANALYTICS_LOADED.clarity = true
+  }
+  
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(loadScript, { timeout: 5000 })
+  } else {
+    setTimeout(loadScript, 5000)
+  }
 }
 
 /**
