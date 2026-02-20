@@ -150,13 +150,19 @@ export function setupSEOGuard(router) {
       seoMeta = to.meta.seo
     }
     
+    // Check if this is a 410 page - should not have canonical or hreflang tags
+    const is410Page = to.path === '/410' || to.path.startsWith('/410/') || 
+                      to.path === '/en/410' || to.path.startsWith('/en/410/') ||
+                      to.path === '/ar/410' || to.path.startsWith('/ar/410/')
+    
     // Build SEO data
     const title = seoMeta.titleKey ? getTranslation(seoMeta.titleKey, locale) : getTranslation('home.title', locale)
     const description = seoMeta.descriptionKey ? getTranslation(seoMeta.descriptionKey, locale) : getTranslation('home.description', locale)
     const image = seoMeta.image || '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp'
     const canonicalUrl = getCanonicalUrl(to.path)
     const alternateUrls = getAlternateUrls(to.path)
-    const robotsContent = getRobotsContent()
+    // For 410 pages, always use 'noindex, follow'
+    const robotsContent = is410Page ? 'noindex, follow' : getRobotsContent()
     
     // Update title
     if (typeof document !== 'undefined') {
@@ -170,14 +176,21 @@ export function setupSEOGuard(router) {
     updateMetaTag('theme-color', '#ffffff')
     updateMetaTag('msapplication-TileColor', '#ffc40d')
     
-    // Canonical URL
-    updateLinkTag('canonical', canonicalUrl)
+    // Canonical URL - DO NOT add for 410 pages
+    if (!is410Page) {
+      updateLinkTag('canonical', canonicalUrl)
+    } else {
+      // Remove any existing canonical tags for 410 pages
+      removeLinkTags('canonical')
+    }
     
-    // Alternate hreflang links
+    // Alternate hreflang links - DO NOT add for 410 pages
     removeLinkTags('alternate')
-    Object.keys(alternateUrls).forEach(loc => {
-      updateLinkTag('alternate', alternateUrls[loc], { hreflang: loc })
-    })
+    if (!is410Page) {
+      Object.keys(alternateUrls).forEach(loc => {
+        updateLinkTag('alternate', alternateUrls[loc], { hreflang: loc })
+      })
+    }
     
     // Open Graph tags
     const ogImage = image.startsWith('http') ? image : `${BASE_URL}${image}`

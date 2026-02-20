@@ -106,7 +106,12 @@ defineOptions({
   name: 'Gone410',
   seo: {
     titleKey: 'error410.meta.title',
-    descriptionKey: 'error410.meta.description'
+    descriptionKey: 'error410.meta.description',
+    // 410 pages should not have canonical or hreflang tags
+    // This is handled in seoGuard.js
+    noCanonical: true,
+    noHreflang: true,
+    robots: 'noindex, follow'
   }
 })
 
