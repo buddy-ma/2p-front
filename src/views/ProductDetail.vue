@@ -860,8 +860,14 @@ const loadProduct = async () => {
   } catch (err) {
     console.error('Error loading product:', err)
     error.value = err.response?.data?.message || err.message || 'Failed to load product'
+    if (err.response?.status === 410) {
+      // Redirect to 410 page for deleted/removed products
+      router.push('/410')
+      return
+    }
     if (err.response?.status === 404) {
       router.push('/404')
+      return
     }
   } finally {
     loading.value = false
