@@ -48,9 +48,23 @@ api.interceptors.request.use(
   }
 )
 
+// Product listing paths that may return 200 with original.error (treat as 410)
+const PRODUCT_LISTING_PATHS = ['/products/achat', '/products/location', '/products/vacances', '/products/immoneuf']
+
 // Response interceptor
 api.interceptors.response.use(
   (response) => {
+    // Backend sometimes returns 200 with original.error (e.g. "Extra not found") — treat as 410
+    const url = response.config?.url || ''
+    if (response.status === 200 && response.data?.original?.error) {
+      const isProductListing = PRODUCT_LISTING_PATHS.some(path => url.includes(path))
+      if (isProductListing) {
+        import('../router').then(({ default: router }) => router.push('/410'))
+        return Promise.reject(Object.assign(new Error(response.data.original.error), {
+          response: { status: 410, data: response.data },
+        }))
+      }
+    }
     return response
   },
   (error) => {
@@ -65,6 +79,8 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Unauthorized - clear token and redirect to login if needed
       localStorage.removeItem('auth_token')
+    } else if (error.response?.status === 410) {
+      import('../router').then(({ default: router }) => router.push('/410'))
     } else if (error.response?.status === 404) {
       console.error('404 Not Found - Check if Laravel backend is running on the correct port')
     }

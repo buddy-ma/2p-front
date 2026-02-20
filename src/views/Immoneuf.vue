@@ -1,5 +1,7 @@
 <template>
   <div class="immoneuf">
+    <!-- Content: only show after API returns success (not 410) -->
+    <template v-if="!loading && data">
     <!-- Hero Section -->
     <HeroSearch :title="pageTitle" :text="pageText" active="immoneuf" bg="immoneuf" :extras="data?.extras || {}"
       :extra="data?.extra || []" />
@@ -9,7 +11,7 @@
     <AdvertisingLongDefault v-else :category-id="data?.category_id" />
 
     <!-- Products Catalogue Section -->
-    <section v-if="!loading && data" class="featured portfolio bg-gray-50 py-8">
+    <section class="featured portfolio bg-gray-50 py-8">
       <div class="container max-w-6xl mx-auto px-4">
         <div class="portfolio">
           <h3 class="text-2xl font-semibold mb-6">{{ pageTitle }}</h3>
@@ -114,20 +116,21 @@
       </div>
     </section>
 
-    <!-- Loading State -->
-    <div v-if="loading" class="flex justify-center items-center py-20 bg-white">
-      <div :class="`animate-spin rounded-full h-12 w-12 border-b-2 ${colorClasses.border}`"></div>
-    </div>
-
-    <!-- Error State -->
-    <div v-if="error && !loading" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mx-4 my-8">
-      {{ error }}
-    </div>
-
     <!-- Footer Links (replaces regular footer when footerLinks data exists) -->
     <FooterLinks v-if="data?.footerLinks && data.footerLinks.length > 0" :footer-links="data.footerLinks"
       :title="data?.footerTitle || ''" :category-id="data?.category_id || 3" :ville="data?.ville || ''"
       :type-id="data?.type_id" :extra="data?.extra || []" :footer-links-type="data?.footerLinksType || 'ville'" />
+    </template>
+
+    <!-- Loading: show until API responds (410 will redirect before content shows) -->
+    <div v-else-if="loading" class="flex justify-center items-center min-h-[60vh] py-20 bg-white">
+      <div :class="`animate-spin rounded-full h-12 w-12 border-b-2 ${colorClasses.border}`"></div>
+    </div>
+
+    <!-- Error State (non-410) -->
+    <div v-else-if="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mx-4 my-8">
+      {{ error }}
+    </div>
   </div>
 </template>
 
@@ -252,7 +255,11 @@ const loadProducts = async () => {
   } catch (err) {
     console.error('Error loading products:', err)
 
-    // If 404 error, redirect to 404 page
+    // If 410 error, redirect to 410 page; if 404, redirect to 404 page
+    if (err.response?.status === 410) {
+      router.push('/410')
+      return
+    }
     if (err.response?.status === 404) {
       router.push('/404')
       return

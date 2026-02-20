@@ -33,6 +33,12 @@ const updateLocaleFromPath = (path) => {
  */
 export function setupLanguageGuard(router) {
   router.beforeEach((to, from, next) => {
+    // Block deprecated ?locale... query params — redirect to 410
+    if (Object.keys(to.query || {}).some(key => key.toLowerCase().startsWith('locale'))) {
+      next('/410')
+      return
+    }
+
     // Extract locale from path
     const pathLocale = getCurrentLocaleFromPath(to.path)
     
