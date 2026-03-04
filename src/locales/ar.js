@@ -711,7 +711,7 @@ export default {
       title: 'ما هي “العضوية المميزة” من 2P.ma؟',
       premium: {
         name: 'Pack Premium',
-        price: '600 درهم',
+        price: '400 درهم',
         period: '/ سنة',
         feature1: 'عضوية مميزة مع صفحة خاصة',
         feature2: 'نشر متقدم داخل نتائج البحث',
@@ -723,7 +723,7 @@ export default {
       },
       premiumSuper: {
         name: 'Pack Premium Super',
-        price: '1200 درهم',
+        price: '800 درهم',
         period: '/ سنة',
         includes: 'مخصصة للعقارات الراقية التي تريد التميّز. تشمل كل مزايا Pack Premium إضافة إلى:',
         feature1: 'زيارة افتراضية 360° مدمجة',
@@ -760,7 +760,7 @@ export default {
       title: 'الباقات المتوفرة:',
       premium: {
         name: 'Particulier Premium',
-        price: '400 درهم',
+        price: '700 درهم',
         period: '/سنة',
         feature1: 'نشر إعلان احترافي وظهور متقدم',
         feature2: 'صور + فيديو + تواصل مباشر',
@@ -769,7 +769,7 @@ export default {
       premiumPlus: {
         badge: 'الأكثر طلباً',
         name: 'Particulier Premium Plus',
-        price: '700 درهم',
+        price: '1000 درهم',
         period: '/سنة',
         feature1: 'Boost للظهور داخل المدن والتصنيفات',
         feature2: 'أولوية الترتيب وإحصائيات متقدمة',
