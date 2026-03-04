@@ -640,7 +640,7 @@ export default {
       description: 'اكتشف عروضنا المصممة لمحترفي العقارات.',
       basic: {
         name: 'باقة Basic',
-        originalPrice: '2000 درهم',
+        originalPrice: '1500 درهم',
         period: '/ السنة',
         feature1: 'حتى 30 إعلان',
         feature2: 'نشر وتسيير الإعلانات',
