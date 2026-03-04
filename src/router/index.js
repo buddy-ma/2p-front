@@ -47,7 +47,7 @@ const baseRoutes = [
     name: 'ServicePromoteur',
     component: ServicePromoteur,
     meta: { 
-      logo: 'blue', 
+      logo: 'green', 
       locale: 'fr',
     },
   },
@@ -65,7 +65,7 @@ const baseRoutes = [
     name: 'ServiceVacances',
     component: ServiceVacances,
     meta: { 
-      logo: 'blue', 
+      logo: 'orange', 
       locale: 'fr',
     },
   },

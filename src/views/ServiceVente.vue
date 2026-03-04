@@ -1,304 +1,213 @@
 <template>
-  <div class="service-vente">
+  <div class="service-vente bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen pt-0">
     <!-- Top Header Banner -->
-    <section class="relative mt-20 mx-4 md:mx-auto max-w-7xl">
-      <div
-        class="bg-gradient-to-r from-blue-800 to-blue-900 text-white py-4 px-8 rounded-t-3xl relative overflow-hidden">
-        <div
-          class="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-blue-400 to-transparent opacity-50 rounded-b-3xl">
-        </div>
-        <div class="relative z-10 text-center">
-          <p class="text-lg md:text-xl font-semibold">{{ t('serviceVente.header.title') }}</p>
-        </div>
+    <section class="bg-gradient-to-r from-blue-900 to-indigo-900 text-white py-3">
+      <div class="container mx-auto px-4 text-center">
+        <p class="text-sm md:text-base font-semibold tracking-wide uppercase">{{ t('serviceVente.header.title') }}</p>
       </div>
     </section>
 
     <!-- Hero Section -->
-    <section class="relative py-16 mx-4 md:mx-auto max-w-7xl overflow-hidden">
-      <!-- Sky Background -->
-      <div class="absolute inset-0 hero-sky-background rounded-b-3xl"></div>
-      <div class="container mx-auto px-4 relative z-10">
-        <div class="text-center">
-          <!-- Premium Title Banner -->
-          <div class="inline-block relative mb-6">
-            <div
-              class="bg-gradient-to-r from-blue-900 to-blue-800 text-white px-8 py-4 rounded-lg shadow-2xl transform -rotate-1 border-2 border-yellow-400">
-              <div class="flex items-center gap-3 transform rotate-1">
-                <svg class="w-8 h-8 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                <h1 class="text-3xl md:text-4xl font-bold">
-                  <span class="font-serif italic">{{ t('serviceVente.hero.particulier') }}</span>
-                  <span class="font-bold ml-2">{{ t('serviceVente.hero.premium') }}</span>
-                </h1>
-              </div>
-            </div>
-          </div>
-          <!-- Tagline -->
-          <p class="text-yellow-500 font-bold text-lg md:text-xl uppercase mb-8">
+    <section class="relative py-12 lg:py-16 px-4 overflow-hidden">
+      <!-- Background Elements -->
+      <div class="absolute top-0 right-0 -mr-32 -mt-32 w-96 h-96 rounded-full bg-blue-500/10 blur-3xl z-0"></div>
+      <div class="absolute bottom-0 left-0 -ml-32 -mb-32 w-96 h-96 rounded-full bg-indigo-500/10 blur-3xl z-0"></div>
+
+      <div class="container mx-auto max-w-6xl relative z-10">
+        <div class="text-center max-w-3xl mx-auto mb-8">
+          <div
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-semibold mb-6 text-sm shadow-sm border border-blue-500 dark:border-blue-400">
+            <span class="relative flex h-3 w-3">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+            </span>
             {{ t('serviceVente.hero.tagline') }}
-          </p>
-          <!-- Property Illustration -->
-          <div class="max-w-4xl mx-auto mb-8">
-            <div class="bg-white rounded-xl shadow-xl p-8 relative">
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
-                <!-- For Sale House -->
-                <div class="text-center">
-                  <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 mb-4 relative">
-                    <div
-                      class="absolute top-2 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-1 rounded-full text-xs font-bold">
-                      {{ t('serviceVente.hero.forSale') }}
-                    </div>
-                    <svg class="w-24 h-24 mx-auto text-blue-600 mt-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path
-                        d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                    </svg>
-                  </div>
-                </div>
-                <!-- Center Buildings -->
-                <div class="text-center">
-                  <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6">
-                    <svg class="w-32 h-32 mx-auto text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                      <path
-                        d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                    </svg>
-                  </div>
-                </div>
-                <!-- For Rent House -->
-                <div class="text-center">
-                  <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-6 mb-4 relative">
-                    <div
-                      class="absolute top-2 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white px-4 py-1 rounded-full text-xs font-bold">
-                      {{ t('serviceVente.hero.forRent') }}
-                    </div>
-                    <svg class="w-24 h-24 mx-auto text-orange-600 mt-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path
-                        d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
+          </div>
+
+          <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-6">
+            {{ t('serviceVente.hero.particulier') }}
+            <span class="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+              {{ t('serviceVente.hero.premium') }}
+            </span>
+          </h1>
+        </div>
+
+        <div class="relative max-w-7xl mx-auto">
+          <div
+            class="aspect-[21/10] bg-gray-200 dark:bg-gray-800 rounded-3xl overflow-hidden shadow-2xl border-4 border-white dark:border-gray-700 relative">
+            <img
+              src="..\assets\images\immobilier\AdobeStock_866670044-scaled-1-rdz82sevntammi6n8w0rhahhqv9z8psixo5svil09c.jpg"
+              alt="Particulier Premium" class="w-full h-full object-cover" />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-blue-900/80 to-transparent flex items-end p-8 justify-between">
+              <h3 class="text-white text-xl md:text-2xl font-bold max-w-xl">
+                {{ t('serviceVente.benefits.title') }}
+              </h3>
+              <p class="text-white text-sm md:text-base float-right">
+                <span class="mr-4">{{ t('serviceVente.hero.forSale') }}</span>
+                |
+                <span class="ml-4">{{ t('serviceVente.hero.forRent') }}</span>
+              </p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Benefits Section -->
-    <section class="container mx-auto px-4 py-16">
-      <div class="max-w-4xl mx-auto">
-        <div class="flex items-center justify-center gap-3 mb-8">
-          <svg class="w-6 h-6 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
-            <path
-              d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-          </svg>
-          <h2 class="text-2xl md:text-3xl font-bold text-gray-900">{{ t('serviceVente.benefits.title') }}</h2>
+    <!-- Benefits Grid -->
+    <section class="py-24 bg-white dark:bg-gray-900">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <div class="text-center mb-16">
+          <span class="text-blue-600 font-semibold tracking-wider uppercase text-sm mb-2 block">Nos Avantages</span>
+          <h2 class="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white">
+            {{ t('serviceVente.benefits.title') }}
+          </h2>
         </div>
-        <div class="bg-white rounded-xl shadow-lg p-8">
-          <ul class="space-y-4">
-            <li class="flex items-start gap-4">
-              <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clip-rule="evenodd" />
-                </svg>
-              </div>
-              <span class="text-gray-700 text-lg">{{ t('serviceVente.benefits.feature1') }}</span>
-            </li>
-            <li class="flex items-start gap-4">
-              <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clip-rule="evenodd" />
-                </svg>
-              </div>
-              <span class="text-gray-700 text-lg">{{ t('serviceVente.benefits.feature2') }}</span>
-            </li>
-            <li class="flex items-start gap-4">
-              <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clip-rule="evenodd" />
-                </svg>
-              </div>
-              <span class="text-gray-700 text-lg">{{ t('serviceVente.benefits.feature3') }}</span>
-            </li>
-          </ul>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div v-for="i in 3" :key="i"
+            class="bg-blue-50/50 dark:bg-gray-800/50 p-8 rounded-3xl border border-blue-100/50 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-gray-800 transition-colors duration-300">
+            <div
+              class="w-12 h-12 bg-white dark:bg-gray-700 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 shadow-sm">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"
+                  v-if="i === 1"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                  v-else-if="i === 2"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+                  v-else></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+              {{ t(`serviceVente.benefits.feature${i}`).split('&')[0] }}
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+              {{ t(`serviceVente.benefits.feature${i}`).split('&')[1] }}
+            </p>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Pricing Section -->
-    <section class="container mx-auto px-4 py-16">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{{ t('serviceVente.pricing.title') }}</h2>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        <!-- Premium Plan -->
-        <div class="bg-white rounded-xl shadow-xl overflow-hidden border-2 border-gray-200">
-          <div class="bg-green-600 text-white py-4 px-6 rounded-t-xl">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clip-rule="evenodd" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold">{{ t('serviceVente.pricing.premium.name') }}</h3>
-            </div>
-          </div>
-          <div class="p-8">
-            <div class="text-center mb-6">
-              <div class="text-5xl font-bold text-gray-900 mb-2">{{ t('serviceVente.pricing.premium.price') }}</div>
-              <div class="text-gray-600">{{ t('serviceVente.pricing.premium.period') }}</div>
-            </div>
-            <ul class="space-y-4 mb-8">
-              <li class="flex items-start gap-3">
-                <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clip-rule="evenodd" />
-                </svg>
-                <span class="text-gray-700">{{ t('serviceVente.pricing.premium.feature1') }}</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clip-rule="evenodd" />
-                </svg>
-                <span class="text-gray-700">{{ t('serviceVente.pricing.premium.feature2') }}</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clip-rule="evenodd" />
-                </svg>
-                <span class="text-gray-700">{{ t('serviceVente.pricing.premium.feature3') }}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Premium PLUS Plan -->
-        <div class="bg-white rounded-xl shadow-xl overflow-hidden border-2 border-yellow-400 relative">
-          <!-- Most Requested Banner -->
-          <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-            <div class="bg-yellow-400 text-gray-900 px-6 py-2 rounded-full font-bold text-sm shadow-lg">
-              {{ t('serviceVente.pricing.premiumPlus.badge') }}
-            </div>
-          </div>
-          <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-4 px-6 rounded-t-xl mt-4">
-            <div class="flex items-center gap-3">
-              <svg class="w-8 h-8 text-yellow-200" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-              <h3 class="text-xl font-bold">{{ t('serviceVente.pricing.premiumPlus.name') }}</h3>
-            </div>
-          </div>
-          <div class="p-8">
-            <div class="text-center mb-6">
-              <div class="text-5xl font-bold text-gray-900 mb-2">{{ t('serviceVente.pricing.premiumPlus.price') }}</div>
-              <div class="text-gray-600">{{ t('serviceVente.pricing.premiumPlus.period') }}</div>
-            </div>
-            <ul class="space-y-4 mb-8">
-              <li class="flex items-start gap-3">
-                <svg class="w-6 h-6 text-yellow-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clip-rule="evenodd" />
-                </svg>
-                <span class="text-gray-700">{{ t('serviceVente.pricing.premiumPlus.feature1') }}</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <svg class="w-6 h-6 text-yellow-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clip-rule="evenodd" />
-                </svg>
-                <span class="text-gray-700">{{ t('serviceVente.pricing.premiumPlus.feature2') }}</span>
-              </li>
-              <li class="flex items-start gap-3">
-                <svg class="w-6 h-6 text-yellow-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clip-rule="evenodd" />
-                </svg>
-                <span class="text-gray-700">{{ t('serviceVente.pricing.premiumPlus.feature3') }}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Bottom CTA Section -->
-    <section class="relative mx-4 md:mx-auto max-w-7xl mb-8">
-      <div
-        class="bg-gradient-to-r from-blue-800 to-blue-900 text-white py-12 px-8 rounded-3xl relative overflow-hidden">
-        <div
-          class="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-blue-400 to-transparent opacity-50 rounded-t-3xl">
-        </div>
-        <div class="relative z-10 text-center">
-          <h2 class="text-2xl md:text-3xl font-bold mb-6">
-            {{ t('serviceVente.cta.title') }}
-            <span class="font-extrabold">{{ t('serviceVente.cta.highlight') }}</span>
-            {{ t('serviceVente.cta.with') }}
-            <span class="text-blue-300">2P</span><span class="text-white">.ma</span>
+    <section class="py-24 bg-gray-50/50 dark:bg-gray-800/20">
+      <div class="container mx-auto px-4 max-w-5xl">
+        <div class="text-center mb-16">
+          <span class="text-blue-600 font-semibold tracking-wider uppercase text-sm mb-2 block">Tarifs</span>
+          <h2 class="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+            {{ t('serviceVente.pricing.title') }}
           </h2>
-          <div class="flex flex-wrap justify-center gap-6 mb-8">
-            <div class="flex items-center gap-2">
-              <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd" />
-              </svg>
-              <span>{{ t('serviceVente.cta.guarantee1') }}</span>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
+          <!-- Premium Plan -->
+          <div
+            class="bg-white dark:bg-gray-800 rounded-[2rem] p-10 border border-gray-100 dark:border-gray-700 shadow-sm relative z-10 hover:shadow-md transition-shadow">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ t('serviceVente.pricing.premium.name')
+            }}</h3>
+            <div class="flex items-baseline gap-1 mb-8">
+              <span class="text-4xl font-extrabold text-gray-900 dark:text-white">{{
+                t('serviceVente.pricing.premium.price') }}</span>
+              <span class="text-gray-500 font-medium text-sm">{{ t('serviceVente.pricing.premium.period') }}</span>
             </div>
-            <div class="flex items-center gap-2">
-              <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd" />
-              </svg>
-              <span>{{ t('serviceVente.cta.guarantee2') }}</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd" />
-              </svg>
-              <span>{{ t('serviceVente.cta.guarantee3') }}</span>
+
+            <button
+              class="w-full py-3 mb-8 bg-blue-50 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-gray-600 text-blue-600 dark:text-blue-400 rounded-xl font-semibold transition-colors">
+              Commencer
+            </button>
+
+            <div class="space-y-4">
+              <p class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Inclus dans ce pack :</p>
+              <div v-for="i in 3" :key="i" class="flex items-start gap-3">
+                <div
+                  class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg class="w-3 h-3 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{
+                    t(`serviceVente.pricing.premium.feature${i}`).split('&')[0] }}</span>
+                </div>
+              </div>
             </div>
           </div>
-          <button
-            class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-10 py-4 rounded-full font-bold text-lg uppercase shadow-2xl transition-all transform hover:scale-105">
-            {{ t('serviceVente.cta.button') }}
-          </button>
+
+          <!-- Premium PLUS Plan -->
+          <div
+            class="bg-blue-600 rounded-[2rem] p-10 text-white shadow-xl relative z-20 md:-ml-4 transform md:scale-105 border-4 border-white dark:border-gray-900">
+            <h3 class="text-xl font-bold mb-2 flex items-center justify-between">
+              {{ t('serviceVente.pricing.premiumPlus.name') }}
+              <span
+                class="bg-blue-500 text-white text-xs px-3 py-1 rounded-full font-semibold border border-blue-400">Recommandé</span>
+            </h3>
+            <div class="flex items-baseline gap-1 mb-8">
+              <span class="text-4xl font-extrabold">{{ t('serviceVente.pricing.premiumPlus.price') }}</span>
+              <span class="text-blue-200 font-medium text-sm">{{ t('serviceVente.pricing.premiumPlus.period') }}</span>
+            </div>
+
+            <button
+              class="w-full py-3 mb-8 bg-white hover:bg-blue-50 text-blue-600 rounded-xl font-semibold transition-colors shadow-sm">
+              Choisir Premium Plus
+            </button>
+
+            <div class="space-y-4">
+              <p class="text-sm font-semibold text-white mb-4">Tout ce qui est inclus, plus :</p>
+              <div v-for="i in 3" :key="i" class="flex items-start gap-3">
+                <div class="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-sm font-medium text-white">{{
+                    t(`serviceVente.pricing.premiumPlus.feature${i}`).split('&')[0] }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <div v-if="loading" class="flex justify-center items-center py-20">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-    </div>
-    <div v-else-if="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mx-4 my-8">
-      {{ error }}
-    </div>
+    <!-- Bottom CTA -->
+    <section class="py-24 bg-white dark:bg-gray-900">
+      <div class="container mx-auto px-4">
+        <div
+          class="mx-auto bg-blue-600 rounded-[2rem] p-12 md:p-16 text-center text-white shadow-xl relative overflow-hidden">
+          <div class="relative z-10">
+            <h2 class="text-3xl md:text-5xl font-bold mb-4 leading-tight">
+              {{ t('serviceVente.cta.title') }}
+              <span class="block text-blue-200">{{ t('serviceVente.cta.highlight') }}</span>
+            </h2>
+            <p class="text-lg text-blue-100 mb-10">
+              {{ t('serviceVente.cta.with') }} 2P.ma
+            </p>
+
+            <button
+              class="bg-white text-blue-600 hover:bg-blue-50 px-10 py-4 rounded-xl font-bold text-lg shadow-md transition-transform hover:-translate-y-1">
+              {{ t('serviceVente.cta.button') }}
+            </button>
+
+            <div class="flex flex-wrap justify-center gap-6 mt-10">
+              <div v-for="i in 3" :key="i" class="flex items-center gap-2 text-blue-100 text-sm font-medium">
+                <svg class="w-5 h-5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span>{{ t(`serviceVente.cta.guarantee${i}`) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { serviceService } from '../services/serviceService'
 import { useI18n } from '../composables/useI18n'
 
 defineOptions({
@@ -311,52 +220,4 @@ defineOptions({
 })
 
 const { t } = useI18n()
-const data = ref(null)
-const loading = ref(true)
-const error = ref(null)
-
-onMounted(async () => {
-  try {
-    loading.value = true
-    error.value = null
-    const response = await serviceService.getServiceData('service-vente')
-    data.value = response.data
-  } catch (err) {
-    console.error('Error loading service data:', err)
-    error.value = err.response?.data?.message || err.message || 'Failed to load service data'
-  } finally {
-    loading.value = false
-  }
-})
 </script>
-
-<style scoped>
-.service-vente {
-  min-height: 100vh;
-}
-
-.hero-sky-background {
-  background: linear-gradient(to bottom,
-      #87CEEB 0%,
-      #87CEEB 60%,
-      #E0F2FE 60%,
-      #E0F2FE 100%);
-  position: relative;
-}
-
-.hero-sky-background::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60%;
-  background-image:
-    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.8) 3px, transparent 3px),
-    radial-gradient(circle at 60% 20%, rgba(255, 255, 255, 0.6) 4px, transparent 4px),
-    radial-gradient(circle at 80% 40%, rgba(255, 255, 255, 0.7) 3px, transparent 3px),
-    radial-gradient(circle at 40% 50%, rgba(255, 255, 255, 0.5) 2px, transparent 2px);
-  background-size: 120px 120px, 150px 150px, 100px 100px, 130px 130px;
-  background-position: 0 0, 50px 30px, 100px 60px, 200px 20px;
-}
-</style>
