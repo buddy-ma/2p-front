@@ -34,7 +34,7 @@
           {{ t('hero.vacation') }}
         </button>
       </div>
-      <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-2xl p-6 max-h-[80vh] md:max-h-[70vh] overflow-y-auto">
+      <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-2xl p-6">
         <!-- Search Form -->
         <form @submit.prevent="handleSearch" class="space-y-4">
           <div :class="['grid gap-4', isHomePage ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-1 md:grid-cols-2']">
