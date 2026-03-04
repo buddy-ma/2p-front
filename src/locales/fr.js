@@ -747,7 +747,7 @@ export default {
       title: 'Que comprend l’abonnement Premium 2P.ma ?',
       premium: {
         name: 'Pack Premium',
-        price: '600 DH',
+        price: '400 DH',
         period: '/ an',
         feature1: 'Abonnement Premium avec page dédiée',
         feature2: 'Visibilité avancée dans les résultats',
@@ -759,7 +759,7 @@ export default {
       },
       premiumSuper: {
         name: 'Pack Premium Super',
-        price: '1200 DH',
+        price: '800 DH',
         period: '/ an',
         includes: 'Pour les biens et projets souhaitant se démarquer. Inclut tout le Pack Premium, plus :',
         feature1: 'Visite virtuelle 360° incluse',
@@ -796,7 +796,7 @@ export default {
       title: 'Nos offres Particulier Premium :',
       premium: {
         name: 'Particulier Premium',
-        price: '400 DH',
+        price: '700 DH',
         period: '/an',
         feature1: 'Annonce professionnelle & Visibilité avancée',
         feature2: 'Photos + vidéo + Contact direct',
@@ -805,7 +805,7 @@ export default {
       premiumPlus: {
         badge: 'PLUS DEMANDÉE',
         name: 'Particulier Premium Plus',
-        price: '700 DH',
+        price: '1000 DH',
         period: '/an',
         feature1: 'Boost de visibilité par ville et catégorie',
         feature2: 'Priorité de classement & Statistiques avancées',
