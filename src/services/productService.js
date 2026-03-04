@@ -1,6 +1,18 @@
 import api from './api'
 import axios from 'axios'
 
+/**
+ * Get current locale from localStorage
+ * @returns {String} Current locale (fr, en, or ar)
+ */
+const getCurrentLocale = () => {
+  try {
+    return localStorage.getItem('app_locale') || 'fr'
+  } catch (error) {
+    return 'fr'
+  }
+}
+
 export const productService = {
   /**
    * Get products for achat category
@@ -8,7 +20,9 @@ export const productService = {
    * @returns {Promise} Product listing data
    */
   getAchatProducts(params = {}) {
-    return api.get('/products/achat', { params })
+    return api.get('/products/achat', { 
+      params: { ...params, locale: getCurrentLocale() }
+    })
   },
 
   /**
@@ -17,7 +31,9 @@ export const productService = {
    * @returns {Promise} Product listing data
    */
   getLocationProducts(params = {}) {
-    return api.get('/products/location', { params })
+    return api.get('/products/location', { 
+      params: { ...params, locale: getCurrentLocale() }
+    })
   },
 
   /**
@@ -26,7 +42,9 @@ export const productService = {
    * @returns {Promise} Product listing data
    */
   getVacancesProducts(params = {}) {
-    return api.get('/products/vacances', { params })
+    return api.get('/products/vacances', { 
+      params: { ...params, locale: getCurrentLocale() }
+    })
   },
 
   /**
@@ -35,7 +53,9 @@ export const productService = {
    * @returns {Promise} Product listing data
    */
   getImmoneufProducts(params = {}) {
-    return api.get('/products/immoneuf', { params })
+    return api.get('/products/immoneuf', { 
+      params: { ...params, locale: getCurrentLocale() }
+    })
   },
 
   /**
@@ -87,7 +107,9 @@ export const productService = {
    * @returns {Promise} Product detail data
    */
   getProductBySlug(slug) {
-    return api.get(`/products/${slug}`)
+    return api.get(`/products/${slug}`, {
+      params: { locale: getCurrentLocale() }
+    })
   },
 
   /**
@@ -142,7 +164,7 @@ export const productService = {
   trackPhoneView(productId) {
     // Note: This route is in web.php, not api.php, so we use axios directly
     const baseURL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:8001' : 'https://2p.ma')
-    return axios.get(`${baseURL}/vues_phone`, {
+    return axios.get(`${baseURL}/api/vues_phone`, {
       params: { id: productId },
       headers: {
         'Accept': 'application/json',

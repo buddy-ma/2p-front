@@ -1,6 +1,10 @@
 <template>
   <div id="app" class="min-h-screen flex flex-col bg-white dark:bg-gray-900 transition-colors">
+    <!-- Mobile App Banner: above topbar, home URL only -->
+    <AppMobileBanner v-if="isHome" />
+
     <Header />
+
     <main class="flex-grow bg-white dark:bg-gray-900 transition-colors">
       <router-view />
     </main>
@@ -11,7 +15,7 @@
 </template>
 
 <script setup>
-import { onMounted, watch } from 'vue'
+import { onMounted, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
@@ -22,9 +26,12 @@ import { useDarkMode } from './composables/useDarkMode'
 import { useSEO } from './composables/useSEO'
 import { useFooterLinks } from './composables/useFooterLinks'
 import { initializeAnalytics, addVerificationTags } from './utils/analytics'
+import AppMobileBanner from './components/AppMobileBanner.vue'
 
 const route = useRoute()
 const { hasFooterLinks } = useFooterLinks()
+
+const isHome = computed(() => route.name === 'Home' || route.path === '/')
 
 // Reset footerLinks status on route change
 watch(() => route.path, () => {

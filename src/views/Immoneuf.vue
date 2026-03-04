@@ -1,14 +1,18 @@
 <template>
   <div class="immoneuf">
+    <!-- Mobile App Banner (mobile only) -->
+    <AppMobileBanner />
     <!-- Content: only show after API returns success (not 410) -->
     <template v-if="!loading && data">
     <!-- Hero Section -->
     <HeroSearch :title="pageTitle" :text="pageText" active="immoneuf" bg="immoneuf" :extras="data?.extras || {}"
       :extra="data?.extra || []" />
 
-    <!-- Long Advertising Section -->
+    <!--
+    Long Advertising Section (temporarily disabled)
     <AdvertisingLong v-if="data?.long_advertising" :advertising="data.long_advertising" />
     <AdvertisingLongDefault v-else :category-id="data?.category_id" />
+    -->
 
     <!-- Products Catalogue Section -->
     <section class="featured portfolio bg-gray-50 py-8">
@@ -79,10 +83,12 @@
       </div>
     </section>
 
-    <!-- Banner Advertising Section -->
+    <!--
+    Banner Advertising Section (temporarily disabled)
     <AdvertisingBanner v-if="data?.banner_advertising && data.banner_advertising.length >= 2"
       :advertisements="data.banner_advertising" />
     <AdvertisingBannerDefault v-else :category-id="data?.category_id" />
+    -->
 
     <!-- Page Content Section with Second Title/Text and Image -->
     <section v-if="data?.page" class="featured portfolio bg-white py-8">
@@ -142,10 +148,10 @@ import { productService } from '../services/productService'
 import HeroSearch from '../components/HeroSearch.vue'
 import ProductCard from '../components/ProductCard.vue'
 import CityNeighborhoodText from '../components/CityNeighborhoodText.vue'
-import AdvertisingLong from '../components/AdvertisingLong.vue'
-import AdvertisingLongDefault from '../components/AdvertisingLongDefault.vue'
-import AdvertisingBanner from '../components/AdvertisingBanner.vue'
-import AdvertisingBannerDefault from '../components/AdvertisingBannerDefault.vue'
+// import AdvertisingLong from '../components/AdvertisingLong.vue'
+// import AdvertisingLongDefault from '../components/AdvertisingLongDefault.vue'
+// import AdvertisingBanner from '../components/AdvertisingBanner.vue'
+// import AdvertisingBannerDefault from '../components/AdvertisingBannerDefault.vue'
 import AdvertisingProduct from '../components/AdvertisingProduct.vue'
 import AdvertisingProductDefault from '../components/AdvertisingProductDefault.vue'
 import PageImage from '../components/PageImage.vue'
@@ -154,6 +160,7 @@ import SmartPagination from '../components/SmartPagination.vue'
 import { useI18n } from '../composables/useI18n'
 import { useFooterLinks } from '../composables/useFooterLinks'
 import { useSEO } from '../composables/useSEO'
+import AppMobileBanner from '../components/AppMobileBanner.vue'
 
 defineOptions({
   name: 'Immoneuf',

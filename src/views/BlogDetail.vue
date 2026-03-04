@@ -20,18 +20,19 @@
 
     <!-- Blog Content -->
     <div v-else-if="blog" class="container mx-auto px-4 py-8">
-      <!-- Long Advertising -->
+      <!-- Long Advertising (temporarily disabled) -->
       <div v-if="!blog.is_internal">
         <AdvertisingLong v-if="longAdvertising" :advertising="longAdvertising" />
         <AdvertisingLongDefault v-else category-id="conseils" />
       </div>
+      
       <!-- Blog Title -->
       <h1 class="text-3xl md:text-4xl font-bold text-blue-600 mb-6 mt-8 capitalize">
         {{ blog.title }}
       </h1>
 
-      <!-- Blog Content -->
-      <div class="prose prose-lg max-w-none dark:prose-invert mb-8">
+    <!-- Blog Content -->
+    <div class="prose prose-lg max-w-none dark:prose-invert mb-8">
         <div v-html="blog.text" class="text-gray-700 dark:text-gray-300"></div>
 
         <!-- PDF Download -->
@@ -45,12 +46,13 @@
         </a>
       </div>
 
-      <!-- Banner Advertising -->
+      <!-- Banner Advertising (temporarily disabled) -->
       <div v-if="!blog.is_internal">
         <AdvertisingBanner v-if="bannerAdvertising && bannerAdvertising.length >= 2"
           :advertisements="bannerAdvertising" />
         <AdvertisingBannerDefault v-else category-id="conseils" />
       </div>
+      
 
       <!-- Similar Articles -->
       <BlogArticlesSection v-if="similaires && similaires.length > 0" :items="similaires"

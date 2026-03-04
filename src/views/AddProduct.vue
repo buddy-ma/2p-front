@@ -1321,20 +1321,20 @@ async function saveProduct() {
     // This prevents creating a user account if product validation fails
     const response = await productService.createProductWithAuth(formData)
 
-    // Store token from response
-    if (response.data.token) {
-      localStorage.setItem('auth_token', response.data.token)
-    }
-
     // Show success toast
     toast.success(response.data.message || t('add-product.success.message'), {
       duration: 4000
     })
 
-    // Redirect to home page after a short delay
+    // Redirect to account site with token for session exchange (user lands authenticated)
+    const accountUrl = import.meta.env.VITE_ACCOUNT_URL || 'https://account.2p.ma'
+    const token = response.data.token
+    const redirectUrl = token
+      ? `${accountUrl}/particulier/auth-from-token?token=${encodeURIComponent(token)}`
+      : accountUrl
+
     setTimeout(() => {
-      // Redirect to account page
-      window.location.href = import.meta.env.VITE_ACCOUNT_URL || 'https://account.2p.ma'
+      window.location.href = redirectUrl
     }, 1500)
 
   } catch (error) {

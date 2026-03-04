@@ -180,9 +180,9 @@ const truncateText = (text, length = props.truncateLength) => {
 const getImageUrl = (value) => {
   const imagePath = typeof value === 'string' ? value : value?.image
   if (imagePath) {
-    return `https://2p.ma/images/${imagePath}`
+    return `https://cdn.2p.ma/public/images/${imagePath}`
   }
-  return 'https://2p.ma/assets/images/blog/b-10.jpg'
+  return '/assets/images/empty-state.png'
 }
 
 const goToArticle = (slug) => {

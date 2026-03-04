@@ -1,5 +1,7 @@
 <template>
   <div class="product-detail min-h-screen bg-gray-50 dark:bg-gray-900">
+    <!-- Mobile App Banner (mobile only) -->
+    <AppMobileBanner />
     <!-- Loading State -->
     <div v-if="loading" class="container mx-auto px-4 py-20">
       <div class="flex justify-center items-center">
@@ -562,6 +564,7 @@
           </svg>
         </a>
         <a v-if="product.proprietaire?.phone && product.hide_infos === 0" :href="`tel:${product.proprietaire.phone}`"
+          @click="togglePhone"
           class="flex-1 px-4 py-3 bg-blue-500 text-white rounded-lg text-center font-semibold">
           <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -646,6 +649,7 @@ import { useToast } from '../composables/useToast'
 import ProductCard from '../components/ProductCard.vue'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
+import AppMobileBanner from '../components/AppMobileBanner.vue'
 
 defineOptions({
   name: 'ProductDetail',
@@ -957,7 +961,7 @@ const clearRateLimitError = () => {
 }
 
 const togglePhone = async () => {
-  if (!phoneRevealed.value && product.value?.id) {
+  if (!phoneRevealed.value && product.value?.id && product.value.proprietaire?.phone) {
     try {
       await productService.trackPhoneView(product.value.id)
     } catch (err) {
@@ -976,8 +980,8 @@ const toggleCompanyContact = async () => {
       console.error('Error tracking phone view:', err)
     }
   }
-  companyContactExpanded.value = !companyContactExpanded.value
   phoneRevealed.value = !phoneRevealed.value
+  companyContactExpanded.value = !companyContactExpanded.value
 }
 
 const shareInstagram = async () => {
@@ -1012,7 +1016,6 @@ const getExtraTranslation = (extra) => {
 const trackWhatsAppClick = async () => {
   if (product.value?.id) {
     try {
-      // TODO: Implement WhatsApp click tracking API call
       await fetch(`/api/whatsapp-clicks?id=${product.value.id}`)
     } catch (err) {
       console.error('Error tracking WhatsApp click:', err)
@@ -1042,6 +1045,13 @@ watch(() => route.params.slug, () => {
   // Scroll to top when route changes (different product)
   window.scrollTo({ top: 0, behavior: 'smooth' })
   loadProduct()
+})
+
+// Watch for product changes to update the document title with the product title
+watch(product, (newProduct) => {
+  if (newProduct?.title && typeof document !== 'undefined') {
+    document.title = newProduct.title
+  }
 })
 </script>
 
