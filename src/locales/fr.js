@@ -49,7 +49,7 @@ export default {
     vacationRental: 'Location vacances',
     services: 'Nos Services',
     sellRent: 'Vente & location',
-    newRealEstate: 'Immobilier neuf',
+    newRealEstate: 'Entreprise',
     vacationRentalService: 'Location vacances',
     rentalManagement: 'Gestion locative',
     eventsCoworking: 'Espace de coworking',
@@ -668,7 +668,7 @@ export default {
   },
   servicePromoteur: {
     meta: {
-      title: 'Promoteur & Agent Immobilier',
+      title: 'Entreprise, Promoteur & Agent Immobilier',
       description: 'Packs dédiés aux promoteurs et agents immobiliers au Maroc.',
     },
     tarifs: {
@@ -773,11 +773,11 @@ export default {
   },
   serviceVente: {
     meta: {
-      title: 'Vente & Location Particulier Premium',
+      title: 'Vente & Location Particulier à Particulier Premium',
       description: 'Vendez ou louez votre bien en direct, sans commission avec 2P.ma.',
     },
     header: {
-      title: 'Vente & Location Particulier Premium',
+      title: 'Vente & Location Particulier à Particulier Premium',
     },
     hero: {
       particulier: 'Vendez ou louez votre bien',
