@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50 transition-colors">
+  <header class="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-50 transition-colors">
     <div class="container mx-auto px-4">
       <div class="flex items-center justify-between py-4">
         <!-- Logo -->
@@ -47,37 +47,26 @@
                   t('navigation.vacation') }}</router-link>
             </div>
           </div>
-          <!-- 
-            <div class="relative group">
-              <button :class="`text-gray-700 dark:text-gray-300 ${colorClasses.hoverText} flex items-center`">
-                {{ t('navigation.services') }}
-                <svg class="w-4 h-4 ms-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div
-                class="absolute top-full start-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                <router-link to="/service-vente"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
-                    t('navigation.serviceSale') }}</router-link>
-                <router-link to="/service-promoteur"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
-                    t('navigation.servicePromoter') }}</router-link>
-                <router-link to="/service-vacances"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
-                    t('navigation.serviceVacation') }}</router-link>
-                <router-link to="/service-location"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
-                    t('navigation.serviceLocation') }}</router-link>
-                <router-link to="/coworking"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
-                    t('navigation.coworking') }}</router-link>
-                <router-link to="/nos-tarifs"
-                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
-                    t('navigation.pricing') }}</router-link>
-              </div>
+          <div class="relative group">
+            <button :class="`text-gray-700 dark:text-gray-300 ${colorClasses.hoverText} flex items-center`">
+              {{ t('navigation.services') }}
+              <svg class="w-4 h-4 ms-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div
+              class="absolute top-full start-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+              <router-link to="/service-vacances"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
+                  t('navigation.serviceVacation') }}</router-link>
+              <router-link to="/service-vente"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
+                  t('navigation.serviceSale') }}</router-link>
+              <router-link to="/service-promoteur"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
+                  t('navigation.servicePromoter') }}</router-link>
             </div>
-          -->
+          </div>
 
           <div class="relative group">
             <button :class="`text-gray-700 dark:text-gray-300 ${colorClasses.hoverText} flex items-center`">
@@ -119,8 +108,7 @@
         </div>
 
         <!-- Mobile Menu Button -->
-        <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden"
-         aria-label="Ouvrir le menu mobile"
+        <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden" aria-label="Ouvrir le menu mobile"
           title="Ouvrir le menu mobile">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -175,7 +163,6 @@
             </div>
           </div>
 
-          <!--
           <div>
             <button @click="toggleServicesMenu"
               class="w-full px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-between">
@@ -186,27 +173,17 @@
               </svg>
             </button>
             <div v-if="servicesMenuOpen" class="pl-4 space-y-1">
+              <router-link to="/service-vacances" @click="closeMobileMenu"
+                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
+                  t('navigation.serviceVacation') }}</router-link>
               <router-link to="/service-vente" @click="closeMobileMenu"
                 class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
                   t('navigation.serviceSale') }}</router-link>
               <router-link to="/service-promoteur" @click="closeMobileMenu"
                 class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
                   t('navigation.servicePromoter') }}</router-link>
-              <router-link to="/service-vacances" @click="closeMobileMenu"
-                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
-                  t('navigation.serviceVacation') }}</router-link>
-              <router-link to="/service-location" @click="closeMobileMenu"
-                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
-                  t('navigation.serviceLocation') }}</router-link>
-              <router-link to="/coworking" @click="closeMobileMenu"
-                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
-                  t('navigation.coworking') }}</router-link>
-              <router-link to="/nos-tarifs" @click="closeMobileMenu"
-                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
-                  t('navigation.pricing') }}</router-link>
             </div>
           </div>
-          -->
           <!-- News Menu Group -->
           <div>
             <button @click="toggleNewsMenu"
