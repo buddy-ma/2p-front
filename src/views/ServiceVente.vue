@@ -39,11 +39,11 @@
               src="..\assets\images\immobilier\AdobeStock_866670044-scaled-1-rdz82sevntammi6n8w0rhahhqv9z8psixo5svil09c.jpg"
               alt="Particulier Premium" class="w-full h-full object-cover" />
             <div
-              class="absolute inset-0 bg-gradient-to-t from-blue-900/80 to-transparent flex items-end p-8 justify-between">
-              <h3 class="text-white text-xl md:text-2xl font-bold max-w-xl">
+              class="absolute inset-0 bg-gradient-to-t from-blue-900/80 to-transparent flex flex-col md:flex-row items-end md:items-center p-4 md:p-8 justify-between gap-3 md:gap-0">
+              <h3 class="text-white text-lg md:text-2xl font-bold max-w-xl">
                 {{ t('serviceVente.benefits.title') }}
               </h3>
-              <p class="text-white text-sm md:text-base float-right">
+              <p class="text-white text-xs md:text-base md:float-right">
                 <span class="mr-4">{{ t('serviceVente.hero.forSale') }}</span>
                 |
                 <span class="ml-4">{{ t('serviceVente.hero.forRent') }}</span>

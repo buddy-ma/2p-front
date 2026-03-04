@@ -11,9 +11,9 @@
       <div class="absolute inset-0 bg-gradient-to-b from-gray-900/50 to-gray-900/10 bg-cover bg-center z-0">
       </div>
 
-      <div class="flex justify-center items-start md:flex-col pl-24 h-full gap-10">
+      <div class="container mx-auto px-4 max-w-6xl flex flex-col lg:flex-row justify-center items-start h-full gap-10">
 
-        <div class="max-w-5xl relative z-10 text-left">
+        <div class="w-full lg:w-auto max-w-5xl relative z-10 text-left">
           <span
             class="inline-block py-1 px-3 rounded-full bg-green-800 text-white font-semibold tracking-wider text-xs md:text-sm mb-4 border border-green-400/40">
             {{ t('servicePromoteur.meta.title') }}

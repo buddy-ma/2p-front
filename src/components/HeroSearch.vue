@@ -34,7 +34,7 @@
           {{ t('hero.vacation') }}
         </button>
       </div>
-      <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-2xl p-6">
+      <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-2xl p-6 max-h-[80vh] md:max-h-[70vh] overflow-y-auto">
         <!-- Search Form -->
         <form @submit.prevent="handleSearch" class="space-y-4">
           <div :class="['grid gap-4', isHomePage ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-1 md:grid-cols-2']">
@@ -708,6 +708,25 @@ watch(() => route.query, async () => {
     await populateFormFromRoute()
   }
 }, { deep: true })
+
+// Limit maximum number of selected villes and quartiers
+watch(
+  () => searchForm.value.ville,
+  (newVilles) => {
+    if (Array.isArray(newVilles) && newVilles.length > 5) {
+      searchForm.value.ville = newVilles.slice(0, 5)
+    }
+  }
+)
+
+watch(
+  () => searchForm.value.quartier,
+  (newQuartiers) => {
+    if (Array.isArray(newQuartiers) && newQuartiers.length > 5) {
+      searchForm.value.quartier = newQuartiers.slice(0, 5)
+    }
+  }
+)
 
 // Watch quartier selection - uncheck "toutelaville" when any other quartier is selected
 watch(() => searchForm.value.quartier, (newQuartiers) => {
