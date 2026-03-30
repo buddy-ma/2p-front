@@ -149,7 +149,7 @@ onMounted(async () => {
 
     <!-- Articles Section -->
     <section class="w-full py-8 bg-gray-50">
-      <div class="container mx-auto px-36">
+      <div class="container mx-auto md:px-36 px-8">
         <div v-if="isLoading" class="text-center py-12">
           <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#ff7503]"></div>
           <p class="mt-4 text-gray-600">{{ t('common.loading') }}</p>

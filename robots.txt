@@ -10,6 +10,8 @@ Disallow: /*?sort=
 Disallow: /*?filter=
 Disallow: /*?min=
 Disallow: /*?max=
+Disallow: /*?types_immobilier=
+Disallow: /*?locale=
 
 # =========================
 # Autoriser les pages principales

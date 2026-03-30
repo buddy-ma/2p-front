@@ -1,469 +1,184 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<url>
-  <loc>https://www.2p.ma/annonce.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/blog.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/pages.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<!-- immobilier par ville -->
-<url>
-    <loc>https://www.2p.ma/sitemap/villes/Agadir.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Azemmour.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Azilal.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Azrou.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Benslimane.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Berkane.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Bouznika.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/B%C3%A9ni-Mellal.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Casablanca.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Dakhla.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Dar-Bouazza.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/El-Jadida.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Errachidia.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Essaouira.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/F%C3%A8s.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Ifrane.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/inzeg-dchi-aitmel.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Khemisset.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/K%C3%A9nitra.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Marrakech.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Mehdia.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Mekn%C3%A8s.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Mohammedia.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Nador.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Oujda.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Rabat.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Safi.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Sal%C3%A9.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Settat.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Skhirat.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Tan-Tan.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Tanger.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Taroudant.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/Temara.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://www.2p.ma/sitemap/villes/T%C3%A9touan.xml</loc>
-    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-1.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-2.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-3.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-4.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-5.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-6.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-7.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-8.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-9.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-9.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-9.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-9.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-10.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-11.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-12.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-13.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-14.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-14.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-14.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-15.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-16.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-17.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-18.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-19.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-20.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-20.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-<loc>https://www.2p.ma/sitemap/ville-21.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<!-- location vacances par quartiers -->
-<url>
-  <loc>https://www.2p.ma/sitemap/vacances/Agadir.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-<!-- location immobiliere par quartiers -->
+  <!-- ========= CORE SITEMAPS ========= -->
+  <sitemap>
+    <loc>https://www.2p.ma/ads.xml</loc>
+    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
+  </sitemap>
+
+  <sitemap>
+    <loc>https://www.2p.ma/blog.xml</loc>
+    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
+  </sitemap>
+
+  <sitemap>
+    <loc>https://www.2p.ma/pages.xml</loc>
+    <lastmod>2024-07-19T13:34:27+00:00</lastmod>
+  </sitemap>
+
+  <!-- ========= CITIES (FROM SERVER FOLDERS) ========= -->
+
+  <!-- agadir vente -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/agadir/immobilier-a-vendre/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/agadir/immobilier-a-vendre/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/agadir/immobilier-a-vendre/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/agadir/immobilier-a-vendre/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+  <!-- agadir location -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/agadir/location-immobiliere/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/agadir/location-immobiliere/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/agadir/location-immobiliere/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/agadir/location-immobiliere/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+ 
+  <!-- agadir location vacance -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/agadir/location-vacances/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/agadir/location-vacances/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/agadir/location-vacances/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/agadir/location-vacances/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+<!-- agadir immoneuf -->
+ <sitemap><loc>https://www.2p.ma/sitemaps/agadir/immobilier-neuf/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
 
 
-<!-- immobilier à vendre par quartiers -->
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Agadir.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Agadir-2.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Benslimane.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Casablanca.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Bouznika.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Dakhla.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/El-Jadida.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Fès.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Essaouira.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Marrakech.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Ifrane.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Kénitra.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Mohammedia.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Meknès.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Nador.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Oujda.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Rabat.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Safi.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Salé.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Tanger.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Settat.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Skhirat.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Temara.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/Tétouan.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.2p.ma/sitemap/vente/vente-secondary.xml</loc>
-  <lastmod>2024-07-19T13:34:27+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-</urlset>
+ <!-- casablanca vente -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/casablanca/immobilier-a-vendre/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/casablanca/immobilier-a-vendre/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/casablanca/immobilier-a-vendre/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/casablanca/immobilier-a-vendre/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+  <!-- casablanca location -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/casablanca/location-immobiliere/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/casablanca/location-immobiliere/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/casablanca/location-immobiliere/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/casablanca/location-immobiliere/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+ 
+  <!-- casablanca location vacance -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/casablanca/location-vacances/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/casablanca/location-vacances/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/casablanca/location-vacances/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/casablanca/location-vacances/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+<!-- casablanca immoneuf -->
+ <sitemap><loc>https://www.2p.ma/sitemaps/casablanca/immobilier-neuf/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+ <!-- marrakech vente -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/marrakech/immobilier-a-vendre/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/marrakech/immobilier-a-vendre/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/marrakech/immobilier-a-vendre/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/marrakech/immobilier-a-vendre/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+  <!-- marrakech location -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/marrakech/location-immobiliere/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/marrakech/location-immobiliere/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/marrakech/location-immobiliere/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/marrakech/location-immobiliere/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+ 
+  <!-- marrakech location vacance -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/marrakech/location-vacances/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/marrakech/location-vacances/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/marrakech/location-vacances/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/marrakech/location-vacances/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+<!-- marrakech immoneuf -->
+ <sitemap><loc>https://www.2p.ma/sitemaps/marrakech/immobilier-neuf/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+<!-- rabat vente -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/rabat/immobilier-a-vendre/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/rabat/immobilier-a-vendre/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/rabat/immobilier-a-vendre/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/rabat/immobilier-a-vendre/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+  <!-- rabat location -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/rabat/location-immobiliere/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/rabat/location-immobiliere/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/rabat/location-immobiliere/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/rabat/location-immobiliere/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+ 
+  <!-- rabat location vacance -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/rabat/location-vacances/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/rabat/location-vacances/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/rabat/location-vacances/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/rabat/location-vacances/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+<!-- rabat immoneuf -->
+ <sitemap><loc>https://www.2p.ma/sitemaps/rabat/immobilier-neuf/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+<!-- tanger vente -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/tanger/immobilier-a-vendre/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/tanger/immobilier-a-vendre/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/tanger/immobilier-a-vendre/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/tanger/immobilier-a-vendre/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+  <!-- tanger location -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/tanger/location-immobiliere/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/tanger/location-immobiliere/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/tanger/location-immobiliere/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/tanger/location-immobiliere/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+ 
+  <!-- tanger location vacance -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/tanger/location-vacances/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/tanger/location-vacances/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/tanger/location-vacances/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/tanger/location-vacances/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+<!-- tanger immoneuf -->
+ <sitemap><loc>https://www.2p.ma/sitemaps/tanger/immobilier-neuf/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+<!-- meknès vente -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/meknès/immobilier-a-vendre/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/meknès/immobilier-a-vendre/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/meknès/immobilier-a-vendre/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/meknès/immobilier-a-vendre/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+  <!-- meknès location -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/meknès/location-immobiliere/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/meknès/location-immobiliere/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/meknès/location-immobiliere/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/meknès/location-immobiliere/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+ 
+  <!-- meknès location vacance -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/meknès/location-vacances/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/meknès/location-vacances/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/meknès/location-vacances/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/meknès/location-vacances/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+<!-- meknès immoneuf -->
+ <sitemap><loc>https://www.2p.ma/sitemaps/meknès/immobilier-neuf/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+
+<!-- fès vente -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/fès/immobilier-a-vendre/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/fès/immobilier-a-vendre/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/fès/immobilier-a-vendre/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/fès/immobilier-a-vendre/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+  <!-- meknès location -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/fès/location-immobiliere/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/fès/location-immobiliere/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/fès/location-immobiliere/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/fès/location-immobiliere/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+ 
+  <!-- meknès location vacance -->
+  <sitemap><loc>https://www.2p.ma/sitemaps/fès/location-vacances/fr/sitemap-extras-quartier.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/fès/location-vacances/fr/sitemap-extras-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/fès/location-vacances/fr/sitemap-quartiers.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+  <sitemap><loc>https://www.2p.ma/sitemaps/fès/location-vacances/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+<!-- meknès immoneuf -->
+ <sitemap><loc>https://www.2p.ma/sitemaps/fès/immobilier-neuf/fr/sitemap-ville.xml</loc><lastmod>2024-07-19T13:34:27+00:00</lastmod></sitemap>
+
+</sitemapindex>
+
+
+
+
+
+
+
+
+
+
+
+
+

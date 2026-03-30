@@ -92,6 +92,13 @@ const bannerAdvertising = ref(null)
 const loading = ref(true)
 const error = ref(null)
 
+// Update the document title with the blog title when available
+watch(blog, (newBlog) => {
+  if (newBlog?.title && typeof document !== 'undefined') {
+    document.title = newBlog.title
+  }
+})
+
 const getPdfUrl = (pdfPath) => {
   if (!pdfPath) return ''
   return `https://cdn.2p.ma/blog/files/${pdfPath}`

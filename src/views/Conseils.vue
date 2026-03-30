@@ -117,7 +117,7 @@ const textAlign = computed(() => isRtl.value ? 'text-right' : 'text-left')
 
     <!-- Content Section -->
     <section class="bg-white py-20">
-      <div class="container mx-auto px-36">
+      <div class="container mx-auto md:px-36 px-8">
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-12">
           <div class="w-full md:w-1/2 flex flex-col space-y-2 md:pr-12">
             <h2 class="text-xl md:text-2xl font-bold text-gray-900">

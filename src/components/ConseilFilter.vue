@@ -141,6 +141,6 @@ onMounted(async () => {
       :empty-image="NoSearchResultsImage" :empty-title="t('decouvrezMaroc.conseils.filter.no_results.title')"
       :empty-message="t('decouvrezMaroc.conseils.filter.no_results.message')" variant="filter"
       :loading-spinner-class="colorClasses.border" section-class="w-full py-8 bg-gray-50"
-      container-class="container mx-auto px-36" />
+      container-class="container mx-auto md:px-36 px-8" />
   </div>
 </template>

@@ -3,6 +3,10 @@
   RewriteEngine On
   RewriteBase /
 
+  # Redirect non-www to www
+  RewriteCond %{HTTP_HOST} ^2p\.ma$ [NC]
+  RewriteRule ^(.*)$ https://www.2p.ma/$1 [R=301,L]
+
   # Don't rewrite requests for files that exist
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d

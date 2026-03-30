@@ -151,6 +151,15 @@ const baseRoutes = [
     },
   },
   {
+    path: '/decouvrez-maroc/:slug',
+    name: 'DecouvrezDetail',
+    component: BlogDetail,
+    meta: {
+      logo: 'orangeDecouvrez',
+      locale: 'fr',
+    },
+  },
+  {
     path: '/annonce/:slug',
     name: 'ProductDetail',
     component: ProductDetail,
