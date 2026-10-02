@@ -3,10 +3,6 @@ import { setupLanguageGuard } from './guards'
 import { setupSEOGuard } from './seoGuard'
 import Home from '../views/Home.vue'
 import Professionnels from '../views/Professionnels.vue'
-import ServicePromoteur from '../views/ServicePromoteur.vue'
-import ServiceLocation from '../views/ServiceLocation.vue'
-import ServiceVacances from '../views/ServiceVacances.vue'
-import ServiceVente from '../views/ServiceVente.vue'
 import Coworking from '../views/Coworking.vue'
 import Tarifs from '../views/Tarifs.vue'
 import Achat from '../views/Achat.vue'
@@ -42,40 +38,45 @@ const baseRoutes = [
       locale: 'fr',
     },
   },
+  // Service marketing pages are retired — keep URLs as 410 for SEO cleanup
   {
     path: '/service-promoteur',
     name: 'ServicePromoteur',
-    component: ServicePromoteur,
+    component: Gone410,
     meta: { 
       logo: 'green', 
       locale: 'fr',
+      gone: true,
     },
   },
   {
     path: '/service-location',
     name: 'ServiceLocation',
-    component: ServiceLocation,
+    component: Gone410,
     meta: { 
       logo: 'blue', 
       locale: 'fr',
+      gone: true,
     },
   },
   {
     path: '/service-vacances',
     name: 'ServiceVacances',
-    component: ServiceVacances,
+    component: Gone410,
     meta: { 
       logo: 'orange', 
       locale: 'fr',
+      gone: true,
     },
   },
   {
     path: '/service-vente',
     name: 'ServiceVente',
-    component: ServiceVente,
+    component: Gone410,
     meta: { 
       logo: 'blue', 
       locale: 'fr',
+      gone: true,
     },
   },
   {
@@ -215,6 +216,7 @@ const baseRoutes = [
     meta: { 
       logo: 'blue', 
       locale: 'fr',
+      gone: true,
     },
   },
 ]

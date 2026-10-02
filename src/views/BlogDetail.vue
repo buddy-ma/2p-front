@@ -63,10 +63,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { homeService } from '../services/homeService'
 import { useI18n } from '../composables/useI18n'
+import { useSEO } from '../composables/useSEO'
+import { BASE_URL } from '../utils/seo'
 import AdvertisingLong from '../components/AdvertisingLong.vue'
 
 defineOptions({
@@ -84,6 +86,7 @@ import BlogArticlesSection from '../components/BlogArticlesSection.vue'
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
+const { updateSEO, stripHtml } = useSEO()
 
 const blog = ref(null)
 const similaires = ref([])
@@ -92,16 +95,46 @@ const bannerAdvertising = ref(null)
 const loading = ref(true)
 const error = ref(null)
 
-// Update the document title with the blog title when available
-watch(blog, (newBlog) => {
-  if (newBlog?.title && typeof document !== 'undefined') {
-    document.title = newBlog.title
-  }
-})
-
 const getPdfUrl = (pdfPath) => {
   if (!pdfPath) return ''
   return `https://cdn.2p.ma/blog/files/${pdfPath}`
+}
+
+const applyBlogSEO = (item) => {
+  const description = stripHtml(item.text || item.title || t('home.description'), 160)
+  const image = item.image
+    ? (item.image.startsWith('http') ? item.image : `https://cdn.2p.ma/${item.image}`)
+    : '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp'
+
+  updateSEO({
+    title: item.title,
+    description,
+    image,
+    type: 'article',
+    structuredDataKey: 'article',
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: item.title,
+      description,
+      image,
+      url: `${BASE_URL}${route.path}`,
+      datePublished: item.created_at || undefined,
+      dateModified: item.updated_at || item.created_at || undefined,
+      author: {
+        '@type': 'Organization',
+        name: '2P.ma',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: '2P.ma',
+        logo: {
+          '@type': 'ImageObject',
+          url: `${BASE_URL}/assets/images/logo-blue.svg`,
+        },
+      },
+    },
+  })
 }
 
 const loadBlog = async () => {
@@ -115,7 +148,9 @@ const loadBlog = async () => {
     blog.value = data.blog
     similaires.value = data.similaires || []
 
-    // TODO: Load advertising data if needed
+    if (blog.value) {
+      applyBlogSEO(blog.value)
+    }
   } catch (err) {
     console.error('Error loading blog:', err)
     error.value = err.response?.data?.message || err.message || 'Failed to load blog'
@@ -135,6 +170,12 @@ onMounted(() => {
 
 watch(() => route.params.slug, () => {
   loadBlog()
+})
+
+watch(blog, (newBlog) => {
+  if (newBlog) {
+    applyBlogSEO(newBlog)
+  }
 })
 </script>
 

@@ -646,6 +646,8 @@ import { productService } from '../services/productService'
 import { useTheme } from '../composables/useTheme'
 import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
+import { useSEO } from '../composables/useSEO'
+import { BASE_URL } from '../utils/seo'
 import ProductCard from '../components/ProductCard.vue'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
@@ -665,6 +667,7 @@ const router = useRouter()
 const { colorClasses } = useTheme()
 const { t } = useI18n()
 const { showToast } = useToast()
+const { updateSEO, stripHtml } = useSEO()
 
 const product = ref(null)
 const similarProducts = ref([])
@@ -861,6 +864,10 @@ const loadProduct = async () => {
     // Reset phone and company contact states
     phoneRevealed.value = false
     companyContactExpanded.value = false
+
+    if (product.value) {
+      applyProductSEO(product.value)
+    }
   } catch (err) {
     console.error('Error loading product:', err)
     error.value = err.response?.data?.message || err.message || 'Failed to load product'
@@ -876,6 +883,73 @@ const loadProduct = async () => {
   } finally {
     loading.value = false
   }
+}
+
+const applyProductSEO = (item) => {
+  const image = item.images?.[0]?.image
+    ? getImageUrl(item.images[0].image)
+    : '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp'
+
+  const description = stripHtml(
+    item.description || item.title || t('productDetail.meta.description'),
+    160
+  )
+
+  const title = item.title
+    ? `${item.title}${item.ville ? ` - ${item.ville}` : ''} | 2P.ma`
+    : t('productDetail.meta.title')
+
+  const priceValue = item.prix ? String(item.prix).replace(/[^\d.]/g, '') : undefined
+  const accommodationType = item.product_type?.title?.toLowerCase()?.includes('appartement')
+    ? 'Apartment'
+    : item.product_type?.title?.toLowerCase()?.includes('villa')
+      ? 'House'
+      : 'Accommodation'
+
+  updateSEO({
+    title,
+    description,
+    image,
+    type: 'article',
+    structuredDataKey: 'listing',
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'RealEstateListing',
+      name: item.title,
+      description,
+      url: `${BASE_URL}/annonce/${item.slug || route.params.slug}`,
+      datePosted: item.created_at || item.date_classement || undefined,
+      image,
+      offers: {
+        '@type': 'Offer',
+        price: priceValue || undefined,
+        priceCurrency: 'MAD',
+        availability: item.vendu ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock',
+        businessFunction: item.product_category_id === 2 || item.category_slug === 'location' || item.category_slug === 'vacances'
+          ? 'https://schema.org/LeaseOut'
+          : 'https://schema.org/Sell',
+        itemOffered: {
+          '@type': accommodationType,
+          name: item.title,
+          description,
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: item.ville || undefined,
+            addressRegion: item.quartier || undefined,
+            addressCountry: 'MA',
+          },
+          numberOfRooms: item.nbr_chambres || undefined,
+          floorSize: item.surface
+            ? {
+                '@type': 'QuantitativeValue',
+                value: item.surface,
+                unitCode: 'MTK',
+              }
+            : undefined,
+        },
+      },
+    },
+  })
 }
 
 const submitContact = async (isRetry = false) => {
@@ -1047,10 +1121,10 @@ watch(() => route.params.slug, () => {
   loadProduct()
 })
 
-// Watch for product changes to update the document title with the product title
+// Watch for product changes to refresh SEO meta
 watch(product, (newProduct) => {
-  if (newProduct?.title && typeof document !== 'undefined') {
-    document.title = newProduct.title
+  if (newProduct) {
+    applyProductSEO(newProduct)
   }
 })
 </script>

@@ -47,26 +47,6 @@
                   t('navigation.vacation') }}</router-link>
             </div>
           </div>
-          <div class="relative group">
-            <button :class="`text-gray-700 dark:text-gray-300 ${colorClasses.hoverText} flex items-center`">
-              {{ t('navigation.services') }}
-              <svg class="w-4 h-4 ms-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <div
-              class="absolute top-full start-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-              <router-link to="/service-vacances"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
-                  t('navigation.serviceVacation') }}</router-link>
-              <router-link to="/service-vente"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
-                  t('navigation.serviceSale') }}</router-link>
-              <router-link to="/service-promoteur"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
-                  t('navigation.servicePromoter') }}</router-link>
-            </div>
-          </div>
 
           <div class="relative group">
             <button :class="`text-gray-700 dark:text-gray-300 ${colorClasses.hoverText} flex items-center`">
@@ -163,27 +143,6 @@
             </div>
           </div>
 
-          <div>
-            <button @click="toggleServicesMenu"
-              class="w-full px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-between">
-              <span>{{ t('navigation.services') }}</span>
-              <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': servicesMenuOpen }" fill="none"
-                stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <div v-if="servicesMenuOpen" class="pl-4 space-y-1">
-              <router-link to="/service-vacances" @click="closeMobileMenu"
-                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
-                  t('navigation.serviceVacation') }}</router-link>
-              <router-link to="/service-vente" @click="closeMobileMenu"
-                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
-                  t('navigation.serviceSale') }}</router-link>
-              <router-link to="/service-promoteur" @click="closeMobileMenu"
-                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
-                  t('navigation.servicePromoter') }}</router-link>
-            </div>
-          </div>
           <!-- News Menu Group -->
           <div>
             <button @click="toggleNewsMenu"
@@ -258,7 +217,6 @@ const { t } = useI18n()
 // Mobile menu submenu states
 const buyMenuOpen = ref(false)
 const rentMenuOpen = ref(false)
-const servicesMenuOpen = ref(false)
 const newsMenuOpen = ref(false)
 
 const logos = {
@@ -283,7 +241,6 @@ const closeMobileMenu = () => {
   // Reset all submenus when closing mobile menu
   buyMenuOpen.value = false
   rentMenuOpen.value = false
-  servicesMenuOpen.value = false
   newsMenuOpen.value = false
 }
 
@@ -293,10 +250,6 @@ const toggleBuyMenu = () => {
 
 const toggleRentMenu = () => {
   rentMenuOpen.value = !rentMenuOpen.value
-}
-
-const toggleServicesMenu = () => {
-  servicesMenuOpen.value = !servicesMenuOpen.value
 }
 
 const toggleNewsMenu = () => {

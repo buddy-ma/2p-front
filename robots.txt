@@ -21,6 +21,22 @@ Allow: /*/location-immobiliere/
 Allow: /*/location-vacances/
 
 # =========================
+# Bloquer les pages services retirées
+# =========================
+Disallow: /service-vacances
+Disallow: /service-vente
+Disallow: /service-promoteur
+Disallow: /service-location
+Disallow: /en/service-vacances
+Disallow: /en/service-vente
+Disallow: /en/service-promoteur
+Disallow: /en/service-location
+Disallow: /ar/service-vacances
+Disallow: /ar/service-vente
+Disallow: /ar/service-promoteur
+Disallow: /ar/service-location
+
+# =========================
 # Bloquer la recherche interne
 # =========================
 Disallow: /search
