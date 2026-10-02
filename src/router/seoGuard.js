@@ -150,14 +150,20 @@ export function setupSEOGuard(router) {
       seoMeta = to.meta.seo
     }
     
-    // Check if this is a 410 page - should not have canonical or hreflang tags
-    const is410Page = to.path === '/410' || to.path.startsWith('/410/') || 
+    // Check if this is a 410 / retired page - should not have canonical or hreflang tags
+    const is410Page = to.meta?.gone === true ||
+                      to.path === '/410' || to.path.startsWith('/410/') || 
                       to.path === '/en/410' || to.path.startsWith('/en/410/') ||
-                      to.path === '/ar/410' || to.path.startsWith('/ar/410/')
+                      to.path === '/ar/410' || to.path.startsWith('/ar/410/') ||
+                      /^\/(en\/|ar\/)?service-(vacances|vente|promoteur|location)\/?$/.test(to.path)
     
     // Build SEO data
-    const title = seoMeta.titleKey ? getTranslation(seoMeta.titleKey, locale) : getTranslation('home.title', locale)
-    const description = seoMeta.descriptionKey ? getTranslation(seoMeta.descriptionKey, locale) : getTranslation('home.description', locale)
+    const title = is410Page
+      ? getTranslation('error410.meta.title', locale)
+      : (seoMeta.titleKey ? getTranslation(seoMeta.titleKey, locale) : getTranslation('home.title', locale))
+    const description = is410Page
+      ? getTranslation('error410.meta.description', locale)
+      : (seoMeta.descriptionKey ? getTranslation(seoMeta.descriptionKey, locale) : getTranslation('home.description', locale))
     const image = seoMeta.image || '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp'
     const canonicalUrl = getCanonicalUrl(to.path)
     const alternateUrls = getAlternateUrls(to.path)

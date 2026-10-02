@@ -73,21 +73,46 @@ function removeLinkTags(rel) {
 /**
  * Update or create JSON-LD structured data
  */
-function updateStructuredData(data) {
+function updateStructuredData(data, schemaKey = 'organization') {
   if (typeof document === 'undefined') return
   
-  // Remove existing organization schema
-  let existingScript = document.querySelector('script[type="application/ld+json"][data-schema="organization"]')
+  let existingScript = document.querySelector(`script[type="application/ld+json"][data-schema="${schemaKey}"]`)
   if (existingScript) {
     existingScript.remove()
   }
   
-  // Create new script
+  if (!data) return
+
   const script = document.createElement('script')
   script.type = 'application/ld+json'
-  script.setAttribute('data-schema', 'organization')
-  script.textContent = JSON.stringify(data, null, 2)
+  script.setAttribute('data-schema', schemaKey)
+  script.textContent = JSON.stringify(data)
   document.head.appendChild(script)
+}
+
+/**
+ * Remove structured data by schema key
+ */
+function removeStructuredData(schemaKey) {
+  if (typeof document === 'undefined') return
+  document.querySelectorAll(`script[type="application/ld+json"][data-schema="${schemaKey}"]`).forEach(el => el.remove())
+}
+
+/**
+ * Strip HTML and truncate text for meta descriptions
+ */
+function stripHtml(html = '', maxLength = 160) {
+  const text = String(html)
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim()
+
+  if (text.length <= maxLength) return text
+  return text.slice(0, maxLength - 1).trimEnd() + '…'
 }
 
 export function useSEO(meta = {}) {
@@ -123,7 +148,7 @@ export function useSEO(meta = {}) {
     const currentPath = route.path
     const canonicalUrl = getCanonicalUrl(currentPath)
     const alternateUrls = getAlternateUrls(currentPath)
-    const robotsContent = getRobotsContent()
+    const robotsContent = metaData.robots || getRobotsContent()
     
     // Update title
     updateTitle(metaData.title)
@@ -131,7 +156,7 @@ export function useSEO(meta = {}) {
     // Basic meta tags
     updateMetaTag('robots', robotsContent)
     updateMetaTag('author', metaData.author)
-    updateMetaTag('description', metaData.description)
+    updateMetaTag('description', stripHtml(metaData.description, 160))
     updateMetaTag('theme-color', '#ffffff')
     updateMetaTag('msapplication-TileColor', '#ffc40d')
     
@@ -149,7 +174,7 @@ export function useSEO(meta = {}) {
     updateMetaTag('og:url', canonicalUrl, 'property')
     updateMetaTag('og:type', metaData.type, 'property')
     updateMetaTag('og:title', metaData.title, 'property')
-    updateMetaTag('og:description', metaData.description, 'property')
+    updateMetaTag('og:description', stripHtml(metaData.description, 200), 'property')
     updateMetaTag('og:image', ogImage, 'property')
     updateMetaTag('og:site_name', metaData.siteName, 'property')
     updateMetaTag('og:image:width', '600', 'property')
@@ -161,7 +186,7 @@ export function useSEO(meta = {}) {
     updateMetaTag('twitter:domain', '2p.ma', 'property')
     updateMetaTag('twitter:url', canonicalUrl, 'property')
     updateMetaTag('twitter:title', metaData.title, 'name')
-    updateMetaTag('twitter:description', metaData.description, 'name')
+    updateMetaTag('twitter:description', stripHtml(metaData.description, 200), 'name')
     updateMetaTag('twitter:image', ogImage, 'name')
     updateMetaTag('twitter:site', '@2Pmaimmobilier', 'name')
     updateMetaTag('twitter:creator', '@2Pmaimmobilier', 'name')
@@ -174,7 +199,7 @@ export function useSEO(meta = {}) {
       url: `${BASE_URL}/`,
       legalName: 'Particulier à particulier',
       name: '2p',
-      description: metaData.description,
+      description: stripHtml(metaData.description, 200),
       image: ogImage,
       logo: `${BASE_URL}/assets/images/logo-blue.svg`,
       telephone: '+212 661 678 714',
@@ -194,7 +219,13 @@ export function useSEO(meta = {}) {
         'https://www.instagram.com/2p_ma/',
         'https://ma.linkedin.com/company/2p-ma',
       ],
-    })
+    }, 'organization')
+
+    if (metaData.structuredData) {
+      updateStructuredData(metaData.structuredData, metaData.structuredDataKey || 'page')
+    } else {
+      removeStructuredData(metaData.structuredDataKey || 'page')
+    }
   }
   
   // Initialize on mount
@@ -205,5 +236,6 @@ export function useSEO(meta = {}) {
   return {
     updateSEO,
     updateTitle,
+    stripHtml,
   }
 }

@@ -247,14 +247,12 @@ const loadProducts = async () => {
 
     data.value = responseData
 
-    // Update dynamic SEO with page data
-    if (responseData?.page?.mainTitle || responseData?.page?.mainText) {
-      updateSEO({
-        title: responseData.page.mainTitle || t('location.title'),
-        description: responseData.page.mainText || t('location.description'),
-        image: '/assets/images/main_pages/Annonces-immobilier-a-louer-au-Maroc.webp'
-      })
-    }
+    // Update dynamic SEO with page data (always refresh, with locale fallbacks)
+    updateSEO({
+      title: responseData?.page?.mainTitle || t('location.title'),
+      description: responseData?.page?.mainText || t('location.description'),
+      image: '/assets/images/main_pages/Annonces-immobilier-a-louer-au-Maroc.webp'
+    })
 
     // Update FooterLinks status
     setHasFooterLinks(responseData?.footerLinks && responseData.footerLinks.length > 0)
