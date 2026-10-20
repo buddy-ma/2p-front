@@ -14,6 +14,7 @@ export default {
   common: {
     home: 'الرئيسية',
     contact: 'اتصل بنا',
+    whatsappChat: 'تحدث عبر واتساب',
     theme: 'المظهر',
     language: 'اللغة',
     login: 'تسجيل الدخول',

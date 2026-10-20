@@ -12,6 +12,7 @@ export default {
   common: {
     home: 'Home',
     contact: 'Contact',
+    whatsappChat: 'Chat on WhatsApp',
     theme: 'Theme',
     language: 'Language',
     login: 'Sign In',
