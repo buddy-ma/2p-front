@@ -1,7 +1,6 @@
 // src/locales/services/mandat-exclusif.js
 // Copy taken verbatim from Ayman's drafts (services2p.zip). Do not rewrite.
-// ⚠ RENTAL FEE CONFLICT: FR draft says “50% du premier loyer”, AR draft says “70% من قيمة الشهر الأول للكراء” (both min 1 500 DH).
-// Left as TODO in BOTH locales on purpose. Ayman must pick ONE value and replace card.fees[1].value in fr AND ar.
+// Rental fee confirmed: 70% of the first rent (min 1 500 DH), same rate in FR and AR.
 export default {
   fr: {
     seo: {
@@ -39,7 +38,7 @@ export default {
         },
         {
           label: "LOCATION RÉUSSIE",
-          value: "[TODO: honoraires LOCATION à confirmer – brouillon FR : « 50% du premier loyer » / brouillon AR : « 70% » – une seule valeur pour FR et AR]" /* TODO – placeholder, must be resolved before deploy */,
+          value: "70% du premier loyer",
           min: "Minimum : 1 500 DH"
         }
       ],
@@ -201,7 +200,7 @@ export default {
         },
         {
           label: "أتعابنا عند نجاح الكراء",
-          value: "[TODO: أتعاب الكراء غير مؤكدة – المسودة الفرنسية 50% / المسودة العربية 70% – يجب اعتماد نسبة واحدة]" /* TODO – placeholder, must be resolved before deploy */,
+          value: "70% من قيمة الشهر الأول للكراء",
           min: "الحد الأدنى: 1,500 درهم"
         }
       ],

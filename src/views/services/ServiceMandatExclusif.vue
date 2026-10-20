@@ -76,7 +76,6 @@
 import heroImage from '../../assets/images/services/mandat-exclusif-hero.webp'
 import { onMounted } from 'vue'
 import { useServicePage } from '../../composables/useServicePage'
-import { isTodo } from '../../utils/todo'
 import ServiceHero from '../../components/services/ServiceHero.vue'
 import ServiceSection from '../../components/services/ServiceSection.vue'
 import ServiceImage from '../../components/services/ServiceImage.vue'
@@ -102,9 +101,6 @@ defineOptions({
 const { c, common, scrollToForm, setServiceSEO, trail, heroBreadcrumb, serviceLinks } = useServicePage('mandatExclusif')
 
 onMounted(() => {
-  if (c.value.card.fees.some((fee) => isTodo(fee.value))) {
-    console.warn('[2P] Mandat exclusif: the rental fee rate is still a TODO (FR draft 50% vs AR draft 70%). Set one value in src/locales/services/mandat-exclusif.js (fr + ar).')
-  }
   setServiceSEO(() => ({
     serviceName: c.value.breadcrumb,
     serviceType: 'Exclusive real estate brokerage mandate',
