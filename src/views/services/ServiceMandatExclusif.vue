@@ -73,6 +73,7 @@
 </template>
 
 <script setup>
+import heroImage from '../../assets/images/services/mandat-exclusif-hero.webp'
 import { onMounted } from 'vue'
 import { useServicePage } from '../../composables/useServicePage'
 import { isTodo } from '../../utils/todo'
@@ -94,7 +95,7 @@ defineOptions({
   seo: {
     titleKey: 'servicePages.mandatExclusif.seo.title',
     descriptionKey: 'servicePages.mandatExclusif.seo.description',
-    image: '/images/services/mandat-exclusif-hero.webp',
+    image: heroImage,
   },
 })
 

@@ -80,6 +80,7 @@
 </template>
 
 <script setup>
+import heroImage from '../../assets/images/services/annonce-premium-hero.webp'
 import { onMounted } from 'vue'
 import { useServicePage } from '../../composables/useServicePage'
 import ServiceHero from '../../components/services/ServiceHero.vue'
@@ -100,7 +101,7 @@ defineOptions({
   seo: {
     titleKey: 'servicePages.annoncePremium.seo.title',
     descriptionKey: 'servicePages.annoncePremium.seo.description',
-    image: '/images/services/annonce-premium-hero.webp',
+    image: heroImage,
   },
 })
 

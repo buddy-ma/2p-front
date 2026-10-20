@@ -128,6 +128,7 @@
 </template>
 
 <script setup>
+import heroImage from '../../assets/images/services/proprietaires-hero.webp'
 import { ref, computed, onMounted } from 'vue'
 import { Smartphone, Truck } from 'lucide-vue-next'
 import { useServicePage, stripNumberPrefix } from '../../composables/useServicePage'
@@ -151,7 +152,7 @@ defineOptions({
   seo: {
     titleKey: 'servicePages.proprietaires.seo.title',
     descriptionKey: 'servicePages.proprietaires.seo.description',
-    image: '/images/services/proprietaires-hero.webp',
+    image: heroImage,
   },
 })
 

@@ -66,6 +66,7 @@
 </template>
 
 <script setup>
+import heroImage from '../../assets/images/services/assistance-commerciale-hero.webp'
 import { computed, onMounted } from 'vue'
 import { useServicePage, stripNumberPrefix } from '../../composables/useServicePage'
 import ServiceHero from '../../components/services/ServiceHero.vue'
@@ -86,7 +87,7 @@ defineOptions({
   seo: {
     titleKey: 'servicePages.assistanceCommerciale.seo.title',
     descriptionKey: 'servicePages.assistanceCommerciale.seo.description',
-    image: '/images/services/assistance-commerciale-hero.webp',
+    image: heroImage,
   },
 })
 
