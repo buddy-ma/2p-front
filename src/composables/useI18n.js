@@ -50,8 +50,20 @@ export function useI18n() {
     return typeof value === 'string' ? value : key
   }
 
+  // Like t() but returns the raw value (object, array or string), or undefined when missing.
+  const tm = (key) => {
+    const resolve = (root) => key.split('.').reduce(
+      (acc, k) => (acc && typeof acc === 'object' && k in acc ? acc[k] : undefined),
+      root
+    )
+    const locale = currentLocale.value || 'fr'
+    const value = resolve(translations[locale] || translations.fr)
+    return value !== undefined ? value : resolve(translations.fr)
+  }
+
   return {
     t,
+    tm,
     currentLocale: computed(() => currentLocale.value),
   }
 }

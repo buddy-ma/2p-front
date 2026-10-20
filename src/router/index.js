@@ -17,6 +17,29 @@ import NotFound404 from '../views/NotFound404.vue'
 import Gone410 from '../views/Gone410.vue'
 import ProductDetail from '../views/ProductDetail.vue'
 import BlogDetail from '../views/BlogDetail.vue'
+import { SERVICE_PAGES } from '../config/services'
+
+const serviceViews = {
+  proprietaires: () => import('../views/services/ServicesProprietaires.vue'),
+  annoncePremium: () => import('../views/services/ServiceAnnoncePremium.vue'),
+  assistanceCommerciale: () => import('../views/services/ServiceAssistanceCommerciale.vue'),
+  mandatExclusif: () => import('../views/services/ServiceMandatExclusif.vue'),
+  locationVacances: () => import('../views/services/ServiceLocationVacancesOwners.vue'),
+  acheteursLocataires: () => import('../views/services/ServiceAcheteursLocataires.vue'),
+}
+
+// FR + AR only: /en/... versions fall through to the invalid-prefix redirect below.
+const serviceRoutes = Object.entries(SERVICE_PAGES).map(([key, page]) => ({
+  path: page.path,
+  name: page.name,
+  component: serviceViews[key],
+  meta: {
+    logo: page.logo,
+    locale: 'fr',
+    locales: ['fr', 'ar'],
+    selfCanonical: true,
+  },
+}))
 
 // Define routes without locale prefix (French routes)
 const baseRoutes = [
@@ -96,6 +119,11 @@ const baseRoutes = [
       logo: 'blue', 
       locale: 'fr',
     },
+  },
+  ...serviceRoutes,
+  {
+    path: '/services',
+    redirect: SERVICE_PAGES.proprietaires.path,
   },
   {
     path: '/immobilier-a-vendre/:ville?/:quartier?/:type?/:extra?',
@@ -223,24 +251,26 @@ const baseRoutes = [
 
 // Helper function to create localized routes
 function createLocalizedRoutes(locale) {
-  return baseRoutes.map(route => {
-    // Skip redirect routes
-    if (route.redirect) {
+  return baseRoutes
+    .filter(route => !route.meta?.locales || route.meta.locales.includes(locale))
+    .map(route => {
+      // Skip redirect routes
+      if (route.redirect) {
+        return {
+          ...route,
+          path: `/${locale}${route.path}`,
+          redirect: `/${locale}${route.redirect}`,
+          meta: { ...route.meta, locale },
+        }
+      }
+      
       return {
         ...route,
         path: `/${locale}${route.path}`,
-        redirect: `/${locale}${route.redirect}`,
+        name: `${route.name}_${locale}`,
         meta: { ...route.meta, locale },
       }
-    }
-    
-    return {
-      ...route,
-      path: `/${locale}${route.path}`,
-      name: `${route.name}_${locale}`,
-      meta: { ...route.meta, locale },
-    }
-  })
+    })
 }
 
 // Create English routes

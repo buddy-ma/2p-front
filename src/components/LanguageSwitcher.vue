@@ -27,7 +27,7 @@
       >
         <div class="py-1" role="menu" aria-orientation="vertical">
           <button
-            v-for="locale in availableLocales"
+            v-for="locale in visibleLocales"
             :key="locale"
             @click="handleLanguageChange(locale)"
             class="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -54,6 +54,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { useLanguage } from '../composables/useLanguage'
 import { useI18n } from '../composables/useI18n'
 import flagAr from '../assets/images/flags/ar.svg'
@@ -62,7 +63,13 @@ import flagFr from '../assets/images/flags/fr.svg'
 
 const { currentLocale, availableLocales, switchLanguage } = useLanguage()
 const { t } = useI18n()
+const route = useRoute()
 const isOpen = ref(false)
+
+const visibleLocales = computed(() => {
+  const allowed = route.meta?.locales
+  return allowed ? availableLocales.filter((l) => allowed.includes(l)) : availableLocales
+})
 const dropdownRef = ref(null)
 
 // Click outside handler

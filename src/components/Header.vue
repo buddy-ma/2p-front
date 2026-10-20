@@ -65,6 +65,20 @@
                   t('navigation.discoverMorocco') }}</router-link>
             </div>
           </div>
+          <div class="relative group">
+            <button :class="`text-gray-700 dark:text-gray-300 ${colorClasses.hoverText} flex items-center whitespace-nowrap`">
+              {{ t('navigation.services') }}
+              <svg class="w-4 h-4 ms-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div
+              class="absolute top-full start-0 mt-2 w-56 bg-white dark:bg-gray-800 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all">
+              <router-link v-for="link in serviceLinks" :key="link.path" :to="getLocalizedPath(link.path)"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">{{
+                  t(link.label) }}</router-link>
+            </div>
+          </div>
           <router-link to="/contact" :class="`text-gray-700 dark:text-gray-300 ${colorClasses.hoverText}`">{{
             t('common.contact') }}</router-link>
         </nav>
@@ -163,6 +177,24 @@
             </div>
           </div>
 
+          <!-- Services Menu Group -->
+          <div>
+            <button @click="servicesMenuOpen = !servicesMenuOpen" :aria-expanded="servicesMenuOpen"
+              class="w-full px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-between">
+              <span>{{ t('navigation.services') }}</span>
+              <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': servicesMenuOpen }" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div v-if="servicesMenuOpen" class="ps-4 space-y-1">
+              <router-link v-for="link in serviceLinks" :key="link.path" :to="getLocalizedPath(link.path)"
+                @click="closeMobileMenu"
+                class="block px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800">{{
+                  t(link.label) }}</router-link>
+            </div>
+          </div>
+
           <router-link to="/contact" @click="closeMobileMenu"
             class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">{{
               t('common.contact') }}</router-link>
@@ -201,6 +233,8 @@
 import { ref, computed } from 'vue'
 import { useTheme } from '../composables/useTheme'
 import { useI18n } from '../composables/useI18n'
+import { useLanguage } from '../composables/useLanguage'
+import { SERVICE_PAGES } from '../config/services'
 import DarkModeToggle from './DarkModeToggle.vue'
 import LanguageSwitcher from './LanguageSwitcher.vue'
 import logoBlue from '../assets/images/logos/logo-blue.svg'
@@ -213,11 +247,19 @@ import logoRed from '../assets/images/logos/logo-red.svg'
 const mobileMenuOpen = ref(false)
 const { logoColor, colorClasses } = useTheme()
 const { t } = useI18n()
+const { getLocalizedPath } = useLanguage()
+
+const serviceLinks = [
+  { label: 'navigation.sellRent', path: SERVICE_PAGES.proprietaires.path },
+  { label: 'navigation.vacationRentalService', path: SERVICE_PAGES.locationVacances.path },
+  { label: 'navigation.buyersTenants', path: SERVICE_PAGES.acheteursLocataires.path },
+]
 
 // Mobile menu submenu states
 const buyMenuOpen = ref(false)
 const rentMenuOpen = ref(false)
 const newsMenuOpen = ref(false)
+const servicesMenuOpen = ref(false)
 
 const logos = {
   blue: logoBlue,
@@ -242,6 +284,7 @@ const closeMobileMenu = () => {
   buyMenuOpen.value = false
   rentMenuOpen.value = false
   newsMenuOpen.value = false
+  servicesMenuOpen.value = false
 }
 
 const toggleBuyMenu = () => {

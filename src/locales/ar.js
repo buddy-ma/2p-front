@@ -1,8 +1,10 @@
 import citiesData from './data/cities.js'
 import quartiersData from './data/quartiers.js'
 import propertiesData from './data/properties.js'
+import servicePagesData from './services/index.js'
 
 export default {
+  servicePages: servicePagesData.ar,
   meta: {
     author: 'Particulier à Particulier',
     robots: 'index,follow',
@@ -51,6 +53,7 @@ export default {
     sellRent: 'بيع وإيجار',
     newRealEstate: 'عقارات جديدة',
     vacationRentalService: 'تأجير العطلات',
+    buyersTenants: 'المشترون والمكترون', // PROPOSED – Ayman to validate
     rentalManagement: 'إدارة الإيجار',
     eventsCoworking: 'مساحة عمل مشترك',
     pricing: 'أسعارنا',

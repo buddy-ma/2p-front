@@ -51,6 +51,7 @@ export default {
     sellRent: 'Sale & Rent',
     newRealEstate: 'New Real Estate',
     vacationRentalService: 'Vacation Rentals',
+    buyersTenants: 'Buyers & tenants',
     rentalManagement: 'Property Management',
     eventsCoworking: 'Coworking Space',
     pricing: 'Our Prices',

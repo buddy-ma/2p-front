@@ -9,9 +9,10 @@ export const BASE_URL = import.meta.env.VITE_APP_URL || (typeof window !== 'unde
 
 /**
  * Get clean URL without query parameters (for canonical)
- * Also removes locale prefix for canonical (canonical should be French version)
+ * Also removes locale prefix for canonical (canonical should be French version),
+ * unless keepLocale is true (self-canonical, used by routes with meta.selfCanonical)
  */
-export function getCanonicalUrl(path = null) {
+export function getCanonicalUrl(path = null, { keepLocale = false } = {}) {
   if (!path) {
     // Get current path without query string
     if (typeof window !== 'undefined') {
@@ -25,7 +26,7 @@ export function getCanonicalUrl(path = null) {
   let cleanPath = path.split('?')[0]
   
   // Remove locale prefix for canonical (canonical should always be French version)
-  for (const locale of AVAILABLE_LOCALES) {
+  for (const locale of keepLocale ? [] : AVAILABLE_LOCALES) {
     if (locale !== DEFAULT_LOCALE && cleanPath.startsWith(`/${locale}/`)) {
       cleanPath = cleanPath.replace(`/${locale}/`, '/')
       break
@@ -50,8 +51,9 @@ export function getCanonicalUrl(path = null) {
 
 /**
  * Generate alternate hreflang URLs for current route
+ * @param {string[]} locales - locales the route exists in (defaults to all)
  */
-export function getAlternateUrls(currentPath = null) {
+export function getAlternateUrls(currentPath = null, locales = AVAILABLE_LOCALES) {
   if (!currentPath && typeof window !== 'undefined') {
     currentPath = window.location.pathname
   }
@@ -82,7 +84,7 @@ export function getAlternateUrls(currentPath = null) {
   const alternates = {}
   
   // Generate URLs for each locale
-  AVAILABLE_LOCALES.forEach(locale => {
+  AVAILABLE_LOCALES.filter(locale => (locales || AVAILABLE_LOCALES).includes(locale)).forEach(locale => {
     if (locale === DEFAULT_LOCALE) {
       // French: no prefix
       alternates[locale] = `${BASE_URL}${basePath}`
