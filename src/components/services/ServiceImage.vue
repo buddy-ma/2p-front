@@ -8,8 +8,8 @@
   >
     <img
       v-show="!failed"
-      :src="src"
-      :srcset="srcSm ? `${srcSm} ${Math.round(width / 2)}w, ${src} ${width}w` : undefined"
+      :src="url"
+      :srcset="urlSm ? `${urlSm} ${Math.round(width / 2)}w, ${url} ${width}w` : undefined"
       :sizes="sizes"
       :alt="alt"
       :width="width"
@@ -32,6 +32,7 @@
 // Explicit width/height + aspect-ratio box: no layout shift, and a neutral placeholder while the file is missing.
 import { computed, ref, watch } from 'vue'
 import { Image as ImageIcon } from 'lucide-vue-next'
+import { serviceImageUrl } from '../../utils/serviceImages'
 
 const props = defineProps({
   src: { type: String, required: true },
@@ -45,6 +46,9 @@ const props = defineProps({
   mirror: { type: Boolean, default: false },
   rounded: { type: Boolean, default: true },
 })
+
+const url = computed(() => serviceImageUrl(props.src))
+const urlSm = computed(() => serviceImageUrl(props.srcSm))
 
 const failed = ref(false)
 watch(() => props.src, () => { failed.value = false })

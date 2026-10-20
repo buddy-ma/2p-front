@@ -77,6 +77,7 @@
 </template>
 
 <script setup>
+import heroImage from '../../assets/images/services/acheteurs-locataires-hero.webp'
 import { computed, onMounted } from 'vue'
 import { useServicePage } from '../../composables/useServicePage'
 import ServiceHero from '../../components/services/ServiceHero.vue'
@@ -93,7 +94,7 @@ defineOptions({
   seo: {
     titleKey: 'servicePages.acheteursLocataires.seo.title',
     descriptionKey: 'servicePages.acheteursLocataires.seo.description',
-    image: '/images/services/acheteurs-locataires-hero.webp',
+    image: heroImage,
   },
 })
 

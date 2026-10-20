@@ -92,6 +92,7 @@
 </template>
 
 <script setup>
+import heroImage from '../../assets/images/services/location-vacances-hero.webp'
 import { computed, onMounted } from 'vue'
 import { useServicePage, stripNumberPrefix, numberPrefix } from '../../composables/useServicePage'
 import ServiceHero from '../../components/services/ServiceHero.vue'
@@ -109,7 +110,7 @@ defineOptions({
   seo: {
     titleKey: 'servicePages.locationVacances.seo.title',
     descriptionKey: 'servicePages.locationVacances.seo.description',
-    image: '/images/services/location-vacances-hero.webp',
+    image: heroImage,
   },
 })
 

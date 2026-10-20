@@ -6,6 +6,7 @@ import { useServiceTheme } from './useServiceTheme'
 import { useSEO } from './useSEO'
 import { BASE_URL } from '../utils/seo'
 import { isTodo, withoutTodo } from '../utils/todo'
+import { serviceImageUrl } from '../utils/serviceImages'
 import { CHECKOUT_URLS, SERVICE_AREA, SERVICE_PAGES } from '../config/services'
 
 const NUMBER_PREFIX = /^\s*(\d+)\s*[—–-]\s*/
@@ -40,7 +41,7 @@ export function useServicePage(pageKey) {
   const { updateSEO } = useSEO({
     title: c.value.seo?.title,
     description: c.value.seo?.description,
-    image: c.value.images?.hero?.src,
+    image: serviceImageUrl(c.value.images?.hero?.src),
   })
 
   const toOffer = (o) => {
@@ -110,7 +111,7 @@ export function useServicePage(pageKey) {
     updateSEO({
       title: c.value.seo?.title,
       description: c.value.seo?.description,
-      image: c.value.images?.hero?.src,
+      image: serviceImageUrl(c.value.images?.hero?.src),
       structuredDataKey: 'page',
       structuredData: { '@context': 'https://schema.org', '@graph': graph },
     })
