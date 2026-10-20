@@ -51,8 +51,11 @@ export function setupLanguageGuard(router) {
 
     // If no locale in path, check localStorage
     const storedLocale = localStorage.getItem('app_locale')
+    // Routes limited to some locales (meta.locales) must not redirect to an unsupported one,
+    // otherwise /en/... bounces back to the French path forever.
+    const routeSupportsStored = !to.meta?.locales || to.meta.locales.includes(storedLocale)
     
-    if (storedLocale && AVAILABLE_LOCALES.includes(storedLocale) && storedLocale !== DEFAULT_LOCALE) {
+    if (storedLocale && AVAILABLE_LOCALES.includes(storedLocale) && storedLocale !== DEFAULT_LOCALE && routeSupportsStored) {
       // Redirect to localized path
       const localizedPath = getLocalizedPath(to.path, storedLocale)
       next(localizedPath)

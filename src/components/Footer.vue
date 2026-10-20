@@ -33,6 +33,16 @@
         </div>
         -->
 
+        <!-- Nos Services -->
+        <div>
+          <h4 class="text-lg font-semibold mb-4">{{ t('footer.ourServices') }}</h4>
+          <ul class="space-y-2">
+            <li v-for="link in serviceLinks" :key="link.path"><router-link :to="getLocalizedPath(link.path)"
+                class="text-gray-300 dark:text-gray-400 hover:text-white transition-colors">{{ t(link.label)
+                }}</router-link></li>
+          </ul>
+        </div>
+
         <!-- Liens Utiles -->
         <div>
           <h4 class="text-lg font-semibold mb-4">{{ t('footer.usefulLinks') }}</h4>
@@ -71,10 +81,19 @@ import { ref, onMounted, computed } from 'vue'
 import { homeService } from '../services/homeService'
 import { useI18n } from '../composables/useI18n'
 import { useTheme } from '../composables/useTheme'
+import { useLanguage } from '../composables/useLanguage'
+import { SERVICE_PAGES } from '../config/services'
 import logoWhite from '../assets/images/logos/logo-blue-white.svg'
 
 const { t } = useI18n()
 const { colorClasses } = useTheme()
+const { getLocalizedPath } = useLanguage()
+
+const serviceLinks = [
+  { label: 'navigation.sellRent', path: SERVICE_PAGES.proprietaires.path },
+  { label: 'navigation.vacationRentalService', path: SERVICE_PAGES.locationVacances.path },
+  { label: 'navigation.buyersTenants', path: SERVICE_PAGES.acheteursLocataires.path },
+]
 const footerBlogs = ref([])
 
 const logoPath = computed(() => {

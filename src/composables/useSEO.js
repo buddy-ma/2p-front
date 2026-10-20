@@ -146,8 +146,8 @@ export function useSEO(meta = {}) {
   function updateSEO(seoMeta = {}) {
     const metaData = { ...defaultMeta, ...seoMeta }
     const currentPath = route.path
-    const canonicalUrl = getCanonicalUrl(currentPath)
-    const alternateUrls = getAlternateUrls(currentPath)
+    const canonicalUrl = getCanonicalUrl(currentPath, { keepLocale: !!route.meta?.selfCanonical })
+    const alternateUrls = getAlternateUrls(currentPath, route.meta?.locales)
     const robotsContent = metaData.robots || getRobotsContent()
     
     // Update title

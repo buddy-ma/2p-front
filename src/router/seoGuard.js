@@ -165,8 +165,8 @@ export function setupSEOGuard(router) {
       ? getTranslation('error410.meta.description', locale)
       : (seoMeta.descriptionKey ? getTranslation(seoMeta.descriptionKey, locale) : getTranslation('home.description', locale))
     const image = seoMeta.image || '/assets/images/immobilier/immobilier-de-particulier-a-particulier-maroc.webp'
-    const canonicalUrl = getCanonicalUrl(to.path)
-    const alternateUrls = getAlternateUrls(to.path)
+    const canonicalUrl = getCanonicalUrl(to.path, { keepLocale: !!to.meta?.selfCanonical })
+    const alternateUrls = getAlternateUrls(to.path, to.meta?.locales)
     // For 410 pages, always use 'noindex, follow'
     const robotsContent = is410Page ? 'noindex, follow' : getRobotsContent()
     

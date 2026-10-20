@@ -1,8 +1,10 @@
 import citiesData from './data/cities.js'
 import quartiersData from './data/quartiers.js'
 import propertiesData from './data/properties.js'
+import servicePagesData from './services/index.js'
 
 export default {
+  servicePages: servicePagesData.fr,
   meta: {
     author: 'Particulier à Particulier',
     robots: 'index,follow',
@@ -51,6 +53,7 @@ export default {
     sellRent: 'Vente & location',
     newRealEstate: 'Entreprise',
     vacationRentalService: 'Location vacances',
+    buyersTenants: 'Acheteurs & locataires', // PROPOSED – Ayman to validate
     rentalManagement: 'Gestion locative',
     eventsCoworking: 'Espace de coworking',
     pricing: 'Nos tarifs',
