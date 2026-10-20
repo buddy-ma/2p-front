@@ -37,9 +37,11 @@ export default defineConfig(({ mode }) => {
             }
             return `assets/${assetInfo.name}-[hash].${ext}`
           },
-          // Optimize chunk file names
-          chunkFileNames: 'assets/js/[name]-[hash].js',
-          entryFileNames: 'assets/js/[name]-[hash].js',
+          // Optimize chunk file names.
+          // Suffix busts Cloudflare's year-long cache of files that were
+          // overwritten in place after a bad deploy (merge-conflict markers).
+          chunkFileNames: 'assets/js/[name]-[hash]-2.js',
+          entryFileNames: 'assets/js/[name]-[hash]-2.js',
         }
       },
       // Minification options - using esbuild (built-in, faster than terser)
