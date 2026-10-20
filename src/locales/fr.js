@@ -14,6 +14,7 @@ export default {
   common: {
     home: 'Accueil',
     contact: 'Contact',
+    whatsappChat: 'Discuter sur WhatsApp',
     theme: 'Thème',
     language: 'Langue',
     login: "S'identifier",

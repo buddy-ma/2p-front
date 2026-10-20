@@ -71,73 +71,36 @@
       </div>
     </section>
 
-    <!-- Steps Section refactor based on the provided image -->
-    <section :class="`${colorClasses.bgDark} w-full py-16 ${colorClasses.text}`" id="catalogue2">
-      <div class="container mx-auto px-4">
-        <h2 class="text-white text-center mb-12 text-white md:text-lg font-semibold">
-          {{ t('home.stepsTitle') }} <span class="font-normal">{{ t('home.stepsSubtitle') }}</span>
-          <span>
-            <img 
-              :src="logoWhiteSmall" 
-              alt="2P Service Premium" 
-              class="inline-block h-7 ml-2 align-middle"
-              width="100"
-              height="28"
-              loading="lazy"
-            />
-          </span>
-        </h2>
-        <div class="relative flex flex-col md:flex-row items-center justify-between md:space-x-0">
-          <!-- Progress Bar Line -->
-          <div class="hidden md:block absolute left-0 right-0 top-6 z-0 w-full">
-            <div class="h-2 bg-white/50 rounded-full mx-auto w-full"></div>
-          </div>
-          <!-- Steps -->
-          <div class="w-full grid grid-cols-1 md:grid-cols-5 gap-y-8 md:gap-0 z-10">
-            <!-- Step 1 -->
-            <div class="flex flex-col items-center text-center px-2">
-              <div class="w-14 h-14 bg-white text-[#534fa5] rounded-full flex items-center justify-center text-2xl font-bold mb-4 border-4 border-[#534fa5]">
-                1
-              </div>
-              <h3 class="mt-2 mb-1 font-semibold text-white">{{ t('home.step1Title') }}</h3>
-              <p class="text-xs text-white/90 leading-snug">{{ t('home.step1Text') }}</p>
-            </div>
-            <!-- Step 2 -->
-            <div class="flex flex-col items-center text-center px-2">
-              <div class="w-14 h-14 bg-[#534fa5] text-white rounded-full flex items-center justify-center text-2xl font-bold mb-4 border-4 border-white">
-                2
-              </div>
-              <h3 class="mt-2 mb-1 font-semibold text-white">{{ t('home.step2Title') }}</h3>
-              <p class="text-xs text-white/90 leading-snug">{{ t('home.step2Text') }}</p>
-            </div>
-            <!-- Step 3 -->
-            <div class="flex flex-col items-center text-center px-2">
-              <div class="w-14 h-14 bg-white text-[#534fa5] rounded-full flex items-center justify-center text-2xl font-bold mb-4 border-4 border-[#534fa5]">
-                3
-              </div>
-              <h3 class="mt-2 mb-1 font-semibold text-white">{{ t('home.step3Title') }}</h3>
-              <p class="text-xs text-white/90 leading-snug">{{ t('home.step3Text') }}</p>
-            </div>
-            <!-- Step 4 -->
-            <div class="flex flex-col items-center text-center px-2">
-              <div class="w-14 h-14 bg-[#534fa5] text-white rounded-full flex items-center justify-center text-2xl font-bold mb-4 border-4 border-white">
-                4
-              </div>
-              <h3 class="mt-2 mb-1 font-semibold text-white">{{ t('home.step4Title') }}</h3>
-              <p class="text-xs text-white/90 leading-snug">{{ t('home.step4Text') }}</p>
-            </div>
-            <!-- Step 5 -->
-            <div class="flex flex-col items-center text-center px-2">
-              <div class="w-14 h-14 bg-white text-[#534fa5] rounded-full flex items-center justify-center text-2xl font-bold mb-4 border-4 border-[#534fa5]">
-                5
-              </div>
-              <h3 class="mt-2 mb-1 font-semibold text-white">{{ t('home.step5Title') }}</h3>
-              <p class="text-xs text-white/90 leading-snug">{{ t('home.step5Text') }}</p>
-            </div>
-          </div>
-        </div>
+    <ServiceSection id="offres" tone="muted" :title="owners.sections?.offers" :intro="premium?.card.groupTitle">
+      <div class="grid gap-8 lg:grid-cols-3 items-stretch">
+        <OfferCard v-if="premium" :card="premium.card">
+          <template #actions>
+            <ServiceButton variant="secondary" :to="SERVICE_PAGES.annoncePremium.path" arrow>{{ premium.card.ctas.details }}</ServiceButton>
+          </template>
+        </OfferCard>
+
+        <OfferCard v-if="assistance" :card="assistance.card" featured>
+          <template #actions>
+            <ServiceButton arrow :to="contactPath">{{ assistance.card.ctas.buy }}</ServiceButton>
+            <ServiceButton variant="secondary" :to="SERVICE_PAGES.assistanceCommerciale.path">{{ assistance.card.ctas.details }}</ServiceButton>
+            <ServiceButton variant="link" class="self-center" :to="contactPath">{{ assistance.card.ctas.contact }}</ServiceButton>
+          </template>
+        </OfferCard>
+
+        <OfferCard v-if="mandat" :card="mandat.card">
+          <template #actions>
+            <ServiceButton variant="secondary" :to="SERVICE_PAGES.mandatExclusif.path">{{ mandat.card.ctas.details }}</ServiceButton>
+            <ServiceButton arrow :to="contactPath">{{ mandat.card.ctas.request }}</ServiceButton>
+            <ServiceButton variant="link" class="self-center" to="/contact">{{ mandat.card.ctas.contact }}</ServiceButton>
+          </template>
+        </OfferCard>
       </div>
-    </section>
+
+      <div v-if="owners.compare" class="mt-16">
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">{{ owners.sections?.compare }}</h3>
+        <ComparisonTable :caption="owners.sections?.compare" :columns="owners.compare.columns" :rows="owners.compare.rows" />
+      </div>
+    </ServiceSection>
 
     <!-- Premium Products Section -->
     <section v-if="!loading && data?.premium && data.premium.length > 0" class="bg-gray-50 dark:bg-gray-800 w-full py-16 transition-colors" id="catalogue2">
@@ -206,11 +169,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useTheme } from '../composables/useTheme'
 import { useI18n } from '../composables/useI18n'
 import { homeService } from '../services/homeService'
+import { SERVICE_PAGES } from '../config/services'
 import HeroSearch from '../components/HeroSearch.vue'
+import ServiceSection from '../components/services/ServiceSection.vue'
+import OfferCard from '../components/services/OfferCard.vue'
+import ComparisonTable from '../components/services/ComparisonTable.vue'
+import ServiceButton from '../components/services/ServiceButton.vue'
 
 defineOptions({
   name: 'Home',
@@ -224,7 +192,14 @@ import ProductCard from '../components/ProductCard.vue'
 import logoBlueSmall from '../assets/images/logos/logo-blue-small.svg'
 import logoWhiteSmall from '../assets/images/logos/logo-white-small.svg'
 const { colorClasses } = useTheme()
-const { t } = useI18n()
+const { t, tm } = useI18n()
+
+const owners = computed(() => tm('servicePages.proprietaires') || {})
+const offerCopy = (key) => tm(`servicePages.${key}`)
+const premium = computed(() => offerCopy('annoncePremium'))
+const assistance = computed(() => offerCopy('assistanceCommerciale'))
+const mandat = computed(() => offerCopy('mandatExclusif'))
+const contactPath = `${SERVICE_PAGES.proprietaires.path}#contact`
 
 const data = ref(null)
 const loading = ref(true)
@@ -265,25 +240,5 @@ onMounted(async () => {
 
 .service-number {
   margin-bottom: 1rem;
-}
-
-.step-item {
-  position: relative;
-  z-index: 1;
-}
-
-.progress-bar-container {
-  z-index: 0;
-}
-
-.progress-line-main {
-  width: 100%;
-  height: 2px;
-}
-
-@media (max-width: 768px) {
-  .progress-bar-container {
-    display: none;
-  }
 }
 </style>

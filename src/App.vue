@@ -9,6 +9,7 @@
       <router-view />
     </main>
     <Footer v-if="!hasFooterLinks" />
+    <WhatsAppButton />
     <Toaster />
     <LoadingIndicator />
   </div>
@@ -27,6 +28,7 @@ import { useSEO } from './composables/useSEO'
 import { useFooterLinks } from './composables/useFooterLinks'
 import { initializeAnalytics, addVerificationTags } from './utils/analytics'
 import AppMobileBanner from './components/AppMobileBanner.vue'
+import WhatsAppButton from './components/WhatsAppButton.vue'
 
 const route = useRoute()
 const { hasFooterLinks } = useFooterLinks()
