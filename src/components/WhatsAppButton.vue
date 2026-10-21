@@ -1,13 +1,11 @@
 <template>
   <a
+    v-if="visible"
     :href="whatsappUrl"
     target="_blank"
     rel="noopener noreferrer"
     :aria-label="t('common.whatsappChat')"
-    :class="[
-      'fixed end-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105 hover:bg-[#1ebe5a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]',
-      isProductDetail ? 'bottom-24 md:bottom-6' : 'bottom-6',
-    ]"
+    class="fixed end-5 bottom-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-105 hover:bg-[#1ebe5a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
   >
     <svg class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path
@@ -21,12 +19,22 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
+import { SERVICE_PAGES } from '../config/services'
 
 const WHATSAPP_NUMBER = '212661678714'
+
+const ALLOWED_ROUTES = new Set([
+  'Home',
+  'Contact',
+  ...Object.values(SERVICE_PAGES).map((page) => page.name),
+])
 
 const route = useRoute()
 const { t } = useI18n()
 
 const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}`
-const isProductDetail = computed(() => route.name === 'ProductDetail')
+const visible = computed(() => {
+  const name = String(route.name || '').replace(/_(en|ar)$/, '')
+  return ALLOWED_ROUTES.has(name)
+})
 </script>

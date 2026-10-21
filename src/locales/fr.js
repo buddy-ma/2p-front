@@ -114,6 +114,7 @@ export default {
     service2Text: 'Notre équipe expérimentée vous guide à chaque étape, vous assurant un service professionnel et efficace.',
     service3Title: 'Des forfaits clairs, abordables et efficaces',
     service3Text: 'Nous proposons des tarifs transparents et compétitifs, adaptés à tous les budgets et besoins.',
+    viewOffers: 'Voir plus',
     stepsTitle: 'Étapes',
     stepsSubtitle: 'Pour Obtenir Votre Service Premium',
     step1Title: 'Choisissez le service adapté à vos besoins',

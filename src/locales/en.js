@@ -111,6 +111,7 @@ export default {
     service2Text: 'Our experienced team guides you at every step, ensuring professional and efficient service.',
     service3Title: 'Clear, affordable and effective packages',
     service3Text: 'We offer transparent and competitive rates, adapted to all budgets and needs.',
+    viewOffers: 'View more',
     stepsTitle: 'Steps',
     stepsSubtitle: 'To Get Your Premium Service',
     step1Title: 'Choose the service that suits your needs',

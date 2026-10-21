@@ -71,34 +71,14 @@
       </div>
     </section>
 
-    <ServiceSection id="offres" tone="muted" :title="owners.sections?.offers" :intro="premium?.card.groupTitle">
-      <div class="grid gap-8 lg:grid-cols-3 items-stretch">
-        <OfferCard v-if="premium" :card="premium.card">
-          <template #actions>
-            <ServiceButton variant="secondary" :to="SERVICE_PAGES.annoncePremium.path" arrow>{{ premium.card.ctas.details }}</ServiceButton>
-          </template>
-        </OfferCard>
-
-        <OfferCard v-if="assistance" :card="assistance.card" featured>
-          <template #actions>
-            <ServiceButton arrow :to="contactPath">{{ assistance.card.ctas.buy }}</ServiceButton>
-            <ServiceButton variant="secondary" :to="SERVICE_PAGES.assistanceCommerciale.path">{{ assistance.card.ctas.details }}</ServiceButton>
-            <ServiceButton variant="link" class="self-center" :to="contactPath">{{ assistance.card.ctas.contact }}</ServiceButton>
-          </template>
-        </OfferCard>
-
-        <OfferCard v-if="mandat" :card="mandat.card">
-          <template #actions>
-            <ServiceButton variant="secondary" :to="SERVICE_PAGES.mandatExclusif.path">{{ mandat.card.ctas.details }}</ServiceButton>
-            <ServiceButton arrow :to="contactPath">{{ mandat.card.ctas.request }}</ServiceButton>
-            <ServiceButton variant="link" class="self-center" to="/contact">{{ mandat.card.ctas.contact }}</ServiceButton>
-          </template>
-        </OfferCard>
+    <ServiceSection id="offres" tone="muted" :title="owners.sections?.offers" center>
+      <div class="grid gap-6 lg:grid-cols-3 items-stretch">
+        <OfferCard v-if="premium" :card="premium.card" compact />
+        <OfferCard v-if="assistance" :card="assistance.card" compact />
+        <OfferCard v-if="mandat" :card="mandat.card" compact />
       </div>
-
-      <div v-if="owners.compare" class="mt-16">
-        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">{{ owners.sections?.compare }}</h3>
-        <ComparisonTable :caption="owners.sections?.compare" :columns="owners.compare.columns" :rows="owners.compare.rows" />
+      <div class="mt-8 flex justify-center">
+        <ServiceButton :to="SERVICE_PAGES.proprietaires.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
       </div>
     </ServiceSection>
 
@@ -177,7 +157,6 @@ import { SERVICE_PAGES } from '../config/services'
 import HeroSearch from '../components/HeroSearch.vue'
 import ServiceSection from '../components/services/ServiceSection.vue'
 import OfferCard from '../components/services/OfferCard.vue'
-import ComparisonTable from '../components/services/ComparisonTable.vue'
 import ServiceButton from '../components/services/ServiceButton.vue'
 
 defineOptions({
@@ -199,7 +178,6 @@ const offerCopy = (key) => tm(`servicePages.${key}`)
 const premium = computed(() => offerCopy('annoncePremium'))
 const assistance = computed(() => offerCopy('assistanceCommerciale'))
 const mandat = computed(() => offerCopy('mandatExclusif'))
-const contactPath = `${SERVICE_PAGES.proprietaires.path}#contact`
 
 const data = ref(null)
 const loading = ref(true)
