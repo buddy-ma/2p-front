@@ -205,12 +205,12 @@ jobs:
             -o ServerAliveCountMax=40
           )
           remote="${DEPLOY_USER}@${DEPLOY_HOST}"
-          remote_script="/tmp/2p-deploy.${GITHUB_RUN_ID}.sh"
 
-          # scp takes -P for the port; ssh takes -p.
-          scp "${ssh_common[@]}" -P "$DEPLOY_PORT" scripts/deploy.sh "${remote}:${remote_script}"
-
-          # Quote every value for the remote login shell, then force bash.
-          remote_body=$(printf 'chmod 700 %q && DEPLOY_PATH=%q DEPLOY_REF=%q VITE_API_BASE_URL=%q bash %q; status=$?; rm -f %q; exit $status' \
-            "$remote_script" "$DEPLOY_PATH" "$DEPLOY_REF" "$VITE_API_BASE_URL" "$remote_script" "$remote_script")
-          ssh "${ssh_common[@]}" -p "$DEPLOY_PORT" "$remote" "bash -c $(printf '%q' "$remote_body")"
+          # Stream the script on SSH stdin. Do not scp it: OpenSSH 9 scp uses
+          # SFTP, and Cloudways' SFTP subsystem is chrooted, so dest open of
+          # /tmp/... fails even though the SSH shell's /tmp is writable.
+          # printf %q quotes every value for the remote shell, then bash -c
+          # forces bash. bash -s reads scripts/deploy.sh from stdin.
+          remote_body=$(printf 'DEPLOY_PATH=%q DEPLOY_REF=%q VITE_API_BASE_URL=%q bash -s' \
+            "$DEPLOY_PATH" "$DEPLOY_REF" "$VITE_API_BASE_URL")
+          ssh "${ssh_common[@]}" -p "$DEPLOY_PORT" "$remote" "bash -c $(printf '%q' "$remote_body")" < scripts/deploy.sh

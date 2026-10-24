@@ -48,6 +48,7 @@ Workflow: `.github/workflows/vue-frontend.yml`.
 
 - Runs on every push to `main`, and from the Actions tab via **Run workflow**.
 - A pull request targeting `main` runs the build job only. It does not SSH or publish. The first publish of a change is the push to `main` after merge, or a manual run.
+- The deploy step does not `scp` `scripts/deploy.sh`. Cloudways' SFTP subsystem is chrooted, so an upload to `/tmp` does not land in the SSH shell's `/tmp`. Actions streams the script on SSH standard input (`bash -s`) with `DEPLOY_PATH`, `DEPLOY_REF`, and `VITE_API_BASE_URL` passed through `printf %q`.
 - Builds with Bun `1.3.9` (the version on the server) and `bun install --frozen-lockfile`.
 - Fails the job if the bundle is missing or if `dist/index.html` still points at `/src/main.js`.
 - Uploads `dist/` as the `vue-frontend-dist` artifact for 30 days. That artifact is a record of the CI compile. The server builds again so it can read the server `.env`. The bytes visitors receive are the server build.
