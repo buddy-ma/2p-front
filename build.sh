@@ -68,9 +68,13 @@ echo -e "${YELLOW}📄 Preparing index.html for build...${NC}"
 cp index-new.html index.html
 echo -e "${GREEN}   ✓ index.html created from index-new.html${NC}"
 
-# Remove node_modules/.vite
+# Remove node_modules/.vite. A cache wipe is not required for a correct build.
+# Failure here used to abort build.sh (set -e) and therefore the deploy,
+# even though the live webroot had not been touched yet.
 echo -e "${YELLOW}🧹 Cleaning Vite cache...${NC}"
-rm -rf node_modules/.vite
+if ! rm -rf node_modules/.vite; then
+    echo -e "${YELLOW}⚠️  Warning: could not remove node_modules/.vite. Continuing the build.${NC}"
+fi
 
 # Run production build with bun
 echo -e "${YELLOW}🔨 Building for production...${NC}"

@@ -11,7 +11,12 @@
 #   2. Build in a detached worktree OUTSIDE public_html.
 #   3. Only if that build succeeds, publish dist/index.html, dist/assets,
 #      and dist/ into the webroot, then git reset --hard the tracked files.
+#      A failed install or build exits before the webroot is modified.
 #   4. --delete is applied only to assets/ and dist/, which are build output.
+#   5. Optional cleanup (worktree prune, chmod of the published index.html)
+#      logs a warning and continues. This script does not copy sitemap dumps
+#      or flush a server cache. If sitemaps/, .git, or .env disappear during
+#      publish, that is data loss and the script still exits with an error.
 #
 # Run on the server as the SSH user (Cloudways master). That account has no
 # sudo. The webroot is group www-data and mode 775, and the master's primary
@@ -224,7 +229,8 @@ case "$BUILD_PARENT" in
     ;;
 esac
  mkdir -p "$BUILD_PARENT"
-git_repo worktree prune
+# Stale worktree metadata is cleanup, not a reason to abort before the build.
+git_repo worktree prune || log "WARNING: git worktree prune failed. Continuing."
 BUILD_DIR="$BUILD_PARENT/build.$$"
 log "Building in $BUILD_DIR (outside the webroot)"
 git_repo worktree add --detach "$BUILD_DIR" "$TARGET"
@@ -321,7 +327,9 @@ git_repo reset --hard "$TARGET"
 
 log "Switching live index.html"
 cp "$BUILD_DIR/dist/index.html" "$DEPLOY_PATH/index.html.next"
-chmod 664 "$DEPLOY_PATH/index.html.next"
+# umask 002 already created this file as 664. A chmod failure must not
+# skip the swap or fail a publish that is otherwise ready.
+chmod 664 "$DEPLOY_PATH/index.html.next" || log "WARNING: could not chmod index.html.next. Continuing with the mode from umask 002."
 mv -f "$DEPLOY_PATH/index.html.next" "$DEPLOY_PATH/index.html"
 
 log "Removing hashed assets that this build did not emit"
@@ -330,7 +338,7 @@ sync_contents "$BUILD_DIR/dist/assets" "$DEPLOY_PATH/assets" delete
 log "Replacing webroot dist/ with this build"
 sync_contents "$BUILD_DIR/dist" "$DEPLOY_PATH/dist" delete
 
-chmod 664 "$DEPLOY_PATH/index.html"
+chmod 664 "$DEPLOY_PATH/index.html" || log "WARNING: could not chmod the published index.html. Leaving the mode from umask 002."
 
 if grep -q '/src/main.js' "$DEPLOY_PATH/index.html"; then
   die "Live index.html still references /src/main.js"
