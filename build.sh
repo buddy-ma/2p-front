@@ -17,6 +17,16 @@ cd "$SCRIPT_DIR"
 
 echo -e "${GREEN}🚀 Starting production build...${NC}"
 
+# public_html is the live Cloudways webroot (it is also the git clone).
+# Building here overwrites the index.html visitors are being served.
+case "$SCRIPT_DIR" in
+  */public_html)
+    echo -e "${RED}❌ Refusing to build inside public_html.${NC}"
+    echo "This directory is the live site. From the server run ./scripts/deploy.sh instead."
+    exit 1
+    ;;
+esac
+
 # Find bun (check PATH first, then default install location)
 if command -v bun &> /dev/null; then
     BUN_CMD="bun"
@@ -29,15 +39,31 @@ else
     exit 1
 fi
 
-# Clean dist directory
+# Clean dist directory. Leave ./assets alone until the build succeeds:
+# on a machine that serves this directory, ./assets is the live bundle.
 echo -e "${YELLOW}🧹 Cleaning dist directory...${NC}"
 rm -rf dist/*
 
-# Clean assets directory
-echo -e "${YELLOW}🧹 Cleaning assets directory...${NC}"
-rm -rf assets/*
+# Vite reads index.html. index-new.html is the source entry (index.html is
+# gitignored build output). Keep the previous index.html so a failed build
+# can put it back.
+index_backup=""
+restore_index_on_failure() {
+  status=$?
+  if [ "$status" -ne 0 ] && [ -n "$index_backup" ] && [ -f "$index_backup" ]; then
+    cp "$index_backup" index.html || true
+  fi
+  if [ -n "$index_backup" ]; then
+    rm -f "$index_backup"
+  fi
+  exit "$status"
+}
+trap restore_index_on_failure EXIT
+if [ -f index.html ]; then
+  index_backup=$(mktemp)
+  cp index.html "$index_backup"
+fi
 
-# Copy index-new.html to index.html (Vite needs index.html to build)
 echo -e "${YELLOW}📄 Preparing index.html for build...${NC}"
 cp index-new.html index.html
 echo -e "${GREEN}   ✓ index.html created from index-new.html${NC}"
@@ -59,9 +85,16 @@ if [ -d "dist" ] && [ "$(ls -A dist)" ]; then
     cp dist/index.html index.html
     echo -e "${GREEN}   ✓ index.html copied from dist${NC}"
     
-    # Copy built assets to project root
+    # Replace ./assets only after dist/ is complete, so a failed build
+    # does not leave the previous bundle half-deleted.
+    if [ ! -d dist/assets ]; then
+        echo -e "${RED}❌ Build failed: dist/assets is missing${NC}"
+        exit 1
+    fi
     echo -e "${YELLOW}📦 Copying built assets to project root...${NC}"
-    cp -r dist/assets/* assets/ 2>/dev/null || mkdir -p assets && cp -r dist/assets/* assets/
+    mkdir -p assets
+    find assets -mindepth 1 -delete
+    cp -a dist/assets/. assets/
     echo -e "${GREEN}   ✓ Assets copied to project root${NC}"
     
     # Copy favicon if it exists
@@ -77,13 +110,9 @@ if [ -d "dist" ] && [ "$(ls -A dist)" ]; then
         echo -e "${YELLOW}   Note: Make sure .htaccess is in the project root${NC}"
     fi
     
-    # Set proper permissions for web files (using current directory)
+    # Modes only. The Cloudways master user cannot chown; scripts/deploy.sh
+    # publishes with umask 002 so the webroot stays group-writable.
     echo -e "${YELLOW}🔐 Setting proper file permissions...${NC}"
-    # Try to get the current user and group, fallback to common web server defaults
-    WEB_USER="${SUDO_USER:-$(whoami)}"
-    WEB_GROUP="${WEB_GROUP:-nobody}"
-    
-    chown -R "$WEB_USER:$WEB_GROUP" index.html assets/ favicon.ico 2>/dev/null || true
     chmod 644 index.html .htaccess favicon.ico 2>/dev/null || true
     find assets/ -type f -exec chmod 644 {} \; 2>/dev/null || true
     

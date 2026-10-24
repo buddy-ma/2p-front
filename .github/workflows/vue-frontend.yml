@@ -1,64 +1,210 @@
+# Build the Vue app in GitHub Actions, then publish it by SSHing to Cloudways
+# and running scripts/deploy.sh on the server.
+#
+# The webroot (/home/master/applications/pfpxvernvm/public_html) is a git clone
+# of this repo. Apache serves that directory, not dist/. An scp of "dist/*"
+# with strip_components: 0 lands in public_html/dist/ and does not update the
+# live index.html or assets/. rsync --delete of the webroot would also remove
+# .git, .env, and the server-only sitemaps/. The server script builds outside
+# public_html and publishes only the build output.
+
 name: Build and Deploy Vue Frontend
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Git ref to build and deploy (SHA, tag, or branch). Empty deploys the workflow commit.
+        required: false
+        type: string
+
+# Queue a second push instead of cancelling a deploy that is already publishing.
+concurrency:
+  group: cloudways-public-html
+  cancel-in-progress: false
+
+permissions:
+  contents: read
 
 jobs:
-  build-and-deploy:
+  build:
+    name: Build
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 20
+    outputs:
+      sha: ${{ steps.meta.outputs.sha }}
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
-      
+        with:
+          persist-credentials: false
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.sha }}
+
+      - name: Record commit
+        id: meta
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Require production API origin
+        env:
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+        run: |
+          set -euo pipefail
+          if [ -z "${VITE_API_BASE_URL}" ]; then
+            echo "::error::Missing GitHub secret VITE_API_BASE_URL. Set it to the site origin, for example https://2p.ma (no /api suffix)."
+            exit 1
+          fi
+          case "$VITE_API_BASE_URL" in
+            */)
+              echo "::error::VITE_API_BASE_URL must not have a trailing slash."
+              exit 1
+              ;;
+            */api)
+              echo "::error::VITE_API_BASE_URL must be the origin only. src/services/api.js appends /api."
+              exit 1
+              ;;
+          esac
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: latest
-      
+          bun-version: 1.3.9
+
       - name: Install dependencies
         run: bun install --frozen-lockfile
-      
+
+      - name: Prepare Vite entry
+        run: |
+          set -euo pipefail
+          # index.html is gitignored. Vite builds from it; index-new.html is the source.
+          if [ -f index-new.html ]; then
+            cp index-new.html index.html
+          fi
+          test -s index.html
+
       - name: Build Vue app
         run: bun run build
         env:
-          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL || 'http://localhost:8001' }}
-      
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+
+      - name: Verify production bundle
+        run: |
+          set -euo pipefail
+          test -s dist/index.html
+          test -d dist/assets
+          if grep -q '/src/main.js' dist/index.html; then
+            echo "::error::dist/index.html still references /src/main.js"
+            exit 1
+          fi
+          find dist/assets -type f | grep -q .
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: vue-frontend-dist
           path: dist
           retention-days: 30
-      
-      - name: Add server to known hosts
+          if-no-files-found: error
+
+  deploy:
+    name: Deploy on Cloudways
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout deploy script
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Require deploy secrets
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
         run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
-      
-      
-      - name: Deploy to Cloudways VPS
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          port: 22
-          source: "dist/*"
-          target: ${{ secrets.DEPLOY_PATH || '/home/master/applications/default/public_html' }}
-          strip_components: 0
-          rm: false
-      
-      - name: Set correct permissions
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          port: 22
-          script: |
-            chmod -R 755 ${{ secrets.DEPLOY_PATH || '/home/master/applications/default/public_html' }}
-            find ${{ secrets.DEPLOY_PATH || '/home/master/applications/default/public_html' }} -type f -exec chmod 644 {} \;
-            find ${{ secrets.DEPLOY_PATH || '/home/master/applications/default/public_html' }} -type d -exec chmod 755 {} \;
+          set -euo pipefail
+          missing=0
+          for name in DEPLOY_HOST DEPLOY_USER DEPLOY_SSH_KEY VITE_API_BASE_URL; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Missing GitHub secret ${name}"
+              missing=1
+            fi
+          done
+          exit "$missing"
+
+      - name: Deploy the built commit on the server
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+          DEPLOY_REF: ${{ needs.build.outputs.sha }}
+        run: |
+          set -euo pipefail
+
+          DEPLOY_PORT="${DEPLOY_PORT:-22}"
+          DEPLOY_PATH="${DEPLOY_PATH:-/home/master/applications/pfpxvernvm/public_html}"
+
+          if ! [[ "$DEPLOY_HOST" =~ ^[A-Za-z0-9.-]+$ ]]; then
+            echo "::error::DEPLOY_HOST is not a hostname or IPv4 address"
+            exit 1
+          fi
+          if ! [[ "$DEPLOY_USER" =~ ^[A-Za-z0-9._-]+$ ]]; then
+            echo "::error::DEPLOY_USER contains unsupported characters"
+            exit 1
+          fi
+          if ! [[ "$DEPLOY_PORT" =~ ^[0-9]+$ ]]; then
+            echo "::error::DEPLOY_PORT must be numeric"
+            exit 1
+          fi
+          if ! [[ "$DEPLOY_REF" =~ ^[0-9a-fA-F]{40}$ ]]; then
+            echo "::error::Refusing to deploy unexpected ref"
+            exit 1
+          fi
+
+          install -m 700 -d ~/.ssh
+          if [[ "$DEPLOY_SSH_KEY" != *$'\n'* ]]; then
+            printf '%s\n' "$DEPLOY_SSH_KEY" | sed 's/\\n/\n/g' > ~/.ssh/deploy_key
+          else
+            printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          fi
+          chmod 600 ~/.ssh/deploy_key
+          if ! grep -q 'PRIVATE KEY' ~/.ssh/deploy_key; then
+            echo "::error::DEPLOY_SSH_KEY does not look like a private key"
+            exit 1
+          fi
+
+          if ! ssh-keyscan -p "$DEPLOY_PORT" -T 15 -H "$DEPLOY_HOST" > ~/.ssh/known_hosts; then
+            echo "::error::ssh-keyscan failed for the deploy host"
+            exit 1
+          fi
+          if [ ! -s ~/.ssh/known_hosts ]; then
+            echo "::error::ssh-keyscan returned no host keys"
+            exit 1
+          fi
+
+          ssh_common=(
+            -i "$HOME/.ssh/deploy_key"
+            -o IdentitiesOnly=yes
+            -o StrictHostKeyChecking=yes
+            -o BatchMode=yes
+            -o ConnectTimeout=20
+            -o ServerAliveInterval=30
+            -o ServerAliveCountMax=40
+          )
+          remote="${DEPLOY_USER}@${DEPLOY_HOST}"
+          remote_script="/tmp/2p-deploy.${GITHUB_RUN_ID}.sh"
+
+          # scp takes -P for the port; ssh takes -p.
+          scp "${ssh_common[@]}" -P "$DEPLOY_PORT" scripts/deploy.sh "${remote}:${remote_script}"
+
+          # Quote every value for the remote login shell, then force bash.
+          remote_body=$(printf 'chmod 700 %q && DEPLOY_PATH=%q DEPLOY_REF=%q VITE_API_BASE_URL=%q bash %q; status=$?; rm -f %q; exit $status' \
+            "$remote_script" "$DEPLOY_PATH" "$DEPLOY_REF" "$VITE_API_BASE_URL" "$remote_script" "$remote_script")
+          ssh "${ssh_common[@]}" -p "$DEPLOY_PORT" "$remote" "bash -c $(printf '%q' "$remote_body")"
