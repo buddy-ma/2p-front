@@ -30,6 +30,31 @@
 
 set -euo pipefail
 
+# Re-exec from a temp file so a later git reset cannot change the script
+# under bash. Actions streams this file on SSH stdin (`bash -s`) because
+# Cloudways SFTP is chrooted and scp cannot write the shell's /tmp. The
+# copy includes this script from the next `set -e` downward (functions
+# included) and closes stdin, so git, bun, and rsync cannot consume the
+# unread script. mktemp runs in the SSH shell, not in the SFTP chroot.
+if [ "${DEPLOY_SH_REEXEC:-0}" != "1" ]; then
+  reexec=$(mktemp /tmp/2p-deploy.XXXXXX.sh)
+  if [ -n "${BASH_SOURCE[0]:-}" ] && [ -f "${BASH_SOURCE[0]}" ]; then
+    cp "${BASH_SOURCE[0]}" "$reexec"
+  else
+    cat > "$reexec"
+  fi
+  if [ ! -s "$reexec" ]; then
+    printf 'ERROR: deploy script was empty\n' >&2
+    rm -f "$reexec"
+    exit 1
+  fi
+  chmod 700 "$reexec"
+  export DEPLOY_SH_REEXEC=1
+  exec bash "$reexec" "$@" </dev/null
+fi
+
+set -euo pipefail
+
 DEFAULT_DEPLOY_PATH="/home/master/applications/pfpxvernvm/public_html"
 
 log() {
@@ -55,17 +80,6 @@ Environment:
 The live site is not modified until the build in the side worktree succeeds.
 EOF
   exit 0
-fi
-
-# Re-exec from /tmp so a later git reset cannot change the script under bash.
-if [ "${DEPLOY_SH_REEXEC:-0}" != "1" ]; then
-  if [ -n "${BASH_SOURCE[0]:-}" ] && [ -f "${BASH_SOURCE[0]}" ]; then
-    reexec=$(mktemp /tmp/2p-deploy.XXXXXX.sh)
-    cp "${BASH_SOURCE[0]}" "$reexec"
-    chmod 700 "$reexec"
-    export DEPLOY_SH_REEXEC=1
-    exec bash "$reexec" "$@"
-  fi
 fi
 
 export GIT_TERMINAL_PROMPT=0
