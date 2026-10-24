@@ -82,17 +82,17 @@ The clone, Bun `1.3.9`, and the app user are already in place. Do this once so A
 
 3. Store `deploy_key` (the private file) in the `DEPLOY_SSH_KEY` secret, and set the other secrets from the table above.
 
-4. Confirm the master user can log in, reach Bun, switch to the app user, and fetch:
+4. Confirm the master user can log in, reach Bun, and fetch. The master user has no sudo; the deploy does not need it.
 
    ```bash
    ssh -i deploy_key master_bcuuqjymxp@165.227.235.60
    ~/.bun/bin/bun --version
-   sudo -n -u pfpxvernvm true
-   sudo -n -u pfpxvernvm git -C /home/master/applications/pfpxvernvm/public_html fetch origin
+   id
+   git -C /home/master/applications/pfpxvernvm/public_html fetch origin
    rsync --version
    ```
 
-   `sudo -n` must succeed without a password. The app user `pfpxvernvm` (group `www-data`) owns the webroot. The script builds and writes as that user so new files stay theirs. The repo is public, so `git fetch` does not need a token. If fetch prompts or fails, point `origin` at `https://github.com/buddy-ma/2p-front.git` and try again as `pfpxvernvm`.
+   `id` should show primary group `www-data`. The webroot is mode `775` and group `www-data`, so this user can write there. The repo is public, so `git fetch` does not need a token. If fetch prompts or fails, point `origin` at `https://github.com/buddy-ma/2p-front.git`.
 
 5. Nginx history-mode routing is not part of the rsync. Cloudways nginx is configured in the panel. The snippet in `.nginx.conf` (`try_files $uri $uri/ /index.html`) belongs under the application → **Domain Management** → nginx configuration. Apache still uses the repo `.htaccess`, which deploy updates with the rest of the tracked files. The `.htaccess` also denies web access to dotfiles, which is what keeps `.env` from being served.
 
@@ -146,4 +146,4 @@ The built HTML still requests `/android-chrome-128x128.png` and `/safari-pinned-
 
 ## Permissions
 
-Published `index.html`, `assets/`, and `dist/` are mode `644` for files and `755` for directories, group `www-data` when `chgrp` is allowed for the app user. The web server runs as `pfpxvernvm`, so owner-read is what serves the site.
+The deploy SSHes in as `master_bcuuqjymxp` and runs as that user. It does not call sudo, chown, or chgrp. The account's primary group is `www-data`, and `scripts/deploy.sh` sets `umask 002`, so new files are `664` and new directories are `775`, group `www-data`. That keeps them group-writable and readable by the web server. The script does not change the owner of files it does not replace.

@@ -110,13 +110,9 @@ if [ -d "dist" ] && [ "$(ls -A dist)" ]; then
         echo -e "${YELLOW}   Note: Make sure .htaccess is in the project root${NC}"
     fi
     
-    # Set proper permissions for web files (using current directory)
+    # Modes only. The Cloudways master user cannot chown; scripts/deploy.sh
+    # publishes with umask 002 so the webroot stays group-writable.
     echo -e "${YELLOW}🔐 Setting proper file permissions...${NC}"
-    # Try to get the current user and group, fallback to common web server defaults
-    WEB_USER="${SUDO_USER:-$(whoami)}"
-    WEB_GROUP="${WEB_GROUP:-nobody}"
-    
-    chown -R "$WEB_USER:$WEB_GROUP" index.html assets/ favicon.ico 2>/dev/null || true
     chmod 644 index.html .htaccess favicon.ico 2>/dev/null || true
     find assets/ -type f -exec chmod 644 {} \; 2>/dev/null || true
     
