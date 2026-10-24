@@ -20,7 +20,9 @@ The previous workflow uploaded `dist/*` with `appleboy/scp-action`, `strip_compo
 
 `rsync --delete` of the webroot is the same kind of mistake. The clone contains `.git`, the server-only `.env`, and sitemap dumps that are not in git. The deploy script never deletes those. It builds in a worktree outside `public_html`, and it uses `rsync --delete` only for `assets/` and `dist/`.
 
-Nothing is published until that outside build succeeds. A failed build leaves the live `index.html` and `assets/` as they were.
+Nothing is published until that outside build succeeds. A failed `bun install`, a failed `build.sh`, or a dist check exits before the first write to the webroot, so the live `index.html` and `assets/` stay as they were.
+
+Optional cleanup does not fail a deploy. `git worktree prune`, and `chmod` of the index file that is about to go live, log a warning and continue. The Vite cache wipe in `build.sh` (`node_modules/.vite`) runs inside the side worktree; if it fails, the build continues, and the webroot is still untouched until that build succeeds. This deploy does not copy sitemap dumps or flush a server cache. `sitemaps/` and `sitemapss/` are left in place. If either directory, `.git`, or `.env` was present and is missing after publish, the script still exits with an error, because that is missing data, not a skipped copy.
 
 ## What a deploy changes
 
@@ -45,6 +47,7 @@ The side worktree lives in `../.deploy-work/` (next to `public_html`, not served
 Workflow: `.github/workflows/vue-frontend.yml`.
 
 - Runs on every push to `main`, and from the Actions tab via **Run workflow**.
+- A pull request targeting `main` runs the build job only. It does not SSH or publish. The first publish of a change is the push to `main` after merge, or a manual run.
 - Builds with Bun `1.3.9` (the version on the server) and `bun install --frozen-lockfile`.
 - Fails the job if the bundle is missing or if `dist/index.html` still points at `/src/main.js`.
 - Uploads `dist/` as the `vue-frontend-dist` artifact for 30 days. That artifact is a record of the CI compile. The server builds again so it can read the server `.env`. The bytes visitors receive are the server build.

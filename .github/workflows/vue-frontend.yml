@@ -14,6 +14,11 @@ on:
   push:
     branches:
       - main
+  # Build-only. The deploy job is skipped for pull_request so a PR does not
+  # publish. Merging to main is what runs the deploy.
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       ref:
@@ -111,6 +116,7 @@ jobs:
   deploy:
     name: Deploy on Cloudways
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
