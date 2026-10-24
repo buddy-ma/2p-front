@@ -73,8 +73,9 @@ Usage: ./scripts/deploy.sh
 Environment:
   DEPLOY_PATH          Webroot (default: ${DEFAULT_DEPLOY_PATH})
   DEPLOY_REF           Git ref to deploy (default: origin/main)
-  VITE_API_BASE_URL    Optional. Overrides the server .env for this build.
-                       Origin only, for example https://2p.ma — do not append /api.
+  VITE_API_BASE_URL    Optional fallback. Used only when the server .env
+                       and .env.production do not set it. Trailing slashes and a
+                       trailing /api are removed. src/services/api.js appends /api.
   BUN_BIN              Override the bun binary.
 
 The live site is not modified until the build in the side worktree succeeds.
@@ -109,19 +110,109 @@ if [ "$(basename "$DEPLOY_PATH")" != "public_html" ]; then
   die "DEPLOY_PATH must be the application public_html directory (got $DEPLOY_PATH)"
 fi
 
-validate_api_base() {
+# Application-user path for this front app. The master webroot (DEPLOY_PATH)
+# is often the same directory. VITE_API_BASE_URL is read from here when it
+# is a different path, so the Cloudways .env wins over the GitHub secret.
+ALT_FRONT_ENV="/home/1480575.cloudwaysapps.com/pfpxvernvm/public_html"
+
+# Last assignment of key in a dotenv file. Prints the raw value (quotes removed).
+# Returns 1 when the file or the key is absent.
+dotenv_get() {
+  local file="$1" key="$2"
+  local line raw val_found=0 first last
+  [ -f "$file" ] && [ -r "$file" ] || return 1
+  while IFS= read -r line || [ -n "$line" ]; do
+    line="${line%$'\r'}"
+    line="${line#"${line%%[![:space:]]*}"}"
+    case "$line" in
+      ''|\#*) continue ;;
+    esac
+    if [[ "$line" == export\ * ]]; then
+      line="${line#export }"
+      line="${line#"${line%%[![:space:]]*}"}"
+    fi
+    case "$line" in
+      "$key"=*)
+        raw="${line#"${key}="}"
+        val_found=1
+        ;;
+    esac
+  done < "$file"
+  [ "$val_found" -eq 1 ] || return 1
+  raw="${raw#"${raw%%[![:space:]]*}"}"
+  raw="${raw%"${raw##*[![:space:]]}"}"
+  raw="${raw%$'\r'}"
+  if [ "${#raw}" -ge 2 ]; then
+    first="${raw:0:1}"
+    last="${raw: -1}"
+    if [ "$first" = '"' ] && [ "$last" = '"' ]; then
+      raw="${raw:1:${#raw}-2}"
+    elif [ "$first" = "'" ] && [ "$last" = "'" ]; then
+      raw="${raw:1:${#raw}-2}"
+    fi
+  fi
+  printf '%s\n' "$raw"
+}
+
+# Strip whitespace, trailing slashes, and one trailing /api.
+# src/services/api.js appends /api itself.
+normalize_api_base() {
   local url="$1"
-  [ -n "$url" ] || return 0
+  url="${url#"${url%%[![:space:]]*}"}"
+  url="${url%"${url##*[![:space:]]}"}"
+  url="${url%$'\r'}"
+  while [ -n "$url" ] && [ "${url%/}" != "$url" ]; do
+    url="${url%/}"
+  done
   case "$url" in
-    */)
-      die "VITE_API_BASE_URL must not have a trailing slash"
-      ;;
-    */api)
-      die "VITE_API_BASE_URL must be the site origin without /api (src/services/api.js appends /api)"
+    */api) url="${url%/api}" ;;
+  esac
+  while [ -n "$url" ] && [ "${url%/}" != "$url" ]; do
+    url="${url%/}"
+  done
+  printf '%s\n' "$url"
+}
+
+# Remember the last non-empty VITE_API_BASE_URL in dir/.env then dir/.env.production.
+consider_env_dir() {
+  local dir="$1" file val norm
+  [ -d "$dir" ] || return 0
+  for file in .env .env.production; do
+    if [ -f "$dir/$file" ] && [ ! -r "$dir/$file" ]; then
+      log "WARNING: $dir/$file is not readable by $(id -un). It was not used for VITE_API_BASE_URL."
+      continue
+    fi
+    if val=$(dotenv_get "$dir/$file" VITE_API_BASE_URL); then
+      norm=$(normalize_api_base "$val")
+      if [ -n "$norm" ]; then
+        API_BASE="$norm"
+        API_BASE_SOURCE="$dir/$file"
+      fi
+    fi
+  done
+}
+
+# Print scheme, host, and path separately. A full URL that equals a GitHub
+# secret is masked in Actions logs; these pieces still show the host.
+log_resolved_api_base() {
+  local url="$1" source="$2"
+  local rest scheme host path
+  case "$url" in
+    https://*) scheme=https; rest="${url#https://}" ;;
+    http://*) scheme=http; rest="${url#http://}" ;;
+    *)
+      die "VITE_API_BASE_URL from ${source} is not an http(s) URL"
       ;;
   esac
+  host="${rest%%/*}"
+  host="${host#*@}"
+  if [ "$rest" = "${rest%%/*}" ]; then
+    path="(none)"
+  else
+    path="/${rest#*/}"
+  fi
+  log "Resolved API base from ${source}: scheme=${scheme} host=${host} path=${path}"
 }
-validate_api_base "${VITE_API_BASE_URL:-}"
 
 # The clone may be owned by the app user. Fetch already works for the master
 # SSH user; pin safe.directory so a non-interactive shell does not trip
@@ -260,13 +351,38 @@ for env_name in .env .env.production .env.local .env.production.local; do
 done
 
 app_path="${BUN_DIR}:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-build_env=("PATH=${app_path}")
-if [ -n "${VITE_API_BASE_URL:-}" ]; then
-  build_env+=("VITE_API_BASE_URL=${VITE_API_BASE_URL}")
-  log "VITE_API_BASE_URL is set for this build and overrides .env"
-else
-  log "VITE_API_BASE_URL is not set; the build uses the server .env if present"
+
+# Server .env wins. The GitHub secret (this process's VITE_API_BASE_URL) is
+# only used when neither .env nor .env.production defines one. Vite would
+# otherwise prefer the process environment over the file.
+API_BASE=""
+API_BASE_SOURCE=""
+consider_env_dir "$BUILD_DIR"
+if [ -d "$ALT_FRONT_ENV" ]; then
+  alt_front_real=$(readlink -f "$ALT_FRONT_ENV")
+  if [ "$alt_front_real" != "$DEPLOY_PATH" ]; then
+    consider_env_dir "$ALT_FRONT_ENV"
+  fi
 fi
+secret_base=$(normalize_api_base "${VITE_API_BASE_URL:-}")
+if [ -n "$API_BASE_SOURCE" ] && [[ "$API_BASE_SOURCE" == "$BUILD_DIR/"* ]]; then
+  API_BASE_SOURCE="${DEPLOY_PATH}/${API_BASE_SOURCE#"$BUILD_DIR"/}"
+fi
+if [ -n "$API_BASE" ]; then
+  log_resolved_api_base "$API_BASE" "$API_BASE_SOURCE"
+  if [ -n "$secret_base" ]; then
+    log "Server .env supplies VITE_API_BASE_URL. The GitHub secret is not used for this build."
+  fi
+elif [ -n "$secret_base" ]; then
+  API_BASE="$secret_base"
+  printf '==> WARNING: VITE_API_BASE_URL is missing from the server .env and .env.production. Using the GitHub secret for this build.\n' >&2
+  log "WARNING: VITE_API_BASE_URL is missing from the server .env and .env.production. Using the GitHub secret for this build."
+  log_resolved_api_base "$API_BASE" "GitHub secret"
+else
+  die "VITE_API_BASE_URL is not set in the server .env or .env.production, and the GitHub secret is empty. Refusing to build (the app would call https://2p.ma/api)."
+fi
+
+build_env=("PATH=${app_path}" "VITE_API_BASE_URL=${API_BASE}")
 
 log "Installing dependencies"
 if !  env "${build_env[@]}" bash -c 'cd "$1" && bun install --frozen-lockfile' bash "$BUILD_DIR"; then

@@ -52,25 +52,19 @@ jobs:
         id: meta
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
-      - name: Require production API origin
+      - name: API origin secret is optional
         env:
           VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
         run: |
           set -euo pipefail
+          # The bytes visitors receive are built on the server. scripts/deploy.sh
+          # reads VITE_API_BASE_URL from the server .env first. This secret is
+          # only a fallback, so a missing or un-normalized value must not fail CI.
           if [ -z "${VITE_API_BASE_URL}" ]; then
-            echo "::error::Missing GitHub secret VITE_API_BASE_URL. Set it to the site origin, for example https://2p.ma (no /api suffix)."
-            exit 1
+            echo "VITE_API_BASE_URL secret is not set. Deploy uses the server .env."
+          else
+            echo "VITE_API_BASE_URL secret is set. Deploy uses the server .env when that file defines one."
           fi
-          case "$VITE_API_BASE_URL" in
-            */)
-              echo "::error::VITE_API_BASE_URL must not have a trailing slash."
-              exit 1
-              ;;
-            */api)
-              echo "::error::VITE_API_BASE_URL must be the origin only. src/services/api.js appends /api."
-              exit 1
-              ;;
-          esac
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -130,11 +124,10 @@ jobs:
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
-          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
         run: |
           set -euo pipefail
           missing=0
-          for name in DEPLOY_HOST DEPLOY_USER DEPLOY_SSH_KEY VITE_API_BASE_URL; do
+          for name in DEPLOY_HOST DEPLOY_USER DEPLOY_SSH_KEY; do
             if [ -z "${!name}" ]; then
               echo "::error::Missing GitHub secret ${name}"
               missing=1

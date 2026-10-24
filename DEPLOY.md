@@ -68,9 +68,9 @@ Repository → Settings → Secrets and variables → Actions.
 | `DEPLOY_SSH_KEY` | yes | Private key that can log in as that master user. Paste the whole file, including the `BEGIN` / `END` lines. A single line with literal `\n` is accepted. |
 | `DEPLOY_PATH` | no | Defaults to `/home/master/applications/pfpxvernvm/public_html`. |
 | `DEPLOY_PORT` | no | Defaults to `22`. |
-| `VITE_API_BASE_URL` | yes | Site origin only, `https://2p.ma`. No trailing slash and no `/api` suffix. `src/services/api.js` appends `/api` itself. |
+| `VITE_API_BASE_URL` | no | Fallback only, when the server `.env` and `.env.production` do not set it. `src/services/api.js` appends `/api`. |
 
-When Actions runs the server script, the secret overrides `VITE_API_BASE_URL` from the server `.env` for that build. Other `VITE_*` variables (`VITE_ACCOUNT_URL`, `VITE_APP_URL`, `VITE_MIGRATION_MODE`) still come from the server `.env`. A manual `./scripts/deploy.sh` with the variable unset uses `.env` for the API origin too. If neither is set, the app falls back to `https://2p.ma/api`.
+The value that gets built is the server's `VITE_API_BASE_URL`. `scripts/deploy.sh` reads it from `public_html/.env`, then from `public_html/.env.production` if that file sets it (Vite's production order). On this app that file is `/home/1480575.cloudwaysapps.com/pfpxvernvm/public_html/.env`, which is the same tree as the master webroot when those paths are one directory. The GitHub secret is used only when neither file has a value, and the script prints a warning in that case. If neither the files nor the secret is set, the deploy stops before it builds, so the bundle does not fall through to `https://2p.ma/api`. Trailing whitespace, trailing slashes, and a trailing `/api` are removed before the build. The job log prints the resolved scheme, host, and path (not the whole URL, so a secret used as a fallback is not masked into `***`). Other `VITE_*` variables still come from the server `.env`.
 
 ## One-time server setup
 
@@ -113,11 +113,10 @@ That fetches `origin/main`, builds outside the webroot, and publishes. Check the
 
 Do not run `./build.sh` inside `public_html`. It would replace the live `index.html` with the Vite source shell while it compiles. `build.sh` now exits if its directory is `public_html`. `scripts/deploy.sh` runs it in the side worktree instead.
 
-Override the commit or the API origin when you need to:
+Override the commit when you need to. The API origin comes from the server `.env`; `VITE_API_BASE_URL` in the environment is only used when that file does not set it.
 
 ```bash
 DEPLOY_REF=7329fd018f5a29e55bb9af6333a329bba4e3f907 ./scripts/deploy.sh
-VITE_API_BASE_URL=https://2p.ma ./scripts/deploy.sh
 ```
 
 `DEPLOY_REF` may be a full SHA, a tag, or `origin/main`. A bare `main` is treated as `origin/main`.
