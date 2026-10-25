@@ -13,7 +13,7 @@
         <h2
           v-if="title"
           :id="id ? `${id}-title` : undefined"
-          :class="['text-2xl md:text-3xl font-semibold', tone === 'brand' ? 'text-white' : colorClasses.text]"
+          :class="['text-2xl md:text-3xl', strong ? 'font-bold' : 'font-semibold', tone === 'brand' ? 'text-white' : colorClasses.text]"
         >{{ title }}</h2>
         <p v-if="intro" :class="['mt-3 text-lg', center ? '' : 'max-w-3xl', tone === 'brand' ? 'text-white/90' : 'text-gray-600 dark:text-gray-400']">
           {{ intro }}
@@ -38,6 +38,7 @@ const props = defineProps({
   tone: { type: String, default: 'white' },
   as: { type: String, default: 'section' },
   center: { type: Boolean, default: false },
+  strong: { type: Boolean, default: false },
   narrow: { type: Boolean, default: false },
 })
 
