@@ -71,15 +71,53 @@
       </div>
     </section>
 
-    <ServiceSection id="offres" tone="muted" :title="owners.sections?.offers" center>
-      <div class="grid gap-6 lg:grid-cols-3 items-stretch">
-        <OfferCard v-if="premium" :card="premium.card" compact />
-        <OfferCard v-if="assistance" :card="assistance.card" compact />
-        <OfferCard v-if="mandat" :card="mandat.card" compact />
-      </div>
-      <div class="mt-8 flex justify-center">
-        <ServiceButton :to="SERVICE_PAGES.proprietaires.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
-      </div>
+    <ServiceSection id="offres" tone="muted" :title="t('navigation.pricing')" center strong>
+      <ServiceTabs v-model="pricingTab" id-prefix="tarifs" :label="t('navigation.pricing')" :tabs="pricingTabs">
+        <template #proprietaires>
+          <div class="grid gap-6 lg:grid-cols-3 items-stretch">
+            <OfferCard v-if="premium" :card="premium.card" compact>
+              <template #actions>
+                <ServiceButton class="!w-full" :to="SERVICE_PAGES.annoncePremium.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+              </template>
+            </OfferCard>
+            <OfferCard v-if="assistance" :card="assistance.card" compact>
+              <template #actions>
+                <ServiceButton class="!w-full" :to="SERVICE_PAGES.assistanceCommerciale.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+              </template>
+            </OfferCard>
+            <OfferCard v-if="mandat" :card="mandat.card" compact>
+              <template #actions>
+                <ServiceButton class="!w-full" :to="SERVICE_PAGES.mandatExclusif.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+              </template>
+            </OfferCard>
+          </div>
+        </template>
+
+        <template #locationVacances>
+          <div v-if="vacationCard" class="max-w-xl mx-auto">
+            <OfferCard :card="vacationCard" compact>
+              <template #actions>
+                <ServiceButton class="!w-full" :to="SERVICE_PAGES.locationVacances.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+              </template>
+            </OfferCard>
+          </div>
+        </template>
+
+        <template #acheteurs>
+          <div class="grid gap-6 md:grid-cols-2 items-stretch">
+            <OfferCard v-if="passCard" :card="passCard" compact>
+              <template #actions>
+                <ServiceButton class="!w-full" :to="SERVICE_PAGES.acheteursLocataires.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+              </template>
+            </OfferCard>
+            <OfferCard v-if="packCard" :card="packCard" compact>
+              <template #actions>
+                <ServiceButton class="!w-full" :to="SERVICE_PAGES.acheteursLocataires.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+              </template>
+            </OfferCard>
+          </div>
+        </template>
+      </ServiceTabs>
     </ServiceSection>
 
     <!-- Premium Products Section -->
@@ -156,6 +194,7 @@ import { homeService } from '../services/homeService'
 import { SERVICE_PAGES } from '../config/services'
 import HeroSearch from '../components/HeroSearch.vue'
 import ServiceSection from '../components/services/ServiceSection.vue'
+import ServiceTabs from '../components/services/ServiceTabs.vue'
 import OfferCard from '../components/services/OfferCard.vue'
 import ServiceButton from '../components/services/ServiceButton.vue'
 
@@ -174,10 +213,45 @@ const { colorClasses } = useTheme()
 const { t, tm } = useI18n()
 
 const owners = computed(() => tm('servicePages.proprietaires') || {})
+const vacation = computed(() => tm('servicePages.locationVacances') || {})
+const buyers = computed(() => tm('servicePages.acheteursLocataires') || {})
 const offerCopy = (key) => tm(`servicePages.${key}`)
 const premium = computed(() => offerCopy('annoncePremium'))
 const assistance = computed(() => offerCopy('assistanceCommerciale'))
 const mandat = computed(() => offerCopy('mandatExclusif'))
+
+const pricingTab = ref('proprietaires')
+const pricingTabs = computed(() => [
+  owners.value.breadcrumb && { id: 'proprietaires', label: owners.value.breadcrumb },
+  vacation.value.breadcrumb && { id: 'locationVacances', label: vacation.value.breadcrumb },
+  buyers.value.breadcrumb && { id: 'acheteurs', label: buyers.value.breadcrumb },
+].filter(Boolean))
+
+// Same card shape as ServiceLocationVacancesOwners. One published offer only.
+const vacationCard = computed(() => {
+  const offer = vacation.value.offer
+  if (!offer) return null
+  return {
+    name: offer.subtitle,
+    price: offer.price,
+    includesTitle: offer.includesTitle,
+    includes: offer.includes,
+    badge: offer.badge,
+    notes: [offer.validity, offer.renewal].filter(Boolean),
+  }
+})
+
+// Same fields as ServiceAcheteursLocataires. Pack price stays the unpublished placeholder.
+const passCard = computed(() => {
+  const pass = buyers.value.offers?.passVisites
+  if (!pass) return null
+  return { n: pass.n, name: pass.name, question: pass.lead, price: pass.price, text: pass.text, includes: pass.includes }
+})
+const packCard = computed(() => {
+  const pack = buyers.value.offers?.packPersonnalise
+  if (!pack) return null
+  return { n: pack.n, name: pack.name, question: pack.lead, text: pack.text, includes: pack.includes, note: pack.note, price: pack.price }
+})
 
 const data = ref(null)
 const loading = ref(true)
