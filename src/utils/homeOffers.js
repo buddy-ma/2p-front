@@ -101,17 +101,88 @@ function padOrder(value, index) {
   return String(shown).padStart(2, '0')
 }
 
+function numericPrice(value) {
+  if (typeof value === 'number' && Number.isFinite(value)) return value
+  if (typeof value === 'string' && value.trim()) {
+    const n = Number(value.trim().replace(/\s/g, '').replace(',', '.'))
+    if (Number.isFinite(n)) return n
+  }
+  return null
+}
+
+// "1 000" — regular space, no decimals when the amount is whole.
+export function formatGroupedPrice(value) {
+  const n = numericPrice(value)
+  if (n === null) return null
+  const sign = n < 0 ? '-' : ''
+  const rounded = Math.round(Math.abs(n) * 100) / 100
+  const [intPart, decPart] = rounded.toFixed(2).split('.')
+  const grouped = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+  return `${sign}${grouped}${decPart === '00' ? '' : `,${decPart}`}`
+}
+
+function isPriceFrom(offer) {
+  return offer?.price_from === true || offer?.price_from === 1
+}
+
+function isTwelveMonths(duration) {
+  if (!duration || typeof duration !== 'object') return false
+  const value = Number(duration.value)
+  const unit = String(duration.unit || '').toLowerCase()
+  return value === 12 && ['month', 'months', 'mois'].includes(unit)
+}
+
+function localizedName(typeName, locale) {
+  if (!typeName || typeof typeName !== 'object') return ''
+  return cleanText(typeName[locale]) || cleanText(typeName.fr) || cleanText(typeName.en) || cleanText(typeName.ar)
+}
+
+function typePriceRows(offer, locale, t) {
+  const rows = Array.isArray(offer?.type_prices) ? [...offer.type_prices] : []
+  rows.sort((a, b) => {
+    const ap = numericPrice(a?.price_ht)
+    const bp = numericPrice(b?.price_ht)
+    if (ap === null && bp === null) return 0
+    if (ap === null) return 1
+    if (bp === null) return -1
+    return ap - bp
+  })
+  return rows.map((row) => {
+    const name = localizedName(row?.type_name, locale)
+    const amount = formatGroupedPrice(row?.price_ht)
+    if (!name || !amount) return null
+    const price = t ? t('home.typePriceAmount', { price: amount }) : `${amount} DH`
+    return { name, price }
+  }).filter(Boolean)
+}
+
+function priceFromLabel(offer, audience, t) {
+  if (!isPriceFrom(offer) || !t) return ''
+  const amount = formatGroupedPrice(offer.price_ht)
+  if (!amount) return ''
+  let label = t('home.priceFrom', { price: amount })
+  if (!label || label === 'home.priceFrom') return ''
+  if (audience === 'location_vacances' && isTwelveMonths(offer.duration)) {
+    const suffix = t('home.priceFromYearSuffix')
+    if (suffix && suffix !== 'home.priceFromYearSuffix') label += suffix
+  }
+  return label
+}
+
 // Locale text, then French, then the static card strings already on the home page.
-export function presentOffers(offers, { locale, pricesAre, staticByKey, audience }) {
+export function presentOffers(offers, { locale, pricesAre, staticByKey, audience, t }) {
   return (offers || []).map((offer, index) => {
     const norm = normalizeOfferKey(offer?.key)
     const staticCard = staticByKey?.[norm] || null
     const texts = offer?.texts || {}
     const primary = texts[locale] && typeof texts[locale] === 'object' ? texts[locale] : {}
     const fr = texts.fr && typeof texts.fr === 'object' ? texts.fr : {}
-    const apiPrice = firstText(primary.price_label, fr.price_label)
+    const generatedPrice = priceFromLabel(offer, audience, t)
+    const labelPrice = firstText(primary.price_label, fr.price_label)
+    const apiPrice = generatedPrice || labelPrice
     const price = apiPrice || cleanText(staticCard?.price)
     const features = firstFeatures(primary.features, fr.features, staticCard?.includes)
+    const typePrices = typePriceRows(offer, locale, t)
     const card = {
       ...(staticCard || {}),
       n: staticCard?.n || padOrder(offer?.sort_order, index),
@@ -121,11 +192,16 @@ export function presentOffers(offers, { locale, pricesAre, staticByKey, audience
       includes: features,
       text: firstText(primary.summary, fr.summary, staticCard?.text, staticCard?.lead),
     }
+    if (typePrices.length) {
+      card.typePrices = typePrices
+      card.typePricesTitle = t ? t('home.priceByType') : ''
+    }
     if (apiPrice) {
       delete card.fees
       delete card.highlight
     }
-    const priceNote = pricesAre === 'HT' && price && !/\bHT\b/i.test(price) ? 'HT' : ''
+    // Generated labels already say HT / excl. tax / دون احتساب الضريبة.
+    const priceNote = !generatedPrice && pricesAre === 'HT' && price && !/\bHT\b/i.test(price) ? 'HT' : ''
     return {
       key: offer?.key || `${norm || 'offer'}-${index}`,
       card,

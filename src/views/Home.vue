@@ -301,6 +301,7 @@ function offersFor(audience) {
     pricesAre: adminCatalog.value.pricesAre,
     staticByKey: staticByKey.value,
     audience,
+    t,
   }).filter((row) => row.card?.name || row.card?.price || row.card?.includes?.length || row.card?.fees?.length)
   return rows.length ? rows : null
 }
