@@ -74,7 +74,14 @@
     <ServiceSection id="offres" tone="muted" :title="t('navigation.pricing')" center strong>
       <ServiceTabs v-model="pricingTab" id-prefix="tarifs" :label="t('navigation.pricing')" :tabs="pricingTabs">
         <template #proprietaires>
-          <div class="grid gap-6 lg:grid-cols-3 items-stretch">
+          <div v-if="adminOwners" class="grid gap-6 lg:grid-cols-3 items-stretch">
+            <OfferCard v-for="offer in adminOwners" :key="offer.key" :card="offer.card" :price-note="offer.priceNote">
+              <template #actions>
+                <ServiceButton class="!w-full" :to="offer.to" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+              </template>
+            </OfferCard>
+          </div>
+          <div v-else class="grid gap-6 lg:grid-cols-3 items-stretch">
             <OfferCard v-if="premium" :card="premium.card" compact>
               <template #actions>
                 <ServiceButton class="!w-full" :to="SERVICE_PAGES.annoncePremium.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
@@ -94,7 +101,14 @@
         </template>
 
         <template #locationVacances>
-          <div v-if="vacationCard" class="max-w-xl mx-auto">
+          <div v-if="adminVacation" :class="adminVacation.length > 1 ? 'grid gap-6 lg:grid-cols-3 items-stretch' : 'max-w-xl mx-auto'">
+            <OfferCard v-for="offer in adminVacation" :key="offer.key" :card="offer.card" :price-note="offer.priceNote">
+              <template #actions>
+                <ServiceButton class="!w-full" :to="offer.to" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+              </template>
+            </OfferCard>
+          </div>
+          <div v-else-if="vacationCard" class="max-w-xl mx-auto">
             <OfferCard :card="vacationCard" compact>
               <template #actions>
                 <ServiceButton class="!w-full" :to="SERVICE_PAGES.locationVacances.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
@@ -104,7 +118,14 @@
         </template>
 
         <template #acheteurs>
-          <div class="grid gap-6 md:grid-cols-2 items-stretch">
+          <div v-if="adminBuyers" class="grid gap-6 md:grid-cols-2 items-stretch">
+            <OfferCard v-for="offer in adminBuyers" :key="offer.key" :card="offer.card" :price-note="offer.priceNote">
+              <template #actions>
+                <ServiceButton class="!w-full" :to="offer.to" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+              </template>
+            </OfferCard>
+          </div>
+          <div v-else class="grid gap-6 md:grid-cols-2 items-stretch">
             <OfferCard v-if="passCard" :card="passCard" compact>
               <template #actions>
                 <ServiceButton class="!w-full" :to="SERVICE_PAGES.acheteursLocataires.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
@@ -191,6 +212,9 @@ import { ref, computed, onMounted } from 'vue'
 import { useTheme } from '../composables/useTheme'
 import { useI18n } from '../composables/useI18n'
 import { homeService } from '../services/homeService'
+import { offerService } from '../services/offerService'
+import { useLanguage } from '../composables/useLanguage'
+import { parseOffersCatalog, presentOffers, normalizeOfferKey } from '../utils/homeOffers'
 import { SERVICE_PAGES } from '../config/services'
 import HeroSearch from '../components/HeroSearch.vue'
 import ServiceSection from '../components/services/ServiceSection.vue'
@@ -211,6 +235,7 @@ import logoBlueSmall from '../assets/images/logos/logo-blue-small.svg'
 import logoWhiteSmall from '../assets/images/logos/logo-white-small.svg'
 const { colorClasses } = useTheme()
 const { t, tm } = useI18n()
+const { currentLocale } = useLanguage()
 
 const owners = computed(() => tm('servicePages.proprietaires') || {})
 const vacation = computed(() => tm('servicePages.locationVacances') || {})
@@ -253,11 +278,52 @@ const packCard = computed(() => {
   return { n: pack.n, name: pack.name, question: pack.lead, text: pack.text, includes: pack.includes, note: pack.note, price: pack.price }
 })
 
+const adminCatalog = ref(null)
+const staticByKey = computed(() => {
+  const map = {}
+  const put = (key, card) => {
+    if (card) map[normalizeOfferKey(key)] = card
+  }
+  put('annoncePremium', premium.value?.card)
+  put('assistanceCommerciale', assistance.value?.card)
+  put('mandatExclusif', mandat.value?.card)
+  put('locationVacances', vacationCard.value)
+  put('passVisites', passCard.value)
+  put('packPersonnalise', packCard.value)
+  return map
+})
+
+function offersFor(audience) {
+  const list = adminCatalog.value?.audiences?.[audience]
+  if (!list?.length) return null
+  const rows = presentOffers(list, {
+    locale: currentLocale.value,
+    pricesAre: adminCatalog.value.pricesAre,
+    staticByKey: staticByKey.value,
+    audience,
+  }).filter((row) => row.card?.name || row.card?.price || row.card?.includes?.length || row.card?.fees?.length)
+  return rows.length ? rows : null
+}
+
+const adminOwners = computed(() => offersFor('proprietaires'))
+const adminVacation = computed(() => offersFor('location_vacances'))
+const adminBuyers = computed(() => offersFor('acheteurs_locataires'))
+
 const data = ref(null)
 const loading = ref(true)
 const error = ref(null)
 
+async function loadOffers() {
+  try {
+    const response = await offerService.getOffers()
+    adminCatalog.value = parseOffersCatalog(response?.data ?? response)
+  } catch {
+    adminCatalog.value = null
+  }
+}
+
 onMounted(async () => {
+  loadOffers()
   try {
     loading.value = true
     error.value = null

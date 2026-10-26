@@ -27,6 +27,7 @@
 
       <p v-if="card.price && (SHOW_TODO || !isTodo(card.price))" :class="['mt-4 font-bold', colorClasses.text, compact ? 'text-2xl' : 'text-3xl']">
         <bdi><TodoText :value="card.price" /></bdi>
+        <span v-if="priceNote" class="ms-2 align-middle text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ priceNote }}</span>
       </p>
 
       <p v-if="!compact && card.question" class="mt-4 font-medium text-gray-800 dark:text-gray-200">{{ card.question }}</p>
@@ -82,6 +83,7 @@ const props = defineProps({
   compact: { type: Boolean, default: false },
   image: { type: Object, default: null },
   headingLevel: { type: Number, default: 3 },
+  priceNote: { type: String, default: '' },
 })
 
 const visibleIncludes = computed(() => {
