@@ -30,6 +30,16 @@
         <span v-if="priceNote" class="ms-2 align-middle text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ priceNote }}</span>
       </p>
 
+      <div v-if="card.typePrices?.length" class="mt-3">
+        <p class="text-[11px] font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">{{ card.typePricesTitle }}</p>
+        <ul class="mt-1 max-h-28 space-y-1 overflow-y-auto text-xs text-gray-500 dark:text-gray-400">
+          <li v-for="(row, i) in card.typePrices" :key="`${row.name}-${i}`" class="flex items-baseline justify-between gap-3">
+            <span class="min-w-0 truncate"><bdi>{{ row.name }}</bdi></span>
+            <span class="shrink-0 font-semibold tabular-nums text-gray-700 dark:text-gray-300"><bdi>{{ row.price }}</bdi></span>
+          </li>
+        </ul>
+      </div>
+
       <p v-if="!compact && card.question" class="mt-4 font-medium text-gray-800 dark:text-gray-200">{{ card.question }}</p>
       <p v-if="!compact && card.lead" class="mt-3 font-semibold text-gray-900 dark:text-white">{{ card.lead }}</p>
       <p v-if="!compact && card.text" class="mt-2 text-gray-600 dark:text-gray-400">{{ card.text }}</p>
