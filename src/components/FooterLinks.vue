@@ -86,11 +86,10 @@
               <h4 class="text-white mb-4">{{ t('footer.legalPages') }}</h4>
               <div class="nav-footer">
                 <ul class="space-y-2">
-                  <li v-for="blog in footerBlogs" :key="blog.id">
-                    <a v-if="blog && blog.slug" :href="`/conseils/${blog.slug}`"
-                      class="text-gray-300 hover:text-white transition-colors">
-                      {{ blog.short_title || blog.title }}
-                    </a>
+                  <li v-for="link in legalLinks" :key="link.id">
+                    <router-link :to="link.to" class="text-gray-300 hover:text-white transition-colors">
+                      {{ t(link.labelKey) }}
+                    </router-link>
                   </li>
                 </ul>
               </div>
@@ -103,10 +102,10 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue'
+import { computed } from 'vue'
 import { useTheme } from '../composables/useTheme'
 import { useI18n } from '../composables/useI18n'
-import { homeService } from '../services/homeService'
+import { useLegalFooterLinks } from '../composables/useLegalFooterLinks'
 import logoWhite from '../assets/images/logos/logo-blue-white.svg'
 
 const props = defineProps({
@@ -142,7 +141,7 @@ const props = defineProps({
 
 const { colorClasses } = useTheme()
 const { t } = useI18n()
-const footerBlogs = ref([])
+const { links: legalLinks } = useLegalFooterLinks()
 
 const logoPath = logoWhite
 
@@ -213,15 +212,6 @@ const generateLink = (city) => {
   return link
 }
 
-onMounted(async () => {
-  try {
-    const response = await homeService.getHomeData()
-    const responseData = response.data || response
-    footerBlogs.value = responseData.footer_blogs || []
-  } catch (error) {
-    footerBlogs.value = []
-  }
-})
 </script>
 
 <style scoped>

@@ -63,11 +63,11 @@
         <div>
           <h4 class="text-lg font-semibold mb-4">{{ t('footer.legalPages') }}</h4>
           <ul class="space-y-2">
-            <li v-for="blog in footerBlogs" :key="blog.id">
-              <a v-if="blog && blog.slug" :href="`/conseils/${blog.slug}`"
+            <li v-for="link in legalLinks" :key="link.id">
+              <router-link :to="link.to"
                 class="text-gray-300 dark:text-gray-400 hover:text-white transition-colors">
-                {{ blog.short_title || blog.title }}
-              </a>
+                {{ t(link.labelKey) }}
+              </router-link>
             </li>
           </ul>
         </div>
@@ -77,37 +77,26 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { homeService } from '../services/homeService'
+import { computed } from 'vue'
 import { useI18n } from '../composables/useI18n'
 import { useTheme } from '../composables/useTheme'
 import { useLanguage } from '../composables/useLanguage'
+import { useLegalFooterLinks } from '../composables/useLegalFooterLinks'
 import { SERVICE_PAGES } from '../config/services'
 import logoWhite from '../assets/images/logos/logo-blue-white.svg'
 
 const { t } = useI18n()
 const { colorClasses } = useTheme()
 const { getLocalizedPath } = useLanguage()
+const { links: legalLinks } = useLegalFooterLinks()
 
 const serviceLinks = [
   { label: 'navigation.sellRent', path: SERVICE_PAGES.proprietaires.path },
   { label: 'navigation.vacationRentalService', path: SERVICE_PAGES.locationVacances.path },
   { label: 'navigation.buyersTenants', path: SERVICE_PAGES.acheteursLocataires.path },
 ]
-const footerBlogs = ref([])
 
 const logoPath = computed(() => {
   return logoWhite
-})
-
-onMounted(async () => {
-  try {
-    const response = await homeService.getHomeData()
-    const responseData = response.data || response
-    footerBlogs.value = responseData.footer_blogs || []
-  } catch (error) {
-    // Silently handle API errors - footer blogs are optional
-    footerBlogs.value = []
-  }
 })
 </script>
