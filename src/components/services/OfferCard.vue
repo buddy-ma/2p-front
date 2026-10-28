@@ -1,44 +1,35 @@
 <template>
   <article
     :class="[
-      'relative flex flex-col h-full bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden transition-shadow hover:shadow-lg',
+      'relative flex flex-col h-full bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden transition-shadow hover:shadow-lg',
+      compact ? 'rounded-2xl' : 'rounded-3xl',
       featured ? ['ring-2', colorClasses.ring, 'lg:scale-105 lg:z-10'] : '',
     ]"
   >
     <ServiceImage v-if="image?.src" v-bind="image" :rounded="false" sizes="(min-width: 768px) 50vw, 100vw" />
 
-    <div :class="['flex flex-col flex-1 text-start', compact ? 'p-5 md:p-6' : 'p-6 md:p-8']">
-      <div v-if="card.n || (!compact && (card.groupTitle || card.tagline)) || (compact && card.tagline)" class="flex items-center gap-3 mb-3">
-        <span v-if="card.n" :class="['w-10 h-10 flex-shrink-0 rounded-full text-white text-sm font-bold flex items-center justify-center', colorClasses.bg]" aria-hidden="true">{{ card.n }}</span>
-        <p v-if="(!compact && (card.groupTitle || card.tagline)) || (compact && card.tagline)" :class="['text-sm font-semibold uppercase tracking-wide', colorClasses.text]">
+    <div :class="['flex flex-col flex-1 text-start', compact ? 'p-4 sm:p-5' : 'p-6 md:p-8']">
+      <div v-if="card.n || (!compact && (card.groupTitle || card.tagline)) || (compact && card.tagline)" :class="['flex items-center gap-3', compact ? 'mb-2' : 'mb-3']">
+        <span v-if="card.n" :class="['flex-shrink-0 rounded-full text-white font-bold flex items-center justify-center', colorClasses.bg, compact ? 'w-8 h-8 text-xs' : 'w-10 h-10 text-sm']" aria-hidden="true">{{ card.n }}</span>
+        <p v-if="(!compact && (card.groupTitle || card.tagline)) || (compact && card.tagline)" :class="['font-semibold uppercase tracking-wide', colorClasses.text, compact ? 'text-xs' : 'text-sm']">
           {{ card.tagline || card.groupTitle }}
         </p>
       </div>
 
-      <component :is="`h${headingLevel}`" v-if="card.name" class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
+      <component :is="`h${headingLevel}`" v-if="card.name" :class="['font-bold text-gray-900 dark:text-white', compact ? 'text-lg md:text-xl' : 'text-xl md:text-2xl']">
         <bdi>{{ card.name }}</bdi>
       </component>
 
-      <p v-if="card.badge" class="mt-3">
-        <span class="inline-block rounded-full bg-yellow/20 dark:bg-yellow/15 text-gray-900 dark:text-yellow px-3 py-1 text-xs font-bold tracking-wide">
+      <p v-if="card.badge" :class="compact ? 'mt-2' : 'mt-3'">
+        <span :class="['inline-block rounded-full bg-yellow/20 dark:bg-yellow/15 text-gray-900 dark:text-yellow font-bold tracking-wide leading-snug', compact ? 'px-2.5 py-0.5 text-[11px]' : 'px-3 py-1 text-xs']">
           {{ card.badge }}
         </span>
       </p>
 
-      <p v-if="card.price && (SHOW_TODO || !isTodo(card.price))" :class="['mt-4 font-bold', colorClasses.text, compact ? 'text-2xl' : 'text-3xl']">
+      <p v-if="card.price && (SHOW_TODO || !isTodo(card.price))" :class="['font-bold leading-snug', colorClasses.text, compact ? 'mt-2 text-lg md:text-xl' : 'mt-4 text-3xl']">
         <bdi><TodoText :value="card.price" /></bdi>
-        <span v-if="priceNote" class="ms-2 align-middle text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ priceNote }}</span>
+        <span v-if="priceNote" :class="['ms-2 align-middle font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400', compact ? 'text-xs' : 'text-sm']">{{ priceNote }}</span>
       </p>
-
-      <div v-if="card.typePrices?.length" class="mt-3">
-        <p class="text-[11px] font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">{{ card.typePricesTitle }}</p>
-        <ul class="mt-1 max-h-28 space-y-1 overflow-y-auto text-xs text-gray-500 dark:text-gray-400">
-          <li v-for="(row, i) in card.typePrices" :key="`${row.name}-${i}`" class="flex items-baseline justify-between gap-3">
-            <span class="min-w-0 truncate"><bdi>{{ row.name }}</bdi></span>
-            <span class="shrink-0 font-semibold tabular-nums text-gray-700 dark:text-gray-300"><bdi>{{ row.price }}</bdi></span>
-          </li>
-        </ul>
-      </div>
 
       <p v-if="!compact && card.question" class="mt-4 font-medium text-gray-800 dark:text-gray-200">{{ card.question }}</p>
       <p v-if="!compact && card.lead" class="mt-3 font-semibold text-gray-900 dark:text-white">{{ card.lead }}</p>
@@ -52,9 +43,9 @@
         </div>
       </dl>
 
-      <div v-if="visibleIncludes.length" class="mt-5">
+      <div v-if="visibleIncludes.length" :class="compact ? 'mt-3' : 'mt-5'">
         <p v-if="card.includesTitle && !compact" class="font-semibold text-gray-900 dark:text-white mb-3">{{ card.includesTitle }}</p>
-        <CheckList :items="visibleIncludes" compact />
+        <CheckList :items="visibleIncludes" :compact="compact" />
       </div>
 
       <p v-if="card.highlight" :class="['mt-5 font-bold', colorClasses.text]">{{ card.highlight }}</p>
@@ -68,7 +59,7 @@
 
       <p v-if="!compact && card.note" class="mt-4 text-sm text-gray-500 dark:text-gray-400">{{ card.note }}</p>
 
-      <div v-if="$slots.actions" class="mt-auto pt-6 flex flex-col gap-3">
+      <div v-if="$slots.actions" :class="['mt-auto flex flex-col gap-2', compact ? 'pt-4' : 'pt-6']">
         <slot name="actions" />
       </div>
     </div>

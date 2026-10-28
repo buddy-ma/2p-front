@@ -117,8 +117,6 @@ export default {
     viewOffers: 'Voir plus',
     priceFrom: 'À partir de {price} DH HT',
     priceFromYearSuffix: ' / an',
-    priceByType: 'Selon le type de bien',
-    typePriceAmount: '{price} DH',
     stepsTitle: 'Étapes',
     stepsSubtitle: 'Pour Obtenir Votre Service Premium',
     step1Title: 'Choisissez le service adapté à vos besoins',

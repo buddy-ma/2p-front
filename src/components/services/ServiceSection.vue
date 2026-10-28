@@ -5,15 +5,15 @@
     :aria-labelledby="title && id ? `${id}-title` : undefined"
     :class="['scroll-mt-20', toneClass]"
   >
-    <div :class="['container mx-auto px-4 py-16 md:py-20', narrow ? 'max-w-4xl' : 'max-w-6xl']">
-      <header v-if="title || eyebrow" :class="['mb-10 md:mb-12', center ? 'text-center mx-auto max-w-3xl' : 'text-start']">
+    <div :class="['container mx-auto px-4', compact ? 'py-8 md:py-10' : 'py-16 md:py-20', narrow ? 'max-w-4xl' : 'max-w-6xl']">
+      <header v-if="title || eyebrow" :class="[compact ? 'mb-5' : 'mb-10 md:mb-12', center ? 'text-center mx-auto max-w-3xl' : 'text-start']">
         <p v-if="eyebrow" :class="['text-sm font-semibold uppercase tracking-wide mb-2', tone === 'brand' ? 'text-white/80' : colorClasses.text]">
           {{ eyebrow }}
         </p>
         <h2
           v-if="title"
           :id="id ? `${id}-title` : undefined"
-          :class="['text-2xl md:text-3xl', strong ? 'font-bold' : 'font-semibold', tone === 'brand' ? 'text-white' : colorClasses.text]"
+          :class="[compact ? 'text-xl md:text-2xl' : 'text-2xl md:text-3xl', strong ? 'font-bold' : 'font-semibold', tone === 'brand' ? 'text-white' : colorClasses.text]"
         >{{ title }}</h2>
         <p v-if="intro" :class="['mt-3 text-lg', center ? '' : 'max-w-3xl', tone === 'brand' ? 'text-white/90' : 'text-gray-600 dark:text-gray-400']">
           {{ intro }}
@@ -40,6 +40,7 @@ const props = defineProps({
   center: { type: Boolean, default: false },
   strong: { type: Boolean, default: false },
   narrow: { type: Boolean, default: false },
+  compact: { type: Boolean, default: false },
 })
 
 const { colorClasses } = useServiceTheme()

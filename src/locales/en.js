@@ -114,8 +114,6 @@ export default {
     viewOffers: 'View more',
     priceFrom: 'From {price} DH excl. tax',
     priceFromYearSuffix: ' / year',
-    priceByType: 'By property type',
-    typePriceAmount: '{price} DH',
     stepsTitle: 'Steps',
     stepsSubtitle: 'To Get Your Premium Service',
     step1Title: 'Choose the service that suits your needs',

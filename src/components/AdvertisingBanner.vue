@@ -5,7 +5,7 @@
         <a 
           v-for="(advertising, index) in advertisements" 
           :key="index"
-          :href="advertising.link || '#'" 
+          :href="adHref(advertising.link)" 
           target="_blank" 
           rel="noopener noreferrer"
         >
@@ -21,6 +21,8 @@
 </template>
 
 <script setup>
+import { adHref } from '../utils/publicLink'
+
 const props = defineProps({
   advertisements: {
     type: Array,

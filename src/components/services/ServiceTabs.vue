@@ -3,7 +3,9 @@
     <div
       role="tablist"
       :aria-label="label || undefined"
-      class="flex flex-wrap gap-2 p-1.5 rounded-2xl bg-gray-100 dark:bg-gray-800 mb-8"
+      :class="compact
+        ? 'flex flex-wrap gap-1.5 rounded-2xl bg-gray-100 dark:bg-gray-800 p-1 mb-4'
+        : 'flex flex-wrap gap-2 rounded-2xl bg-gray-100 dark:bg-gray-800 p-1.5 mb-8'"
       @keydown="onKeydown"
     >
       <button
@@ -17,7 +19,8 @@
         :aria-controls="`${idPrefix}-panel-${tab.id}`"
         :tabindex="modelValue === tab.id ? 0 : -1"
         :class="[
-          'flex-1 min-w-[8rem] px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2',
+          'flex-1 rounded-xl font-semibold transition-colors focus:outline-none focus-visible:ring-2',
+          compact ? 'min-w-[7rem] px-3 py-2 text-sm' : 'min-w-[8rem] px-4 py-2.5 text-sm',
           colorClasses.ring,
           modelValue === tab.id
             ? [colorClasses.bg, 'text-white shadow-sm']
@@ -58,6 +61,7 @@ const props = defineProps({
   modelValue: { type: String, default: '' },
   idPrefix: { type: String, default: 'tabs' },
   label: { type: String, default: '' },
+  compact: { type: Boolean, default: false },
 })
 const emit = defineEmits(['update:modelValue'])
 
