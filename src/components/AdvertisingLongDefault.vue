@@ -1,6 +1,6 @@
 <template>
   <div class="container max-w-6xl mx-auto px-4 my-8">
-    <a href="/app">
+    <a href="https://2p.ma">
       <img src="../assets/images/advertising/V4-02.jpg" width="1268" height="200"
         alt="Annonces d'immobilier neuf à vendre au Maroc" class="w-full h-auto" />
     </a>

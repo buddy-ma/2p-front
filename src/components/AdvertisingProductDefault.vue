@@ -15,15 +15,16 @@
 <script setup>
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { replaceAppHref, SITE_HOME } from '../utils/publicLink'
 
 const router = useRouter()
 
 const addProductRoute = computed(() => {
   try {
     const route = router.resolve({ name: 'AddProduct' })
-    return route.href || '/app'
+    return replaceAppHref(route.href || SITE_HOME)
   } catch {
-    return '/app'
+    return SITE_HOME
   }
 })
 </script>

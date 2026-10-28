@@ -20,6 +20,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { replaceAppHref, SITE_HOME } from '../utils/publicLink'
 
 const props = defineProps({
   categoryId: {
@@ -35,10 +36,9 @@ const addProductRoute = computed(() => {
   try {
     // Try to resolve the AddProduct route
     const route = router.resolve({ name: 'AddProduct' })
-    return route.href || '/app'
+    return replaceAppHref(route.href || SITE_HOME)
   } catch {
-    // Fallback to '/app' if route doesn't exist
-    return '/app'
+    return SITE_HOME
   }
 })
 </script>

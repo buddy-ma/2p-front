@@ -132,30 +132,6 @@ function isTwelveMonths(duration) {
   return value === 12 && ['month', 'months', 'mois'].includes(unit)
 }
 
-function localizedName(typeName, locale) {
-  if (!typeName || typeof typeName !== 'object') return ''
-  return cleanText(typeName[locale]) || cleanText(typeName.fr) || cleanText(typeName.en) || cleanText(typeName.ar)
-}
-
-function typePriceRows(offer, locale, t) {
-  const rows = Array.isArray(offer?.type_prices) ? [...offer.type_prices] : []
-  rows.sort((a, b) => {
-    const ap = numericPrice(a?.price_ht)
-    const bp = numericPrice(b?.price_ht)
-    if (ap === null && bp === null) return 0
-    if (ap === null) return 1
-    if (bp === null) return -1
-    return ap - bp
-  })
-  return rows.map((row) => {
-    const name = localizedName(row?.type_name, locale)
-    const amount = formatGroupedPrice(row?.price_ht)
-    if (!name || !amount) return null
-    const price = t ? t('home.typePriceAmount', { price: amount }) : `${amount} DH`
-    return { name, price }
-  }).filter(Boolean)
-}
-
 function priceFromLabel(offer, audience, t) {
   if (!isPriceFrom(offer) || !t) return ''
   const amount = formatGroupedPrice(offer.price_ht)
@@ -182,7 +158,6 @@ export function presentOffers(offers, { locale, pricesAre, staticByKey, audience
     const apiPrice = generatedPrice || labelPrice
     const price = apiPrice || cleanText(staticCard?.price)
     const features = firstFeatures(primary.features, fr.features, staticCard?.includes)
-    const typePrices = typePriceRows(offer, locale, t)
     const card = {
       ...(staticCard || {}),
       n: staticCard?.n || padOrder(offer?.sort_order, index),
@@ -191,10 +166,6 @@ export function presentOffers(offers, { locale, pricesAre, staticByKey, audience
       price,
       includes: features,
       text: firstText(primary.summary, fr.summary, staticCard?.text, staticCard?.lead),
-    }
-    if (typePrices.length) {
-      card.typePrices = typePrices
-      card.typePricesTitle = t ? t('home.priceByType') : ''
     }
     if (apiPrice) {
       delete card.fees

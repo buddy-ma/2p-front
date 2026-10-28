@@ -71,69 +71,69 @@
       </div>
     </section>
 
-    <ServiceSection id="offres" tone="muted" :title="t('navigation.pricing')" center strong>
-      <ServiceTabs v-model="pricingTab" id-prefix="tarifs" :label="t('navigation.pricing')" :tabs="pricingTabs">
+    <ServiceSection id="offres" tone="muted" :title="t('navigation.pricing')" center strong compact>
+      <ServiceTabs v-model="pricingTab" id-prefix="tarifs" :label="t('navigation.pricing')" :tabs="pricingTabs" compact>
         <template #proprietaires>
-          <div v-if="adminOwners" class="grid gap-6 lg:grid-cols-3 items-stretch">
-            <OfferCard v-for="offer in adminOwners" :key="offer.key" :card="offer.card" :price-note="offer.priceNote">
+          <div v-if="adminOwners" class="grid gap-4 lg:grid-cols-3 items-stretch">
+            <OfferCard v-for="offer in adminOwners" :key="offer.key" :card="offer.card" :price-note="offer.priceNote" compact>
               <template #actions>
-                <ServiceButton class="!w-full" :to="offer.to" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+                <ServiceButton class="!w-full !py-2.5 !px-4 !text-sm" :to="offer.to" arrow>{{ t('home.viewOffers') }}</ServiceButton>
               </template>
             </OfferCard>
           </div>
-          <div v-else class="grid gap-6 lg:grid-cols-3 items-stretch">
+          <div v-else class="grid gap-4 lg:grid-cols-3 items-stretch">
             <OfferCard v-if="premium" :card="premium.card" compact>
               <template #actions>
-                <ServiceButton class="!w-full" :to="SERVICE_PAGES.annoncePremium.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+                <ServiceButton class="!w-full !py-2.5 !px-4 !text-sm" :to="SERVICE_PAGES.annoncePremium.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
               </template>
             </OfferCard>
             <OfferCard v-if="assistance" :card="assistance.card" compact>
               <template #actions>
-                <ServiceButton class="!w-full" :to="SERVICE_PAGES.assistanceCommerciale.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+                <ServiceButton class="!w-full !py-2.5 !px-4 !text-sm" :to="SERVICE_PAGES.assistanceCommerciale.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
               </template>
             </OfferCard>
             <OfferCard v-if="mandat" :card="mandat.card" compact>
               <template #actions>
-                <ServiceButton class="!w-full" :to="SERVICE_PAGES.mandatExclusif.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+                <ServiceButton class="!w-full !py-2.5 !px-4 !text-sm" :to="SERVICE_PAGES.mandatExclusif.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
               </template>
             </OfferCard>
           </div>
         </template>
 
         <template #locationVacances>
-          <div v-if="adminVacation" :class="adminVacation.length > 1 ? 'grid gap-6 lg:grid-cols-3 items-stretch' : 'max-w-xl mx-auto'">
-            <OfferCard v-for="offer in adminVacation" :key="offer.key" :card="offer.card" :price-note="offer.priceNote">
+          <div v-if="adminVacation" :class="adminVacation.length > 1 ? 'grid gap-4 lg:grid-cols-3 items-stretch' : 'max-w-md mx-auto'">
+            <OfferCard v-for="offer in adminVacation" :key="offer.key" :card="offer.card" :price-note="offer.priceNote" compact>
               <template #actions>
-                <ServiceButton class="!w-full" :to="offer.to" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+                <ServiceButton class="!w-full !py-2.5 !px-4 !text-sm" :to="offer.to" arrow>{{ t('home.viewOffers') }}</ServiceButton>
               </template>
             </OfferCard>
           </div>
-          <div v-else-if="vacationCard" class="max-w-xl mx-auto">
+          <div v-else-if="vacationCard" class="max-w-md mx-auto">
             <OfferCard :card="vacationCard" compact>
               <template #actions>
-                <ServiceButton class="!w-full" :to="SERVICE_PAGES.locationVacances.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+                <ServiceButton class="!w-full !py-2.5 !px-4 !text-sm" :to="SERVICE_PAGES.locationVacances.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
               </template>
             </OfferCard>
           </div>
         </template>
 
         <template #acheteurs>
-          <div v-if="adminBuyers" class="grid gap-6 md:grid-cols-2 items-stretch">
-            <OfferCard v-for="offer in adminBuyers" :key="offer.key" :card="offer.card" :price-note="offer.priceNote">
+          <div v-if="adminBuyers" class="grid gap-4 md:grid-cols-2 items-stretch">
+            <OfferCard v-for="offer in adminBuyers" :key="offer.key" :card="offer.card" :price-note="offer.priceNote" compact>
               <template #actions>
-                <ServiceButton class="!w-full" :to="offer.to" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+                <ServiceButton class="!w-full !py-2.5 !px-4 !text-sm" :to="offer.to" arrow>{{ t('home.viewOffers') }}</ServiceButton>
               </template>
             </OfferCard>
           </div>
-          <div v-else class="grid gap-6 md:grid-cols-2 items-stretch">
+          <div v-else class="grid gap-4 md:grid-cols-2 items-stretch">
             <OfferCard v-if="passCard" :card="passCard" compact>
               <template #actions>
-                <ServiceButton class="!w-full" :to="SERVICE_PAGES.acheteursLocataires.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+                <ServiceButton class="!w-full !py-2.5 !px-4 !text-sm" :to="SERVICE_PAGES.acheteursLocataires.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
               </template>
             </OfferCard>
             <OfferCard v-if="packCard" :card="packCard" compact>
               <template #actions>
-                <ServiceButton class="!w-full" :to="SERVICE_PAGES.acheteursLocataires.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
+                <ServiceButton class="!w-full !py-2.5 !px-4 !text-sm" :to="SERVICE_PAGES.acheteursLocataires.path" arrow>{{ t('home.viewOffers') }}</ServiceButton>
               </template>
             </OfferCard>
           </div>

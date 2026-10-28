@@ -116,8 +116,6 @@ export default {
     viewOffers: 'عرض المزيد',
     priceFrom: 'ابتداءً من {price} درهم دون احتساب الضريبة',
     priceFromYearSuffix: ' في السنة',
-    priceByType: 'حسب نوع العقار',
-    typePriceAmount: '{price} درهم',
     stepsTitle: 'الخطوات',
     stepsSubtitle: 'للحصول على خدمتك المميزة',
     step1Title: 'اختر الخدمة المناسبة لاحتياجاتك',
