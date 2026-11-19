@@ -146,14 +146,9 @@ export const productService = {
    * @returns {Promise} Success response
    */
   submitProductContact(productId, contactData) {
-    // Note: This route is in web.php, not api.php, so we use axios directly
-    const baseURL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:8001' : 'https://2p.ma')
-    return axios.post(`${baseURL}/produit/contact/${productId}`, contactData, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Accept': 'application/json',
-      }
-    })
+    // JSON under /api so the API CORS config (paths: api/*) applies.
+    // 2p-api must expose POST /products/{id}/contact; the old /produit/contact web route does not exist there.
+    return api.post(`/products/${productId}/contact`, contactData)
   },
 
   /**
