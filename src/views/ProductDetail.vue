@@ -492,9 +492,9 @@
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
               <textarea v-model="contactForm.message" :placeholder="t('product.messageOptional')" required rows="4"
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"></textarea>
-              <button type="submit"
-                :class="`w-full px-6 py-3 rounded-lg font-semibold text-white transition ${colorClasses.bg} ${colorClasses.hover}`">
-                {{ t('product.send') }}
+              <button type="submit" :disabled="contactSending"
+                :class="`w-full px-6 py-3 rounded-lg font-semibold text-white transition disabled:opacity-60 disabled:cursor-not-allowed ${colorClasses.bg} ${colorClasses.hover}`">
+                {{ contactSending ? t('product.sending') : t('product.send') }}
               </button>
             </form>
 
@@ -666,7 +666,11 @@ const route = useRoute()
 const router = useRouter()
 const { colorClasses } = useTheme()
 const { t } = useI18n()
-const { showToast } = useToast()
+const toast = useToast()
+function showToast(message, variant = 'default') {
+  const notify = toast[variant] || toast.toast
+  return notify(message)
+}
 const { updateSEO, stripHtml } = useSEO()
 
 const product = ref(null)
@@ -685,6 +689,7 @@ const contactForm = ref({
   email: '',
   message: '',
 })
+const contactSending = ref(false)
 const rateLimitError = ref(null)
 const retryAttempts = ref(0)
 const maxRetryAttempts = ref(5)
@@ -953,9 +958,10 @@ const applyProductSEO = (item) => {
 }
 
 const submitContact = async (isRetry = false) => {
+  if (contactSending.value) return
   try {
     if (!product.value?.id) {
-      showToast('Erreur: Produit introuvable', 'error')
+      showToast(t('product.contactError'), 'error')
       return
     }
 
@@ -965,22 +971,19 @@ const submitContact = async (isRetry = false) => {
       retryAttempts.value = 0
     }
 
-    showToast(t('product.send') + ' - ' + t('common.loading'), 'info')
-
-    // Convert form data to URL-encoded format
-    const formData = new URLSearchParams()
-    formData.append('fullname', contactForm.value.fullname)
-    formData.append('phone', contactForm.value.phone)
-    formData.append('email', contactForm.value.email || '')
-    formData.append('message', contactForm.value.message)
-
-    await productService.submitProductContact(product.value.id, formData)
+    contactSending.value = true
+    await productService.submitProductContact(product.value.id, {
+      fullname: contactForm.value.fullname,
+      phone: contactForm.value.phone,
+      email: contactForm.value.email || '',
+      message: contactForm.value.message,
+    })
 
     // Success - reset all error states
     rateLimitError.value = null
     retryAttempts.value = 0
     isRetrying.value = false
-    showToast('Message envoyé avec succès', 'success')
+    showToast(t('product.contactSent'), 'success')
     contactForm.value = { fullname: '', phone: '', email: '', message: '' }
   } catch (err) {
     console.error('Error submitting contact form:', err)
@@ -1002,7 +1005,12 @@ const submitContact = async (isRetry = false) => {
     
     // For other errors, show the error toast
     rateLimitError.value = null
-    showToast(err.response?.data?.message || 'Erreur lors de l\'envoi du message', 'error')
+    const validationMessage = err.response?.status === 422 && err.response?.data?.errors
+      ? Object.values(err.response.data.errors).flat()[0]
+      : ''
+    showToast(validationMessage || t('product.contactError'), 'error')
+  } finally {
+    contactSending.value = false
   }
 }
 
